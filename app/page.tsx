@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Image from "next/image";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const jobs = [
   {
@@ -310,7 +311,7 @@ function JobDetailModal({
                         <div className="w-2 h-2 bg-[#F1592A] rounded-full mt-2 shrink-0"></div>
                         <span className="text-gray-700">{responsibility}</span>
                       </li>
-                    )
+                    ),
                   )}
                 </ul>
               </div>
@@ -327,7 +328,7 @@ function JobDetailModal({
                         <div className="w-2 h-2 bg-green-600 rounded-full mt-2 shrink-0"></div>
                         <span className="text-gray-700">{requirement}</span>
                       </li>
-                    )
+                    ),
                   )}
                 </ul>
               </div>
@@ -388,41 +389,56 @@ function JobDetailModal({
 }
 
 export default function JobBoard() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [jobTypeFilter, setJobTypeFilter] = useState("all");
-  const [locationFilter, setLocationFilter] = useState("all");
-  const [remoteFilter, setRemoteFilter] = useState("all");
-  const [selectedJob, setSelectedJob] = useState<any>(null);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const jobIdParam = searchParams.has("job") ? searchParams.get("job") : "";
 
-  const filteredJobs = useMemo(() => {
-    return jobs.filter((job) => {
-      const matchesSearch =
-        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.skills.some((skill) =>
-          skill.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+  const selectedJob = () => {
+    if (!jobIdParam) {
+      return;
+    }
 
-      const matchesJobType =
-        jobTypeFilter === "all" || job.type === jobTypeFilter;
-      const matchesLocation =
-        locationFilter === "all" || job.location.includes(locationFilter);
-      const matchesRemote =
-        remoteFilter === "all" ||
-        (remoteFilter === "remote" && job.remote) ||
-        (remoteFilter === "onsite" && !job.remote);
+    const jobId = parseInt(jobIdParam);
 
-      return (
-        matchesSearch && matchesJobType && matchesLocation && matchesRemote
-      );
-    });
-  }, [searchTerm, jobTypeFilter, locationFilter, remoteFilter]);
+    return jobs.find((job) => job.id === jobId) ?? null;
+  };
 
-  const clearFilters = () => {
-    setSearchTerm("");
-    setJobTypeFilter("all");
-    setLocationFilter("all");
-    setRemoteFilter("all");
+  const handleClearSelectedJob = () => {
+    const params = new URLSearchParams(searchParams);
+    params.delete("job");
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleSelectJob = (id: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("job", id.toString());
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  // TODO: make a hook to deduplicate this, debounce, etc.
+  const handleSearch = (value: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("search", value);
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleContractChange = (value: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("contract", value);
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleLocationChange = (value: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("location", value);
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleWorkplaceChange = (value: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("workplace", value);
+    router.replace(`${pathname}?${params.toString()}`);
   };
 
   return (
@@ -500,14 +516,16 @@ export default function JobBoard() {
             <Input
               type="text"
               placeholder="Zoek op functie, bedrijf of vaardigheden..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              defaultValue={searchParams.get("search") ?? ""}
               className="pl-10 h-12 text-lg"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-            <Select value={jobTypeFilter} onValueChange={setJobTypeFilter}>
+            <Select
+              defaultValue={searchParams.get("contract")?.toString()}
+              onValueChange={handleContractChange}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Type contract" />
               </SelectTrigger>
@@ -519,7 +537,10 @@ export default function JobBoard() {
               </SelectContent>
             </Select>
 
-            <Select value={locationFilter} onValueChange={setLocationFilter}>
+            <Select
+              defaultValue={searchParams.get("location")?.toString()}
+              onValueChange={handleLocationChange}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Locatie" />
               </SelectTrigger>
@@ -533,7 +554,10 @@ export default function JobBoard() {
               </SelectContent>
             </Select>
 
-            <Select value={remoteFilter} onValueChange={setRemoteFilter}>
+            <Select
+              defaultValue={searchParams.get("workplace")?.toString()}
+              onValueChange={handleWorkplaceChange}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Werkstijl" />
               </SelectTrigger>
@@ -548,7 +572,9 @@ export default function JobBoard() {
 
             <Button
               variant="outline"
-              onClick={clearFilters}
+              onClick={() => {
+                router.replace(pathname);
+              }}
               className="flex items-center gap-2"
             >
               <Filter className="h-4 w-4" />
@@ -557,12 +583,12 @@ export default function JobBoard() {
           </div>
 
           <div className="text-sm text-gray-600">
-            {filteredJobs.length} van {jobs.length} vacatures
+            {jobs.length} van {jobs.length} vacatures
           </div>
         </div>
 
         <div className="space-y-6">
-          {filteredJobs.length === 0 ? (
+          {jobs.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-gray-400 mb-4">
                 <Search className="h-12 w-12 mx-auto" />
@@ -575,7 +601,7 @@ export default function JobBoard() {
               </p>
             </div>
           ) : (
-            filteredJobs.map((job) => (
+            jobs.map((job) => (
               <Card key={job.id} className="hover:shadow-md transition-shadow">
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -609,7 +635,7 @@ export default function JobBoard() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setSelectedJob(job)}
+                        onClick={() => handleSelectJob(job.id)}
                         className="flex items-center gap-1"
                       >
                         <Eye className="h-4 w-4" />
@@ -639,7 +665,7 @@ export default function JobBoard() {
           )}
         </div>
 
-        {filteredJobs.length > 0 && (
+        {jobs.length > 0 && (
           <div className="text-center mt-12">
             <Button variant="outline" size="lg">
               Meer vacatures laden
@@ -648,11 +674,11 @@ export default function JobBoard() {
         )}
       </main>
 
-      {selectedJob && (
+      {searchParams.get("job") && (
         <JobDetailModal
           job={selectedJob}
           isOpen={true}
-          onClose={() => setSelectedJob(null)}
+          onClose={handleClearSelectedJob}
         />
       )}
 

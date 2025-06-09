@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useMemo } from "react";
 import {
   Search,
   MapPin,
@@ -28,7 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import useSearchState from "@/hooks/use-search-state";
 
 const jobs = [
   {
@@ -209,14 +208,14 @@ Je werkt nauw samen met ons designteam om pixel-perfecte gebruikersinterfaces te
 
 function JobDetailModal({
   job,
-  isOpen,
   onClose,
 }: {
-  job: any;
-  isOpen: boolean;
+  job: (typeof jobs)[0];
   onClose: () => void;
 }) {
-  if (!isOpen || !job) return null;
+  if (!job) {
+    return null;
+  }
 
   return (
     <>
@@ -389,57 +388,18 @@ function JobDetailModal({
 }
 
 export default function JobBoard() {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
-  const jobIdParam = searchParams.has("job") ? searchParams.get("job") : "";
+  const searchState = useSearchState();
+  const jobIdParam = searchState.get("job");
 
-  const selectedJob = () => {
+  const selectedJob = (() => {
     if (!jobIdParam) {
-      return;
+      return null;
     }
 
     const jobId = parseInt(jobIdParam);
 
     return jobs.find((job) => job.id === jobId) ?? null;
-  };
-
-  const handleClearSelectedJob = () => {
-    const params = new URLSearchParams(searchParams);
-    params.delete("job");
-    router.replace(`${pathname}?${params.toString()}`);
-  };
-
-  const handleSelectJob = (id: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("job", id.toString());
-    router.replace(`${pathname}?${params.toString()}`);
-  };
-
-  // TODO: make a hook to deduplicate this, debounce, etc.
-  const handleSearch = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("search", value);
-    router.replace(`${pathname}?${params.toString()}`);
-  };
-
-  const handleContractChange = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("contract", value);
-    router.replace(`${pathname}?${params.toString()}`);
-  };
-
-  const handleLocationChange = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("location", value);
-    router.replace(`${pathname}?${params.toString()}`);
-  };
-
-  const handleWorkplaceChange = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("workplace", value);
-    router.replace(`${pathname}?${params.toString()}`);
-  };
+  })();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -516,15 +476,15 @@ export default function JobBoard() {
             <Input
               type="text"
               placeholder="Zoek op functie, bedrijf of vaardigheden..."
-              defaultValue={searchParams.get("search") ?? ""}
+              defaultValue={searchState.get("search") ?? ""}
               className="pl-10 h-12 text-lg"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
             <Select
-              defaultValue={searchParams.get("contract")?.toString()}
-              onValueChange={handleContractChange}
+              defaultValue={searchState.get("contract")}
+              onValueChange={searchState.getOnChange("contract")}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Type contract" />
@@ -538,8 +498,8 @@ export default function JobBoard() {
             </Select>
 
             <Select
-              defaultValue={searchParams.get("location")?.toString()}
-              onValueChange={handleLocationChange}
+              defaultValue={searchState.get("location")}
+              onValueChange={searchState.getOnChange("location")}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Locatie" />
@@ -555,8 +515,8 @@ export default function JobBoard() {
             </Select>
 
             <Select
-              defaultValue={searchParams.get("workplace")?.toString()}
-              onValueChange={handleWorkplaceChange}
+              defaultValue={searchState.get("workplace")}
+              onValueChange={searchState.getOnChange("workplace")}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Werkstijl" />
@@ -572,9 +532,7 @@ export default function JobBoard() {
 
             <Button
               variant="outline"
-              onClick={() => {
-                router.replace(pathname);
-              }}
+              onClick={searchState.clear}
               className="flex items-center gap-2"
             >
               <Filter className="h-4 w-4" />
@@ -635,7 +593,9 @@ export default function JobBoard() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleSelectJob(job.id)}
+                        onClick={() =>
+                          searchState.getOnChange("job")(job.id.toString())
+                        }
                         className="flex items-center gap-1"
                       >
                         <Eye className="h-4 w-4" />
@@ -674,11 +634,10 @@ export default function JobBoard() {
         )}
       </main>
 
-      {searchParams.get("job") && (
+      {selectedJob && (
         <JobDetailModal
           job={selectedJob}
-          isOpen={true}
-          onClose={handleClearSelectedJob}
+          onClose={searchState.getOnDelete("job")}
         />
       )}
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import {
   Search,
   MapPin,
@@ -28,183 +29,8 @@ import {
 } from "@/components/ui/select";
 import Image from "next/image";
 import useSearchState from "@/hooks/use-search-state";
-
-const jobs = [
-  {
-    id: 1,
-    title: "Senior Frontend Developer",
-    company: "TechCorp Inc.",
-    location: "Amsterdam, NL",
-    type: "Fulltime",
-    salary: "€65k - €85k",
-    posted: "2 dagen geleden",
-    description:
-      "We zoeken een ervaren frontend developer om ons team te versterken en geweldige gebruikerservaringen te bouwen.",
-    skills: ["React", "TypeScript", "Next.js", "Tailwind CSS"],
-    remote: true,
-    cao: "Metalektro CAO",
-    fullDescription: `We zijn op zoek naar een zeer bekwame Senior Frontend Developer om ons dynamische engineeringteam te versterken. In deze rol ben je verantwoordelijk voor het ontwikkelen en onderhouden van geavanceerde webapplicaties die miljoenen gebruikers wereldwijd bedienen.
-
-Je werkt nauw samen met ons designteam om pixel-perfecte gebruikersinterfaces te implementeren en werkt samen met backend engineers om API's en services te integreren. We waarderen schone, onderhoudbare code en moderne ontwikkelingspraktijken.`,
-    responsibilities: [
-      "Ontwikkelen en onderhouden van responsieve webapplicaties met React en TypeScript",
-      "Samenwerken met designers om gebruiksvriendelijke interfaces te implementeren",
-      "Optimaliseren van applicaties voor maximale snelheid en schaalbaarheid",
-      "Mentoren van junior developers en uitvoeren van code reviews",
-      "Deelnemen aan architecturale beslissingen en technische planning",
-    ],
-    requirements: [
-      "5+ jaar ervaring met React en moderne JavaScript",
-      "Sterke beheersing van TypeScript en ES6+",
-      "Ervaring met Next.js en server-side rendering",
-      "Kennis van CSS frameworks (Tailwind CSS bij voorkeur)",
-      "Bekendheid met testing frameworks (Jest, React Testing Library)",
-    ],
-    benefits: [
-      "Competitief salaris volgens CAO-schalen",
-      "Uitgebreide zorgverzekering en pensioenregeling",
-      "Flexibele werkregelingen en thuiswerk mogelijkheden",
-      "Professioneel ontwikkelingsbudget (€2.000/jaar)",
-      "25 vakantiedagen + feestdagen",
-    ],
-    companyInfo: {
-      size: "500-1000 medewerkers",
-      founded: "2015",
-      industry: "Technologie",
-    },
-    applicationDeadline: "15 maart 2024",
-    startDate: "1 april 2024",
-  },
-  {
-    id: 2,
-    title: "Product Manager",
-    company: "StartupXYZ",
-    location: "Rotterdam, NL",
-    type: "Fulltime",
-    salary: "€55k - €75k",
-    posted: "1 dag geleden",
-    description:
-      "Leid productstrategie en werk samen met multifunctionele teams om innovatieve oplossingen te leveren.",
-    skills: ["Product Strategy", "Analytics", "Agile", "Leadership"],
-    remote: false,
-    cao: "ICT CAO",
-    fullDescription: `Sluit je aan bij onze snelgroeiende startup als Product Manager waar je de productvisie en strategie voor ons kernplatform zult sturen. Je werkt op het snijvlak van business, technologie en gebruikerservaring om producten te leveren waar klanten van houden.`,
-    responsibilities: [
-      "Definiëren en communiceren van productvisie en strategie",
-      "Uitvoeren van marktonderzoek en concurrentieanalyse",
-      "Samenwerken met engineeringteams om technische vereisten te definiëren",
-      "Analyseren van gebruikersdata en feedback om productbeslissingen te informeren",
-      "Beheren van productroadmap en prioriteren van feature ontwikkeling",
-    ],
-    requirements: [
-      "3+ jaar product management ervaring",
-      "Sterke analytische en probleemoplossende vaardigheden",
-      "Ervaring met agile ontwikkelingsmethodologieën",
-      "Uitstekende communicatie- en leiderschapsvaardigheden",
-      "Bekendheid met analytics tools (Google Analytics, Mixpanel, etc.)",
-    ],
-    benefits: [
-      "Competitief salaris met prestatiebonussen",
-      "Aandelen participatie in groeiende startup",
-      "Gezondheids- en welzijnsvoordelen",
-      "Leer- en ontwikkelingsmogelijkheden",
-      "Flexibel werkschema",
-    ],
-    companyInfo: {
-      size: "50-100 medewerkers",
-      founded: "2020",
-      industry: "SaaS",
-    },
-    applicationDeadline: "20 maart 2024",
-    startDate: "15 april 2024",
-  },
-  {
-    id: 3,
-    title: "UX/UI Designer",
-    company: "Design Studio",
-    location: "Utrecht, NL",
-    type: "Contract",
-    salary: "€45k - €60k",
-    posted: "3 dagen geleden",
-    description:
-      "Creëer mooie en intuïtieve gebruikersinterfaces voor web- en mobiele applicaties.",
-    skills: ["Figma", "Adobe Creative Suite", "Prototyping", "User Research"],
-    remote: true,
-    cao: "Grafimedia CAO",
-    fullDescription: `We zoeken een getalenteerde UX/UI Designer om ons creatieve team te versterken en de toekomst van digitale ervaringen vorm te geven. Je werkt aan diverse projecten variërend van webapplicaties tot mobiele apps.`,
-    responsibilities: [
-      "Uitvoeren van gebruikersonderzoek en usability testing",
-      "Creëren van wireframes, prototypes en high-fidelity designs",
-      "Ontwikkelen en onderhouden van design systems en style guides",
-      "Samenwerken met ontwikkelteams om design implementatie te waarborgen",
-      "Presenteren van design concepten aan stakeholders en klanten",
-    ],
-    requirements: [
-      "3+ jaar UX/UI design ervaring",
-      "Beheersing van Figma en Adobe Creative Suite",
-      "Sterk portfolio dat design proces en resultaten toont",
-      "Ervaring met gebruikersonderzoek methodologieën",
-      "Begrip van front-end ontwikkelingsprincipes",
-    ],
-    benefits: [
-      "Competitieve contract tarieven",
-      "Flexibele werkuren",
-      "Thuiswerk mogelijkheden",
-      "Toegang tot design tools en resources",
-      "Professionele ontwikkelingsondersteuning",
-    ],
-    companyInfo: {
-      size: "20-50 medewerkers",
-      founded: "2018",
-      industry: "Design Agency",
-    },
-    applicationDeadline: "25 maart 2024",
-    startDate: "1 mei 2024",
-  },
-  {
-    id: 4,
-    title: "Backend Engineer",
-    company: "CloudTech Solutions",
-    location: "Eindhoven, NL",
-    type: "Fulltime",
-    salary: "€60k - €80k",
-    posted: "1 week geleden",
-    description:
-      "Bouw schaalbare backend systemen en API's om ons groeiende platform te ondersteunen.",
-    skills: ["Node.js", "Python", "AWS", "Docker", "PostgreSQL"],
-    remote: true,
-    cao: "Metalektro CAO",
-    fullDescription: `Sluit je aan bij ons engineeringteam als Backend Engineer waar je de server-side systemen ontwerpt en bouwt die ons platform aandrijven. Je werkt aan uitdagende problemen betreffende schaalbaarheid, prestaties en betrouwbaarheid.`,
-    responsibilities: [
-      "Ontwerpen en implementeren van schaalbare backend services en API's",
-      "Optimaliseren van database queries en systeemprestaties",
-      "Implementeren van security best practices en data bescherming",
-      "Samenwerken met frontend teams om services te integreren",
-      "Monitoren van systeemprestaties en troubleshooten van problemen",
-    ],
-    requirements: [
-      "4+ jaar backend ontwikkelingsexpertise",
-      "Sterke beheersing van Node.js en Python",
-      "Ervaring met cloud platforms (AWS bij voorkeur)",
-      "Kennis van database design en optimalisatie",
-      "Bekendheid met containerization (Docker, Kubernetes)",
-    ],
-    benefits: [
-      "Competitief salaris en aandelenopties",
-      "Remote-first werkomgeving",
-      "Zorg-, tandheelkundige en zichtverzekering",
-      "Professioneel ontwikkelingsbudget",
-      "Flexibel verlofbeleid",
-    ],
-    companyInfo: {
-      size: "200-500 medewerkers",
-      founded: "2017",
-      industry: "Cloud Services",
-    },
-    applicationDeadline: "30 maart 2024",
-    startDate: "15 mei 2024",
-  },
-];
+import { useDebouncedSearch } from "@/hooks/use-debounced-search";
+import { jobs } from "../constants/jobs";
 
 function JobDetailModal({
   job,
@@ -310,7 +136,7 @@ function JobDetailModal({
                         <div className="w-2 h-2 bg-[#F1592A] rounded-full mt-2 shrink-0"></div>
                         <span className="text-gray-700">{responsibility}</span>
                       </li>
-                    ),
+                    )
                   )}
                 </ul>
               </div>
@@ -327,7 +153,7 @@ function JobDetailModal({
                         <div className="w-2 h-2 bg-green-600 rounded-full mt-2 shrink-0"></div>
                         <span className="text-gray-700">{requirement}</span>
                       </li>
-                    ),
+                    )
                   )}
                 </ul>
               </div>
@@ -391,13 +217,53 @@ export default function JobBoard() {
   const searchState = useSearchState();
   const jobIdParam = searchState.get("job");
 
+  const {
+    value: searchValue,
+    debouncedValue: searchTerm,
+    setValue: setSearchValue,
+  } = useDebouncedSearch(searchState.get("search") || "", 300);
+
+  const filteredJobs = useMemo(() => {
+    return jobs.filter((job) => {
+      const matchesSearch =
+        !searchTerm ||
+        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.skills.some((skill) =>
+          skill.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+      const contractFilter = searchState.get("contract");
+      const matchesContract =
+        !contractFilter ||
+        contractFilter === "all" ||
+        job.type === contractFilter;
+
+      const locationFilter = searchState.get("location");
+      const matchesLocation =
+        !locationFilter ||
+        locationFilter === "all" ||
+        job.location.includes(locationFilter);
+
+      const workplaceFilter = searchState.get("workplace");
+      const matchesWorkplace =
+        !workplaceFilter ||
+        workplaceFilter === "all" ||
+        (workplaceFilter === "home" && job.remote) ||
+        (workplaceFilter === "onsite" && !job.remote);
+
+      return (
+        matchesSearch && matchesContract && matchesLocation && matchesWorkplace
+      );
+    });
+  }, [searchTerm, searchState]);
+
   const selectedJob = (() => {
     if (!jobIdParam) {
       return null;
     }
 
-    const jobId = parseInt(jobIdParam);
-
+    const jobId = Number.parseInt(jobIdParam);
     return jobs.find((job) => job.id === jobId) ?? null;
   })();
 
@@ -476,7 +342,8 @@ export default function JobBoard() {
             <Input
               type="text"
               placeholder="Zoek op functie, bedrijf of vaardigheden..."
-              defaultValue={searchState.get("search") ?? ""}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
               className="pl-10 h-12 text-lg"
             />
           </div>
@@ -541,12 +408,12 @@ export default function JobBoard() {
           </div>
 
           <div className="text-sm text-gray-600">
-            {jobs.length} van {jobs.length} vacatures
+            {filteredJobs.length} van {jobs.length} vacatures
           </div>
         </div>
 
         <div className="space-y-6">
-          {jobs.length === 0 ? (
+          {filteredJobs.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-gray-400 mb-4">
                 <Search className="h-12 w-12 mx-auto" />
@@ -559,7 +426,7 @@ export default function JobBoard() {
               </p>
             </div>
           ) : (
-            jobs.map((job) => (
+            filteredJobs.map((job) => (
               <Card key={job.id} className="hover:shadow-md transition-shadow">
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -625,7 +492,7 @@ export default function JobBoard() {
           )}
         </div>
 
-        {jobs.length > 0 && (
+        {filteredJobs.length > 0 && (
           <div className="text-center mt-12">
             <Button variant="outline" size="lg">
               Meer vacatures laden

@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { JobsResponse } from "./types";
 import { Search, MapPin, Clock, Building2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import ApplyModal from "@/components/ui/modal";
 
 export default function JobList({
   jobsResponsePromise,
@@ -14,6 +15,8 @@ export default function JobList({
 }) {
   const jobsResponse = React.use(jobsResponsePromise);
   const jobs = jobsResponse.data;
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <div className="space-y-6">
@@ -66,6 +69,7 @@ export default function JobList({
                   variant="outline"
                   size="sm"
                   onClick={() => {
+                    setModalOpen(true);
                     // const updatedSearchParams = new URLSearchParams(
                     //   searchParams,
                     // );
@@ -99,6 +103,30 @@ export default function JobList({
           </CardContent>
         </Card>
       ))}
+      <ApplyModal open={modalOpen} onOpenChange={setModalOpen}>
+        <h2 className="text-lg font-semibold mb-4">Let op:</h2>
+        <p className="mb-6">
+          Je staat op het punt om de website van deze vacature te openen. Je
+          wordt doorgestuurd naar een externe pagina buiten onze site.
+        </p>
+        <div className="flex justify-start gap-3">
+          <button
+            className="px-4 py-2 border rounded hover:bg-gray-100"
+            onClick={() => setModalOpen(false)}
+          >
+            Annuleer
+          </button>
+          <button
+            className="px-4 py-2 bg-[#F1592A] hover:bg-[#F1592A]/90 text-white rounded"
+            onClick={() => {
+              alert("Goed gedaan Rogier!");
+              setModalOpen(false);
+            }}
+          >
+            Solliciteer
+          </button>
+        </div>
+      </ApplyModal>
     </div>
   );
 }

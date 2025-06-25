@@ -17,7 +17,7 @@ export default async function JobBoard(props: {
         return response.json() as Promise<JobsResponse>;
       }
       throw new Error("could not fetch mon");
-    },
+    }
   );
 
   // const selectedJob = (() => {
@@ -96,7 +96,7 @@ export default async function JobBoard(props: {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
         <Suspense fallback={<div>Aan het laden ...</div>}>
           <Filters jobCount={0} totalJobCount={0} />
         </Suspense>
@@ -109,14 +109,6 @@ export default async function JobBoard(props: {
       </main>
 
       {/* {selectedJob && <JobDetailModal job={selectedJob} />} */}
-
-      <footer className="bg-gray-900 text-white mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <p>&copy; 2025 Baan met CAO. Hetzelfde werk, betere voorwaarden.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

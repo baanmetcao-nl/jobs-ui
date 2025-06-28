@@ -6,20 +6,38 @@ import { Search, MapPin, Clock, Building2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import ApplyModal from "@/components/ui/modal";
+import ApplyModal from "./apply-modal";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function JobList({
   jobsResponsePromise,
+  selectedJobId,
 }: {
   jobsResponsePromise: Promise<JobsResponse>;
+  selectedJobId: null | number;
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const jobsResponse = React.use(jobsResponsePromise);
   const jobs = jobsResponse.data;
-
-  const [modalOpen, setModalOpen] = useState(false);
+  const selectedJob = jobs.find((job) => job.id === selectedJobId);
 
   return (
     <div className="space-y-6">
+      {selectedJob && (
+        <ApplyModal
+          job={selectedJob}
+          onClose={() => {
+            const updatedSearchParams = new URLSearchParams(searchParams);
+            updatedSearchParams.delete("jobId");
+            router.push(`${pathname}?${updatedSearchParams.toString()}`);
+          }}
+          onAccept={() => {
+            alert("naar de website gaan...");
+          }}
+        />
+      )}
       {jobs.length === 0 && (
         <div className="text-center py-12">
           <div className="text-gray-400 mb-4">
@@ -85,6 +103,15 @@ export default function JobList({
                 <Button
                   size="sm"
                   className="bg-[#F1592A] hover:bg-[#F1592A]/90"
+                  onClick={() => {
+                    const updatedSearchParams = new URLSearchParams(
+                      searchParams,
+                    );
+                    updatedSearchParams.set("jobId", job.id.toString());
+                    router.push(
+                      `${pathname}?${updatedSearchParams.toString()}`,
+                    );
+                  }}
                 >
                   Solliciteer
                 </Button>
@@ -103,30 +130,6 @@ export default function JobList({
           </CardContent>
         </Card>
       ))}
-      <ApplyModal open={modalOpen} onOpenChange={setModalOpen}>
-        <h2 className="text-lg font-semibold mb-4">Let op:</h2>
-        <p className="mb-6">
-          Je staat op het punt om de website van deze vacature te openen. Je
-          wordt doorgestuurd naar een externe pagina buiten onze site.
-        </p>
-        <div className="flex justify-start gap-3">
-          <button
-            className="px-4 py-2 border rounded hover:bg-gray-100"
-            onClick={() => setModalOpen(false)}
-          >
-            Annuleer
-          </button>
-          <button
-            className="px-4 py-2 bg-[#F1592A] hover:bg-[#F1592A]/90 text-white rounded"
-            onClick={() => {
-              alert("Goed gedaan Rogier!");
-              setModalOpen(false);
-            }}
-          >
-            Solliciteer
-          </button>
-        </div>
-      </ApplyModal>
     </div>
   );
 }

@@ -5,28 +5,21 @@ import { JobsResponse } from "./types";
 import JobList from "./job-list";
 import Pagination from "./pagination";
 import { Suspense } from "react";
+import ApplyModal from "./apply-modal";
+import { usePathname, useRouter } from "next/navigation";
 
 export default async function JobBoard(props: {
   searchParams: Promise<{ jobId?: string }>;
 }) {
   const searchParams = await props.searchParams;
-  const jobIdParam = searchParams.jobId ?? null;
   const jobsResponsePromise = fetch("https://api.baanmetcao.nl/jobs").then(
-    async (response) => {
+    (response) => {
       if (response.ok) {
         return response.json() as Promise<JobsResponse>;
       }
       throw new Error("could not fetch mon");
-    }
+    },
   );
-
-  // const selectedJob = (() => {
-  //   if (!jobIdParam) {
-  //     return null;
-  //   }
-  //   const jobId = Number.parseInt(jobIdParam);
-  //   return jobs.find((job) => job.id === jobId) ?? null;
-  // })();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -101,14 +94,17 @@ export default async function JobBoard(props: {
           <Filters jobCount={0} totalJobCount={0} />
         </Suspense>
         <Suspense fallback={<div>Aan het laden ...</div>}>
-          <JobList jobsResponsePromise={jobsResponsePromise} />
+          <JobList
+            jobsResponsePromise={jobsResponsePromise}
+            selectedJobId={
+              searchParams.jobId ? parseInt(searchParams.jobId) : null
+            }
+          />
         </Suspense>
         <Suspense fallback={<div>Aan het laden ...</div>}>
           <Pagination jobsResponsePromise={jobsResponsePromise} />
         </Suspense>
       </main>
-
-      {/* {selectedJob && <JobDetailModal job={selectedJob} />} */}
     </div>
   );
 }

@@ -2,17 +2,13 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
-type ApplyModalProps = {
+type ModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
 };
 
-export default function ApplyModal({
-  open,
-  onOpenChange,
-  children,
-}: ApplyModalProps) {
+export default function Modal({ open, onOpenChange, children }: ModalProps) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <AnimatePresence>

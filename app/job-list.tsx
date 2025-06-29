@@ -54,8 +54,8 @@ export default function JobList({
       )}
 
       {jobs.map((job) => (
-        <Link href={`/jobs/${job.id}`}>
-          <Card key={job.id} className="hover:shadow-md transition-shadow">
+        <Link href={`/jobs/${job.id}`} key={job.id}>
+          <Card className="hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div className="flex-1">

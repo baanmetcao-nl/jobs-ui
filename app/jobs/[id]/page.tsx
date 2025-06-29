@@ -1,4 +1,5 @@
 import { Job } from "@/app/types";
+import { notFound } from "next/navigation";
 
 const CACHE_TIME = 7 * 24 * 60 * 60;
 
@@ -6,8 +7,17 @@ const CACHE_TIME = 7 * 24 * 60 * 60;
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const response = await fetch(`https://api.baanmetcao.nl/jobs/${params.id}`, {
-    next: { revalidate: CACHE_TIME },
+    next: { revalidate: 0 },
   });
+
+  if (response.status === 404) {
+    notFound();
+  }
+
+  if (!response.ok) {
+    return "an erreur";
+  }
+
   const result: { data: Job } = await response.json();
   const job = result.data;
 

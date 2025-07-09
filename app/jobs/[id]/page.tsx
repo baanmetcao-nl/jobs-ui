@@ -1,5 +1,6 @@
 import { Job } from "@/app/types";
 import { notFound } from "next/navigation";
+import JobDetails from "./job-details";
 
 const CACHE_TIME = 7 * 24 * 60 * 60;
 
@@ -23,7 +24,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
   return (
     <div>
-      <h1>{job.position}</h1>
+      <JobDetails job={job} />
     </div>
   );
 }

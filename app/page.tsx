@@ -5,8 +5,6 @@ import { JobsResponse } from "./types";
 import JobList from "./job-list";
 import Pagination from "./pagination";
 import { Suspense } from "react";
-import ApplyModal from "./apply-modal";
-import { usePathname, useRouter } from "next/navigation";
 
 export default async function JobBoard(props: {
   searchParams: Promise<{ jobId?: string }>;
@@ -18,7 +16,7 @@ export default async function JobBoard(props: {
         return response.json() as Promise<JobsResponse>;
       }
       throw new Error("could not fetch mon");
-    },
+    }
   );
 
   return (

@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { JobsResponse } from "./types";
 import { Search, MapPin, Clock, Building2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import ApplyModal from "./apply-modal";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import DOMPurify from "dompurify";
 
 export default function JobList({
   jobsResponsePromise,
@@ -22,23 +22,9 @@ export default function JobList({
   const searchParams = useSearchParams();
   const jobsResponse = React.use(jobsResponsePromise);
   const jobs = jobsResponse.data;
-  const selectedJob = jobs.find((job) => job.id === selectedJobId);
 
   return (
     <div className="space-y-6">
-      {selectedJob && (
-        <ApplyModal
-          job={selectedJob}
-          onClose={() => {
-            const updatedSearchParams = new URLSearchParams(searchParams);
-            updatedSearchParams.delete("jobId");
-            router.push(`${pathname}?${updatedSearchParams.toString()}`);
-          }}
-          onAccept={() => {
-            alert("naar de website gaan...");
-          }}
-        />
-      )}
       {jobs.length === 0 && (
         <div className="text-center py-12">
           <div className="text-gray-400 mb-4">
@@ -86,42 +72,31 @@ export default function JobList({
                 </div>
                 <div className="flex gap-2 shrink-0">
                   <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setModalOpen(true);
-                      // const updatedSearchParams = new URLSearchParams(
-                      //   searchParams,
-                      // );
-                      // router.replace(
-                      //   `${pathname}?${updatedSearchParams.toString()}`,
-                      // );
-                    }}
-                    className="flex items-center gap-1"
-                  >
-                    <Eye className="h-4 w-4" />
-                    Bekijk Details
-                  </Button>
-                  <Button
                     size="sm"
                     className="bg-[#F1592A] hover:bg-[#F1592A]/90"
                     onClick={() => {
                       const updatedSearchParams = new URLSearchParams(
-                        searchParams,
+                        searchParams
                       );
                       updatedSearchParams.set("jobId", job.id.toString());
                       router.push(
-                        `${pathname}?${updatedSearchParams.toString()}`,
+                        `${pathname}?${updatedSearchParams.toString()}`
                       );
                     }}
                   >
-                    Solliciteer
+                    <Eye className="h-4 w-4" />
+                    Bekijk Details
                   </Button>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700 mb-4">{job.description}</p>
+              <p
+                className="text-gray-700 mb-4"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(job.description),
+                }}
+              />
               <div className="flex flex-wrap gap-2">
                 {job.tags.map((skill) => (
                   <Badge key={skill} variant="outline" className="text-xs">

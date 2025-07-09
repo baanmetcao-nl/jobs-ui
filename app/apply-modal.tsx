@@ -1,12 +1,10 @@
 import Modal from "@/components/ui/modal";
-import { Job } from "./types";
+import { Button } from "@/components/ui/button";
 
 export default function ApplyModal({
-  job,
   onAccept,
   onClose,
 }: {
-  job: Job;
   onAccept: () => void;
   onClose: () => void;
 }) {
@@ -18,18 +16,19 @@ export default function ApplyModal({
         doorgestuurd naar een externe pagina buiten onze site.
       </p>
       <div className="flex justify-start gap-3">
-        <button
-          className="px-4 py-2 border rounded hover:bg-gray-100"
+        <Button
+          className="px-4 py-2 border rounded hover:bg-gray-800"
           onClick={onClose}
         >
           Annuleer
-        </button>
-        <button
+        </Button>
+
+        <Button
           className="px-4 py-2 bg-[#F1592A] hover:bg-[#F1592A]/90 text-white rounded"
           onClick={onAccept}
         >
           Solliciteer
-        </button>
+        </Button>
       </div>
     </Modal>
   );

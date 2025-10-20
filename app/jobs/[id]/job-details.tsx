@@ -13,6 +13,8 @@ import {
   Award,
   EuroIcon,
   MapPin,
+  Handshake,
+  Coins,
 } from "lucide-react";
 import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
@@ -21,6 +23,7 @@ import { useState } from "react";
 import Image from "next/image";
 import ApplyModal from "@/app/apply-modal";
 import { Job } from "@/app/types";
+import { capitalize, formatDate } from "@/lib/utils";
 
 const relatedJobs = [
   {
@@ -88,6 +91,14 @@ const CompanyJobs = [
     daysLeft: 20,
   },
 ];
+
+type ContractType = "freelance" | "permanent" | "temporary" | "internship";
+const contractLabels: Record<ContractType, string> = {
+  freelance: "Freelance",
+  permanent: "Vast contract",
+  temporary: "Tijdelijk contract",
+  internship: "Stage",
+};
 
 export default function JobDetails({ job }: { job: Job }) {
   const router = useRouter();
@@ -169,7 +180,7 @@ export default function JobDetails({ job }: { job: Job }) {
                 <InfoItem
                   icon={<Calendar color="#F1693F" />}
                   label="Gepubliceerd"
-                  description="7 juli 2025"
+                  description={formatDate(job.createdAt)}
                 />
                 <InfoItem
                   icon={<Calendar color="#F1693F" />}
@@ -184,17 +195,17 @@ export default function JobDetails({ job }: { job: Job }) {
                 <InfoItem
                   icon={<Award color="#F1693F" />}
                   label="Carrièreniveau"
-                  description="Senior"
+                  description={capitalize(job.seniority)}
                 />
                 <InfoItem
                   icon={<GraduationCap color="#F1693F" />}
                   label="Opleiding"
-                  description="Bachelordiploma"
+                  description={capitalize(job.education)}
                 />
                 <InfoItem
-                  icon={<Briefcase color="#F1693F" />}
-                  label="Ervaring"
-                  description="3 - 5 jaar"
+                  icon={<Handshake color="#F1693F" />}
+                  label="Contract"
+                  description={contractLabels[job.contract]}
                 />
               </div>
             </div>
@@ -213,12 +224,12 @@ export default function JobDetails({ job }: { job: Job }) {
                 <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">
                   Belangrijkste verantwoordelijkheden
                 </h3>
-                <ul className="space-y-2 mb-6">
+                <ul className="mb-6">
                   {job.responsibilities.map((r: string, i: number) => (
                     <li
                       key={i}
                       dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(`• ${r}`),
+                        __html: DOMPurify.sanitize(r),
                       }}
                     />
                   ))}
@@ -226,15 +237,48 @@ export default function JobDetails({ job }: { job: Job }) {
                 <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">
                   Vereisten
                 </h3>
-                <ul className="space-y-2">
+                <ul>
                   {job.requirements.map((r: string, i: number) => (
                     <li
                       key={i}
                       dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(`• ${r}`),
+                        __html: DOMPurify.sanitize(r),
                       }}
                     />
                   ))}
+                </ul>
+                <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">
+                  Secundaire arbeidsvoorwaarden
+                </h3>
+                <ul>
+                  <li>
+                    <strong>
+                      Extra beloning (bijv. 13e maand, vaste
+                      eindejaarsuitkering, vaste toelage):
+                    </strong>{" "}
+                    {job.collectiveLaborAgreement.extraMoney ? "Ja" : "Nee"}
+                  </li>
+                  <li>
+                    <strong>
+                      Prestatiegebonden beloning (bijv. variabele uitkering,
+                      prestatiebeloning, winstuitkering):
+                    </strong>{" "}
+                    {job.collectiveLaborAgreement.bonus ? "Ja" : "Nee"}
+                  </li>
+                  <li>
+                    <strong>Pensioen:</strong>{" "}
+                    {job.collectiveLaborAgreement.pension ? "Ja" : "Nee"}
+                  </li>
+                  <li>
+                    <strong>Reiskostenvergoeding:</strong>{" "}
+                    {job.collectiveLaborAgreement.travelAllowance
+                      ? "Ja"
+                      : "Nee"}
+                  </li>
+                  <li>
+                    <strong>Aandelen:</strong>{" "}
+                    {job.collectiveLaborAgreement.stocks ? "Ja" : "Nee"}
+                  </li>
                 </ul>
               </div>
             </div>

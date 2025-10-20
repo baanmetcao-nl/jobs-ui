@@ -92,3 +92,13 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+ul {
+  margin: 1em 0;
+
+  li {
+    list-style-type: disc;
+    margin-left: 1em;
+    padding: 0.3em 0;
+  }
+}

@@ -1,4 +1,5 @@
 export type Job = {
+  createdAt: string;
   description: string;
   id: number;
   location: string;
@@ -9,6 +10,8 @@ export type Job = {
   url: string;
   workplace: "remote" | "hybrid" | "office" | "other";
   contract: "internship" | "permanent" | "temporary" | "freelance";
+  seniority: string;
+  education: string;
   metadata: {
     collected: boolean;
   };

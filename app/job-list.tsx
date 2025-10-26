@@ -91,7 +91,7 @@ export default function JobList({
               </div>
             </CardHeader>
             <CardContent>
-              <p
+              <div
                 className="text-gray-700 mb-4"
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(job.description),

@@ -12,6 +12,7 @@ export type Job = {
   contract: "internship" | "permanent" | "temporary" | "freelance";
   seniority: string;
   education: string;
+  field: string;
   metadata: {
     collected: boolean;
   };

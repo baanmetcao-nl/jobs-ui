@@ -15,6 +15,8 @@ import {
   MapPin,
   Handshake,
   Coins,
+  MapPinned,
+  BookUser,
 } from "lucide-react";
 import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
@@ -100,6 +102,14 @@ const contractLabels: Record<ContractType, string> = {
   internship: "Stage",
 };
 
+type WorkPlaceType = "remote" | "hybrid" | "office" | "other";
+const workplaceLabels: Record<WorkPlaceType, string> = {
+  remote: "Remote",
+  hybrid: "Hybride",
+  office: "Kantoor",
+  other: "Anders",
+};
+
 export default function JobDetails({ job }: { job: Job }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -176,7 +186,7 @@ export default function JobDetails({ job }: { job: Job }) {
               <h2 className="text-xl font-semibold mb-6 text-gray-900">
                 Inzichten over de functie
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-6">
                 <InfoItem
                   icon={<Calendar color="#F1693F" />}
                   label="Gepubliceerd"
@@ -184,8 +194,8 @@ export default function JobDetails({ job }: { job: Job }) {
                 />
                 <InfoItem
                   icon={<Calendar color="#F1693F" />}
-                  label="Sluitingsdatum"
-                  description="2 september 2025"
+                  label="Remote"
+                  description={capitalize(workplaceLabels[job.workplace])}
                 />
                 <InfoItem
                   icon={<EuroIcon color="#F1693F" />}
@@ -206,6 +216,16 @@ export default function JobDetails({ job }: { job: Job }) {
                   icon={<Handshake color="#F1693F" />}
                   label="Contract"
                   description={contractLabels[job.contract]}
+                />
+                <InfoItem
+                  icon={<MapPinned color="#F1693F" />}
+                  label="Locatie"
+                  description={capitalize(job.location)}
+                />
+                <InfoItem
+                  icon={<BookUser color="#F1693F" />}
+                  label="Beroep"
+                  description={capitalize(job.field)}
                 />
               </div>
             </div>
@@ -500,41 +520,6 @@ function Sidebar({
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua....
                   </p>
-
-                  <div className="space-y-3">
-                    <div>
-                      <div className="text-sm font-medium text-gray-900 mb-1">
-                        Categorie
-                      </div>
-                      <Link
-                        href="#"
-                        className="text-teal-600 hover:underline text-sm"
-                      >
-                        Ontwikkeling & IT
-                      </Link>
-                    </div>
-
-                    <div>
-                      <div className="text-sm font-medium text-gray-900 mb-1">
-                        Bedrijfsgrootte
-                      </div>
-                      <div className="text-sm text-gray-600">10-50</div>
-                    </div>
-
-                    <div>
-                      <div className="text-sm font-medium text-gray-900 mb-1">
-                        Opgericht in
-                      </div>
-                      <div className="text-sm text-gray-600">2020</div>
-                    </div>
-
-                    <div>
-                      <div className="text-sm font-medium text-gray-900 mb-1">
-                        Locatie
-                      </div>
-                      <div className="text-sm text-gray-600">Amsterdam</div>
-                    </div>
-                  </div>
                 </div>
               )}
 

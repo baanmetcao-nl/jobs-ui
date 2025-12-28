@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { JobsResponse } from "./types";
 import { Search, MapPin, Clock, Building2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import DOMPurify from "dompurify";
 
 export default function JobList({
   jobsResponsePromise,
@@ -17,11 +16,24 @@ export default function JobList({
   jobsResponsePromise: Promise<JobsResponse>;
   selectedJobId: null | number;
 }) {
+  const [DOMPurify, setDOMPurify] = useState<any>(null);
+  const [isClient, setIsClient] = useState(false);
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const jobsResponse = React.use(jobsResponsePromise);
   const jobs = jobsResponse.data;
+
+  useEffect(() => {
+    setIsClient(true);
+    import("dompurify").then((module) => {
+      const purify = module.default();
+      setDOMPurify(() => purify);
+    });
+  }, []);
+
+  if (!isClient || !DOMPurify) return <div>Loading...</div>;
 
   return (
     <div className="space-y-6">

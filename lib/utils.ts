@@ -19,3 +19,22 @@ export function formatDate(dateString: string): string {
 
   return formatted;
 }
+
+const DEFAULT_LIMIT = 10;
+const DEFAULT_OFFSET = 0;
+
+export async function fetchJobs(
+  limit: number = DEFAULT_LIMIT,
+  offset: number = DEFAULT_OFFSET
+) {
+  const res = await fetch(
+    `https://api.baanmetcao.nl/jobs?limit=${limit}&offset=${offset}`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) {
+    throw new Error("Er kunnen momenteel geen vacatures geladen worden.");
+  }
+
+  return res.json();
+}

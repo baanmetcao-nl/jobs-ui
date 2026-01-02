@@ -1,9 +1,8 @@
 "use client";
 
 import { Search, Filter } from "lucide-react";
+import { useState } from "react";
 import useDebouncedCallback from "@/hooks/use-debounced-callback";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { startTransition } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -13,8 +12,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { startTransition } from "react";
 
-export default function Filters(props: {
+function updateParam(params: URLSearchParams, key: string, value: string) {
+  const next = new URLSearchParams(params);
+
+  if (!value || value === "all") {
+    next.delete(key);
+  } else {
+    next.set(key, value);
+  }
+
+  next.set("offset", "0");
+  return next;
+}
+
+export default function Filters({
+  jobCount,
+  totalJobCount,
+}: {
   jobCount: number;
   totalJobCount: number;
 }) {
@@ -22,42 +39,57 @@ export default function Filters(props: {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleSearch = useDebouncedCallback(
-    (event: { target: { value: string } }) => {
-      const updatedSearchParams = new URLSearchParams(searchParams);
-      updatedSearchParams.set("search", event.target.value);
-      startTransition(() => {
-        router.replace(`${pathname}?${updatedSearchParams.toString()}`);
-      });
-    },
-    { timeout: 400 },
+  const [searchTerm, setSearchTerm] = useState(
+    searchParams.get("search") || ""
+  );
+  const [contract, setContract] = useState(
+    searchParams.get("contract") || "all"
+  );
+  const [location, setLocation] = useState(
+    searchParams.get("location") || "all"
+  );
+  const [workplace, setWorkplace] = useState(
+    searchParams.get("workplace") || "all"
   );
 
-  // TODO: dedup these
-  const handleContractChange = (contract: string) => {
-    const updatedSearchParams = new URLSearchParams(searchParams);
-    updatedSearchParams.set("contract", contract);
+  const applyFilters = (nextParams: URLSearchParams) => {
     startTransition(() => {
-      router.replace(`${pathname}?${updatedSearchParams.toString()}`);
+      router.replace(`${pathname}?${nextParams.toString()}`);
     });
   };
 
-  // TODO: dedup these
-  const handleWorkplaceChange = (workplace: string) => {
-    const updatedSearchParams = new URLSearchParams(searchParams);
-    updatedSearchParams.set("workplace", workplace);
-    startTransition(() => {
-      router.replace(`${pathname}?${updatedSearchParams.toString()}`);
-    });
+  const debouncedSearch = useDebouncedCallback(
+    (value: string) => {
+      const next = updateParam(
+        new URLSearchParams(searchParams.toString()),
+        "search",
+        value
+      );
+      applyFilters(next);
+    },
+    { timeout: 400 }
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    debouncedSearch(e.target.value);
   };
 
-  // TODO: dedup these
-  const handleLocationChange = (location: string) => {
-    const updatedSearchParams = new URLSearchParams(searchParams);
-    updatedSearchParams.set("location", location);
-    startTransition(() => {
-      router.replace(`${pathname}?${updatedSearchParams.toString()}`);
-    });
+  const handleSelectChange = (key: string, value: string) => {
+    const next = updateParam(searchParams, key, value);
+    applyFilters(next);
+
+    if (key === "contract") setContract(value);
+    if (key === "location") setLocation(value);
+    if (key === "workplace") setWorkplace(value);
+  };
+
+  const resetFilters = () => {
+    setSearchTerm("");
+    setContract("all");
+    setLocation("all");
+    setWorkplace("all");
+    startTransition(() => router.push(pathname));
   };
 
   return (
@@ -67,15 +99,16 @@ export default function Filters(props: {
         <Input
           type="text"
           placeholder="Zoek op functie, bedrijf of vaardigheden..."
-          onChange={handleSearch}
+          value={searchTerm}
+          onChange={handleSearchChange}
           className="pl-10 h-12 text-lg"
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
         <Select
-          value={searchParams.get("contract") ?? ""}
-          onValueChange={handleContractChange}
+          value={contract}
+          onValueChange={(val) => handleSelectChange("contract", val)}
         >
           <SelectTrigger>
             <SelectValue placeholder="Type contract" />
@@ -90,8 +123,8 @@ export default function Filters(props: {
         </Select>
 
         <Select
-          value={searchParams.get("location") ?? ""}
-          onValueChange={handleLocationChange}
+          value={location}
+          onValueChange={(val) => handleSelectChange("location", val)}
         >
           <SelectTrigger>
             <SelectValue placeholder="Locatie" />
@@ -107,11 +140,11 @@ export default function Filters(props: {
         </Select>
 
         <Select
-          value={searchParams.get("workplace") ?? ""}
-          onValueChange={handleWorkplaceChange}
+          value={workplace}
+          onValueChange={(val) => handleSelectChange("workplace", val)}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Kantoor, hybride of remote" />
+            <SelectValue placeholder="Werklocatie" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Werklocatie</SelectItem>
@@ -125,18 +158,15 @@ export default function Filters(props: {
 
         <Button
           variant="outline"
-          onClick={() => {
-            router.push(pathname);
-          }}
+          onClick={resetFilters}
           className="flex items-center gap-2"
         >
-          <Filter className="h-4 w-4" />
-          Filters wissen
+          <Filter className="h-4 w-4" /> Filters wissen
         </Button>
       </div>
 
       <div className="text-sm text-gray-600">
-        {props.jobCount} van {props.totalJobCount} vacatures
+        {jobCount} van {totalJobCount} vacatures
       </div>
     </div>
   );

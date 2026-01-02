@@ -44,3 +44,9 @@ export type JobsResponse = {
     isFinished: boolean;
   };
 };
+
+export type PaginationProps = {
+  loadMore: () => Promise<void>;
+  hasMore: boolean;
+  loading: boolean;
+};

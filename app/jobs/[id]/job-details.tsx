@@ -8,17 +8,14 @@ import {
 import Link from "next/link";
 import {
   Calendar,
-  Briefcase,
   GraduationCap,
   Award,
   EuroIcon,
   MapPin,
   Handshake,
-  Coins,
   MapPinned,
   BookUser,
 } from "lucide-react";
-import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
@@ -26,6 +23,8 @@ import Image from "next/image";
 import ApplyModal from "@/app/apply-modal";
 import { Job } from "@/app/types";
 import { capitalize, formatDate } from "@/lib/utils";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 const relatedJobs = [
   {
@@ -235,23 +234,27 @@ export default function JobDetails({ job }: { job: Job }) {
                 Beschrijving
               </h2>
               <div className="prose max-w-none text-gray-700">
-                <p
-                  className="mb-4"
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(job.description),
-                  }}
-                />
+                <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                  {job.description}
+                </ReactMarkdown>
+
                 <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">
                   Belangrijkste verantwoordelijkheden
                 </h3>
                 <ul className="mb-6">
                   {job.responsibilities.map((r: string, i: number) => (
-                    <li
-                      key={i}
-                      dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(r),
-                      }}
-                    />
+                    <li key={i}>
+                      <ReactMarkdown
+                        rehypePlugins={[rehypeRaw]}
+                        components={{
+                          p: ({ children }) => (
+                            <p className="my-0">{children}</p>
+                          ),
+                        }}
+                      >
+                        {r}
+                      </ReactMarkdown>
+                    </li>
                   ))}
                 </ul>
                 <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">
@@ -259,12 +262,18 @@ export default function JobDetails({ job }: { job: Job }) {
                 </h3>
                 <ul>
                   {job.requirements.map((r: string, i: number) => (
-                    <li
-                      key={i}
-                      dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(r),
-                      }}
-                    />
+                    <li key={i}>
+                      <ReactMarkdown
+                        rehypePlugins={[rehypeRaw]}
+                        components={{
+                          p: ({ children }) => (
+                            <p className="my-0">{children}</p>
+                          ),
+                        }}
+                      >
+                        {r}
+                      </ReactMarkdown>
+                    </li>
                   ))}
                 </ul>
                 <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">

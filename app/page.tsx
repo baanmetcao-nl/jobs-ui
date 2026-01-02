@@ -1,29 +1,34 @@
 import { Users, TrendingUp, Shield } from "lucide-react";
 import Image from "next/image";
 import Filters from "./filters";
-import { JobsResponse } from "./types";
 import JobList from "./job-list";
-import Pagination from "./pagination";
-import { Suspense } from "react";
+import { JobsResponse } from "./types";
+import { fetchJobs } from "@/lib/utils";
 
 export default async function JobBoard(props: {
-  searchParams: Promise<{ jobId?: string }>;
+  searchParams: Promise<{
+    jobId?: string;
+    offset?: string;
+    search?: string;
+    contract?: string;
+    location?: string;
+    workplace?: string;
+  }>;
 }) {
   const searchParams = await props.searchParams;
-  const jobsResponsePromise = fetch("https://api.baanmetcao.nl/jobs").then(
-    (response) => {
-      if (response.ok) {
-        return response.json() as Promise<JobsResponse>;
-      }
-      throw new Error("could not fetch mon");
-    }
-  );
+  const offset = Number(searchParams.offset ?? 0);
+
+  const initialJobsResponse: JobsResponse = await fetchJobs({
+    offset,
+    search: searchParams.search,
+    contract: searchParams.contract,
+    location: searchParams.location,
+    workplace: searchParams.workplace,
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=60 height=60 viewBox=0 0 60 60 xmlns=http://www.w3.org/2000/svg%3E%3Cg fill=none fillRule=evenodd%3E%3Cg fill=%23ffffff fillOpacity=0.03%3E%3Ccircle cx=30 cy=30 r=2/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
-
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
             <div className="flex justify-center mb-6">
@@ -83,25 +88,18 @@ export default async function JobBoard(props: {
             </div>
           </div>
         </div>
-
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
-        <Suspense fallback={<div>Aan het laden ...</div>}>
-          <Filters jobCount={0} totalJobCount={0} />
-        </Suspense>
-        <Suspense fallback={<div>Aan het laden ...</div>}>
-          <JobList
-            jobsResponsePromise={jobsResponsePromise}
-            selectedJobId={
-              searchParams.jobId ? parseInt(searchParams.jobId) : null
-            }
-          />
-        </Suspense>
-        <Suspense fallback={<div>Aan het laden ...</div>}>
-          <Pagination jobsResponsePromise={jobsResponsePromise} />
-        </Suspense>
+        <Filters
+          jobCount={initialJobsResponse.data.length}
+          totalJobCount={initialJobsResponse.pagination.totalCount}
+        />
+
+        <JobList
+          initialJobsResponse={initialJobsResponse}
+          selectedJobId={searchParams.jobId ? Number(searchParams.jobId) : null}
+        />
       </main>
     </div>
   );

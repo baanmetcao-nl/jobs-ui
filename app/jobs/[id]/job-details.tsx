@@ -21,77 +21,10 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import Image from "next/image";
 import ApplyModal from "@/app/apply-modal";
-import { Job } from "@/app/types";
+import { Job, RelatedJobsProps } from "@/app/types";
 import { capitalize, formatDate } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-
-const relatedJobs = [
-  {
-    id: 5,
-    title: "Burger flipper",
-    company: "Yomama",
-    category: "Horeca",
-    type: "Voltijds",
-    location: "Planeet Jupiter",
-    salary: "€25 - €40",
-    daysLeft: 22,
-    logo: "bg-purple-500",
-  },
-  {
-    id: 6,
-    title: "Tomatenplukker",
-    company: "Babymomma",
-    category: "Ontwikkeling & IT",
-    type: "Remote",
-    location: "Kas in Meteren",
-    salary: "€450 - €900/maand",
-    daysLeft: 22,
-    logo: "bg-gray-800",
-  },
-  {
-    id: 7,
-    title: "Autopoetser",
-    company: "Bayla's poetsbedrijf",
-    category: "Ontwikkeling & IT",
-    type: "Hybride",
-    location: "Californië",
-    salary: "Prijs bespreekbaar",
-    daysLeft: 22,
-    logo: "bg-red-500",
-  },
-];
-
-const CompanyJobs = [
-  {
-    id: 8,
-    title: "Frontend Ontwikkelaar",
-    type: "Voltijds",
-    location: "Amsterdam",
-    daysLeft: 15,
-  },
-  {
-    id: 9,
-    title: "Backend Engineer",
-    type: "Remote",
-    location: "Remote",
-    daysLeft: 30,
-  },
-  {
-    id: 10,
-    title: "DevOps Engineer",
-    type: "Voltijds",
-    location: "Amsterdam",
-    daysLeft: 45,
-  },
-  {
-    id: 11,
-    title: "Productmanager",
-    type: "Voltijds",
-    location: "Amsterdam",
-    daysLeft: 20,
-  },
-];
 
 type ContractType = "freelance" | "permanent" | "temporary" | "internship";
 const contractLabels: Record<ContractType, string> = {
@@ -109,7 +42,27 @@ const workplaceLabels: Record<WorkPlaceType, string> = {
   other: "Anders",
 };
 
-export default function JobDetails({ job }: { job: Job }) {
+type JobDetailsProps = {
+  job: Job;
+  relatedJobs: RelatedJobsProps[];
+  relatedCompanyJobs: RelatedJobsProps[];
+};
+
+type SidebarProps = {
+  job: Job;
+  activeTab: string;
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  relatedCompanyJobs: RelatedJobsProps[];
+  updatedSearchParams: URLSearchParams;
+  router: ReturnType<typeof useRouter>;
+  pathname: string;
+};
+
+export default function JobDetails({
+  job,
+  relatedJobs,
+  relatedCompanyJobs,
+}: JobDetailsProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -357,7 +310,7 @@ export default function JobDetails({ job }: { job: Job }) {
             job={job}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-            bedrijfVacatures={CompanyJobs}
+            relatedCompanyJobs={relatedCompanyJobs}
             updatedSearchParams={updatedSearchParams}
             router={router}
             pathname={pathname}
@@ -401,7 +354,7 @@ function InfoItem({
   );
 }
 
-function RelatedJobCard({ vacature }: { vacature: any }) {
+function RelatedJobCard({ vacature }: { vacature: RelatedJobsProps }) {
   return (
     <div className="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
       <div className="flex items-start gap-4">
@@ -410,7 +363,7 @@ function RelatedJobCard({ vacature }: { vacature: any }) {
         >
           <span className="text-white font-semibold text-sm">
             <Image
-              src={"https://api.baanmetcao.nl/images/logos/rijksoverheid.svg"}
+              src={vacature.company.logoUrl}
               alt={"logo"}
               width={60}
               height={60}
@@ -418,27 +371,27 @@ function RelatedJobCard({ vacature }: { vacature: any }) {
           </span>
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 mb-1">{vacature.title}</h3>
+          <h3 className="font-semibold text-gray-900 mb-1">
+            {vacature.position}
+          </h3>
           <div className="text-sm text-gray-600">
-            door <span className="font-medium">{vacature.company}</span> in
+            door <span className="font-medium">{vacature.company.name}</span> in
             <Link href="#" className="text-teal-600 hover:underline ml-1">
-              {vacature.category}
+              {vacature.field}
             </Link>
           </div>
           <div className="flex flex-wrap items-center gap-2 mt-2">
             <Badge className="bg-[#F4F4F4] text-[#333333] text-xs">
-              {vacature.type}
+              {vacature.workplace}
             </Badge>
             <Badge className="bg-[#F4F4F4] text-[#333333] text-xs">
               <MapPin size={16} style={{ marginRight: 5 }} />
               {vacature.location}
             </Badge>
             <Badge className="bg-[#F4F4F4] text-[#333333] text-xs">
-              {vacature.salary}
+              {vacature.salaryRange.currency} {vacature.salaryRange.min}-
+              {vacature.salaryRange.max}
             </Badge>
-          </div>
-          <div className="text-sm text-[#333333] font-medium mt-2">
-            {vacature.daysLeft} dagen over om te solliciteren
           </div>
         </div>
       </div>
@@ -450,11 +403,11 @@ function Sidebar({
   job,
   activeTab,
   setActiveTab,
-  bedrijfVacatures,
+  relatedCompanyJobs,
   updatedSearchParams,
   router,
   pathname,
-}: any) {
+}: SidebarProps) {
   return (
     <div className="lg:w-80 lg:flex-shrink-0">
       <div className="lg:sticky lg:top-8 space-y-6">
@@ -516,7 +469,7 @@ function Sidebar({
               >
                 Vacatures
                 <span className="ml-1 text-xs bg-gray-200 px-1.5 py-0.5 rounded">
-                  {bedrijfVacatures.length}
+                  {relatedCompanyJobs.length}
                 </span>
               </button>
             </div>
@@ -534,23 +487,24 @@ function Sidebar({
 
               {activeTab === "jobs" && (
                 <div className="space-y-3">
-                  {bedrijfVacatures.map((job: any) => (
+                  {relatedCompanyJobs.map((job: RelatedJobsProps) => (
                     <Link
                       key={job.id}
                       href={`/jobs/${job.id}`}
                       className="block border border-gray-200 rounded-lg p-3 hover:bg-gray-50"
                     >
                       <h4 className="font-medium text-gray-900 mb-1 hover:text-teal-600">
-                        {job.title}
+                        {job.position}
                       </h4>
                       <div className="flex items-center gap-2 text-xs text-gray-600 mb-2">
                         <Badge className="bg-[#F4F4F4] text-[#333333] text-xs">
-                          {job.type}
+                          {job.workplace}
                         </Badge>
                         <span>{job.location}</span>
-                      </div>
-                      <div className="text-xs text-teal-600 font-medium">
-                        {job.daysLeft} dagen over om te solliciteren
+                        <Badge className="bg-[#F4F4F4] text-[#333333] text-xs">
+                          {job.salaryRange.currency} {job.salaryRange.min}-
+                          {job.salaryRange.max}
+                        </Badge>
                       </div>
                     </Link>
                   ))}

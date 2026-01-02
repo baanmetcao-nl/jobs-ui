@@ -39,9 +39,15 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     .filter((j) => j.field === job.field && j.company.name !== job.company.name)
     .slice(0, 4);
 
+  console.log(relatedCompanyJobs);
+
   return (
     <div>
-      <JobDetails job={job} />
+      <JobDetails
+        job={job}
+        relatedCompanyJobs={relatedCompanyJobs}
+        relatedJobs={relatedJobs}
+      />
     </div>
   );
 }

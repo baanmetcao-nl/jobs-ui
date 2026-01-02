@@ -50,3 +50,21 @@ export type PaginationProps = {
   hasMore: boolean;
   loading: boolean;
 };
+
+export type RelatedJobsProps = {
+  id: number;
+  position: string;
+  company: {
+    logoUrl: string;
+    name: string;
+  };
+  field: string;
+  workplace: string;
+  location: string;
+  salaryRange: {
+    min: number;
+    max: number;
+    currency: string;
+    interval: string;
+  };
+};

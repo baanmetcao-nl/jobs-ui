@@ -19,7 +19,7 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="text-center">
               <p>
-                &copy; 2025 Baan met CAO. Hetzelfde werk, betere voorwaarden.
+                &copy; 2026 Baan met CAO. Hetzelfde werk, betere voorwaarden.
               </p>
             </div>
           </div>

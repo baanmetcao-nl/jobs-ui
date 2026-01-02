@@ -4,7 +4,7 @@ import JobDetails from "./job-details";
 
 const CACHE_TIME = 7 * 24 * 60 * 60;
 
-// TODO: error handling
+// TODO: error handling & change with general route in route.ts
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const singleJob = await fetch(`https://api.baanmetcao.nl/jobs/${params.id}`, {

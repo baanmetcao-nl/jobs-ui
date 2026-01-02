@@ -110,7 +110,10 @@ export default function JobList({
                       {job.workplace === "remote" && (
                         <Badge variant="outline">Thuiswerken</Badge>
                       )}
-                      <Badge variant="outline">{job.salaryRange?.max}</Badge>
+                      <Badge variant="outline">
+                        {job.salaryRange.currency} {job.salaryRange.min}-
+                        {job.salaryRange.max}
+                      </Badge>
                     </div>
                   </div>
                   <div className="flex gap-2 shrink-0">

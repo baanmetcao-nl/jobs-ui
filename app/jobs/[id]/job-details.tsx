@@ -268,10 +268,10 @@ export default function JobDetails({
             <div className="bg-gray-50 rounded-lg p-6 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                  Geïnteresseerd in deze vacature?
+                  Geïnteresseerd in de vacature?
                 </h3>
                 <p className="text-[#F1592A] text-sm font-medium">
-                  64 dagen over om te solliciteren
+                  Neem de volgende stap
                 </p>
               </div>
 
@@ -410,14 +410,11 @@ function Sidebar({
 }: SidebarProps) {
   return (
     <div className="lg:w-80 lg:flex-shrink-0">
-      <div className="lg:sticky lg:top-8 space-y-6">
+      <div className="lg:sticky lg:top-24 space-y-6">
         <div className="bg-gray-50 rounded-lg p-6 max-sm:hidden">
-          <h3 className="text-lg font-semibold mb-2 text-gray-900">
-            Geïnteresseerd?
+          <h3 className="text-lg font-semibold mb-4 text-gray-900">
+            Geïnteresseerd in de vacature?
           </h3>
-          <p className="text-[#F1592A] text-sm mb-4 font-medium">
-            64 dagen over om te solliciteren
-          </p>
 
           <Button
             onClick={() => {

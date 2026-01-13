@@ -1,44 +1,65 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { JobsResponse } from "./types";
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function Pagination({
-  jobsResponsePromise,
-  offset,
+  page,
+  totalPages,
 }: {
-  jobsResponsePromise: Promise<JobsResponse>;
-  offset: number;
+  page: number;
+  totalPages: number;
 }) {
-  const [jobsResponse, setJobsResponse] = useState<JobsResponse | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  useEffect(() => {
-    jobsResponsePromise.then((res) => setJobsResponse(res));
-  }, [jobsResponsePromise]);
+  const goToPage = (p: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", p.toString());
 
-  if (!jobsResponse) return null;
+    router.push(`${pathname}?${params.toString()}`);
 
-  if (jobsResponse.pagination.isFinished) {
-    return null;
-  }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (totalPages <= 1) return null;
 
   return (
-    <div className="text-center mt-12">
+    <div className="flex justify-center gap-2 mt-12">
+      <Button disabled={page === 0} onClick={() => goToPage(0)}>
+        {"<<"}
+      </Button>
+      <Button disabled={page === 0} onClick={() => goToPage(page - 1)}>
+        {"<"}
+      </Button>
+
+      {Array.from({ length: totalPages })
+        .slice(Math.max(0, page - 2), page + 3)
+        .map((_, i) => {
+          const pageNumber = Math.max(0, page - 2) + i;
+          return (
+            <Button
+              key={pageNumber}
+              variant={pageNumber === page ? "default" : "outline"}
+              onClick={() => goToPage(pageNumber)}
+            >
+              {pageNumber + 1}
+            </Button>
+          );
+        })}
+
       <Button
-        variant="outline"
-        size="lg"
-        onClick={() => {
-          const params = new URLSearchParams(searchParams);
-          params.set("offset", (offset + 10).toString());
-          router.push(`${pathname}?${params.toString()}`);
-        }}
+        disabled={page >= totalPages - 1}
+        onClick={() => goToPage(page + 1)}
       >
-        Meer vacatures laden
+        {">"}
+      </Button>
+      <Button
+        disabled={page >= totalPages - 1}
+        onClick={() => goToPage(totalPages - 1)}
+      >
+        {">>"}
       </Button>
     </div>
   );

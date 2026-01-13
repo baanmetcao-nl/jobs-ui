@@ -15,9 +15,13 @@ export function Header() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/?search=${encodeURIComponent(searchQuery.trim())}`);
-    }
+    const trimmed = searchQuery.trim();
+
+    const params = new URLSearchParams();
+    if (trimmed) params.set("search", trimmed);
+    params.set("page", "0");
+
+    router.push(`/?${params.toString()}`);
   };
 
   const pathname = usePathname();

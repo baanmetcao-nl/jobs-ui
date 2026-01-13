@@ -1,8 +1,7 @@
 "use client";
 
 import { Search, Filter } from "lucide-react";
-import { useState } from "react";
-import useDebouncedCallback from "@/hooks/use-debounced-callback";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -24,7 +23,7 @@ function updateParam(params: URLSearchParams, key: string, value: string) {
     next.set(key, value);
   }
 
-  next.set("offset", "0");
+  next.set("page", "0");
   return next;
 }
 
@@ -58,23 +57,6 @@ export default function Filters({
     });
   };
 
-  const debouncedSearch = useDebouncedCallback(
-    (value: string) => {
-      const next = updateParam(
-        new URLSearchParams(searchParams.toString()),
-        "search",
-        value
-      );
-      applyFilters(next);
-    },
-    { timeout: 400 }
-  );
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    debouncedSearch(e.target.value);
-  };
-
   const handleSelectChange = (key: string, value: string) => {
     const next = updateParam(searchParams, key, value);
     applyFilters(next);
@@ -84,12 +66,26 @@ export default function Filters({
     if (key === "workplace") setWorkplace(value);
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const params = new URLSearchParams(window.location.search);
+      const next = updateParam(params, "search", searchTerm);
+      applyFilters(next);
+    }, 400);
+
+    return () => clearTimeout(handler);
+  }, [searchTerm, pathname]);
+
   const resetFilters = () => {
     setSearchTerm("");
     setContract("all");
     setLocation("all");
     setWorkplace("all");
-    startTransition(() => router.push(pathname));
+    startTransition(() => router.replace(pathname));
   };
 
   return (

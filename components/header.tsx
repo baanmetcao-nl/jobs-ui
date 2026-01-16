@@ -26,9 +26,95 @@ export function Header() {
 
   const pathname = usePathname();
   const isHomePage = pathname === "/";
+
+  const NavBar = () => (
+    <div className="w-full bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+        <div className="flex h-16 items-center justify-between gap-4">
+          <div className="flex items-center gap-6 lg:gap-8">
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src="/logo-header.png"
+                alt="Job Board Logo"
+                width={160}
+                height={62}
+                className="h-8 w-auto"
+              />
+            </Link>
+
+            <nav className="hidden md:flex items-center gap-6">
+              <Link
+                href="/"
+                className="text-sm font-medium text-gray-700 hover:text-gray-900"
+              >
+                Alle vacatures
+              </Link>
+              <Link
+                href="/over-ons"
+                className="text-sm font-medium text-gray-700 hover:text-gray-900"
+              >
+                Over ons
+              </Link>
+            </nav>
+          </div>
+          {!isHomePage && (
+            <form
+              onSubmit={handleSearch}
+              className="hidden lg:flex flex-1 max-w-md"
+            >
+              <div className="relative w-full">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  type="search"
+                  placeholder="Zoek vacatures..."
+                  className="pl-10 w-full"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </form>
+          )}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="shrink-0 lg:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </Button>
+          </div>
+        </div>
+        {isMenuOpen && (
+          <div className="lg:hidden border-t py-4 space-y-2">
+            <Link
+              href="/"
+              className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Alle vacatures
+            </Link>
+            <Link
+              href="#"
+              className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Over ons
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   if (isHomePage) {
     return (
       <header className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden">
+        {<NavBar />}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
             <div className="flex justify-center mb-6">
@@ -91,87 +177,10 @@ export function Header() {
       </header>
     );
   }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-4">
-          <div className="flex items-center gap-6 lg:gap-8">
-            <Link href="/" className="flex items-center gap-2">
-              <Image
-                src="/logo-header.png"
-                alt="Job Board Logo"
-                width={160}
-                height={62}
-                className="h-8 w-auto"
-              />
-            </Link>
-
-            <nav className="hidden md:flex items-center gap-6">
-              <Link
-                href="/"
-                className="text-sm font-medium text-gray-700 hover:text-gray-900"
-              >
-                Alle vacatures
-              </Link>
-              <Link
-                href="#"
-                className="text-sm font-medium text-gray-700 hover:text-gray-900"
-              >
-                Over ons
-              </Link>
-            </nav>
-          </div>
-
-          <form
-            onSubmit={handleSearch}
-            className="hidden lg:flex flex-1 max-w-md"
-          >
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                type="search"
-                placeholder="Zoek vacatures..."
-                className="pl-10 w-full"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </form>
-
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="shrink-0 lg:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </Button>
-          </div>
-        </div>
-        {isMenuOpen && (
-          <div className="lg:hidden border-t py-4 space-y-2">
-            <Link
-              href="/"
-              className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Alle vacatures
-            </Link>
-            <Link
-              href="#"
-              className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Over ons
-            </Link>
-          </div>
-        )}
-      </div>
+      <NavBar />
     </header>
   );
 }

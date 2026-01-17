@@ -12,7 +12,7 @@ import Link from "next/link";
 
 export default function AboutUsPage() {
   return (
-    <main className="min-h-screen bg-white">
+    <>
       <section className="py-16 md:py-24 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
@@ -207,6 +207,6 @@ export default function AboutUsPage() {
           </Link>
         </div>
       </section>
-    </main>
+    </>
   );
 }

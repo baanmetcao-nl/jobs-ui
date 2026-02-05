@@ -1,86 +1,117 @@
+type Seniority = 'trainee' | 'junior' | 'medior' | 'senior' | 'principal';
+
+type Workplace = 'remote' | 'hybrid' | 'office' | 'other' | 'free_choice';
+
+type Contract = 'freelance' | 'temporary' | 'permanent' | 'internship' | 'flex';
+
+type Education =
+    | 'none'
+    | 'primary'
+    | 'secondary'
+    | 'vocational_training'
+    | 'higher_professional'
+    | 'university_bachelor'
+    | 'university_master'
+    | 'doctorate'
+    | 'unknown';
+
+type Country = 'the_netherlands' | 'unknown';
+
+type Interval =
+    | 'hourly'
+    | 'monthly'
+    | 'daily'
+    | 'weekly'
+    | '4_weekly'
+    | 'yearly';
+
+type Niche =
+    | 'communications'
+    | 'creative_design'
+    | 'education_training'
+    | 'engineering'
+    | 'finance_accounting'
+    | 'healthcare_medical'
+    | 'human_resources'
+    | 'legal'
+    | 'logistics_supply_chain'
+    | 'marketing_advertising'
+    | 'public_sector_non_profit'
+    | 'real_estate'
+    | 'sales_retail'
+    | 'science_research'
+    | 'technology_it'
+    | 'skilled_trades'
+    | 'other'
+    | 'unknown';
+
 export type Job = {
-  createdAt: string;
-  description: string;
-  id: number;
-  location: string;
-  position: string;
-  requirements: string[];
-  responsibilities: string[];
-  tags: string[];
-  url: string;
-  workplace: "remote" | "hybrid" | "office" | "other";
-  contract: "internship" | "permanent" | "temporary" | "freelance";
-  seniority: string;
-  education: string;
-  field: string;
-  metadata: {
-    collected: boolean;
-  };
-  salaryRange: {
-    min: number;
-    max: number;
-    currency: "EUR";
-    interval: "month";
-  };
-  company: {
-    name: string;
-    logoUrl: string;
-  };
-  collectiveLaborAgreement: {
-    extraMoney: boolean;
-    pension: boolean;
-    travelAllowance: boolean;
-    stocks: boolean;
-    bonus: boolean;
-  };
+    id: string;
+    title: string;
+    description: string;
+    country: Country;
+    city: string;
+    workplace: Workplace;
+    contract: Contract;
+    seniority: Seniority;
+    education: Education;
+    url: string;
+    requirements: string[];
+    responsibilities: string[];
+    publishedAt: string;
+    niches: Niche[];
+    benefits: {
+        extraFixedPayment: boolean;
+        extraVariablePayment: boolean;
+        pensionPlan: boolean;
+        travelAllowance: boolean;
+        extraTimeOff: boolean;
+        stockPlan: boolean;
+    };
+    company: {
+        name: string;
+        bio: string;
+        logoUrl: string;
+    };
+    salary: {
+        min: number;
+        max: number;
+        interval: Interval;
+        currency: string;
+        symbol: '€';
+    };
+    tags: string[];
+};
+
+export type MinimalJob = {
+    id: string;
+    salary: {
+        symbol: string;
+        min: number;
+        max: number;
+        interval: Interval;
+        currency: string;
+    };
+    tags: string[];
+    title: string;
+    summary: string;
+    country: string;
+    city: string;
+    niches: Niche[];
+    workplace: Workplace;
+    contract: Contract;
+    company: {
+        name: string;
+        logoUrl: string;
+    };
 };
 
 export type JobsResponse = {
-  data: {
-      id: string;
-      salary: {
-          symbol: string
-          min: number
-          max: number
-          interval: string
-          currency: string
-      }
-      tags: string[]
-      id: string
-      title: string
-      summary: string
-      country: string
-      city: string
-      workplace: string
-      contract: string
-      company: {
-          name: string,
-          logoUrl: string
-      },
-  }[];
-  pagination: {
-    limit: number;
-    offset: number;
-    totalCount: number;
-    hasMore: boolean;
-  };
-};
-
-
-export type RelatedJobsProps = {
-  id: number;
-  position: string;
-  company: {
-    logoUrl: string;
-    name: string;
-  };
-  field: string;
-  workplace: string;
-  location: string;
-  salaryRange: {
-    min: number;
-    max: number;
-    currency: string;
-    interval: string;
-  };
+    data: MinimalJob[];
+    pagination: {
+        limit: number;
+        offset: number;
+        totalCount: number;
+        hasMore: boolean;
+    };
 };

@@ -1,4 +1,4 @@
-import { Job, JobsResponse, MinimalJob } from '@/app/types';
+import { Job, JobsResponse } from '@/app/types';
 import { notFound } from 'next/navigation';
 import JobDetails from './job-details';
 
@@ -25,9 +25,6 @@ async function getRelatedJobs(niches: string[]): Promise<JobsResponse> {
     const params = new URLSearchParams();
     params.append('limit', '3');
     niches.forEach((niche) => params.set('niches', niche));
-    console.log(
-        `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
-    );
     const response = await fetch(
         `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
     );
@@ -48,8 +45,7 @@ async function getRelatedCompanyJobs(companyId: string): Promise<JobsResponse> {
     if (!response.ok) {
         throw new Error('Er is iets misgegaan');
     }
-    const relatedCompanyJobs: MinimalJob[] = await response.json();
-    return relatedCompanyJobs;
+    return response.json();
 }
 
 // TODO: error handling & change with general route in route.ts

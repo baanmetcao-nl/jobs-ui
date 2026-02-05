@@ -23,7 +23,7 @@ export default function JobList({
 
   const router = useRouter();
 
-  const openJob = (jobId: number) => {
+  const openJob = (jobId: string) => {
     router.push(`/jobs/${jobId}`);
   };
 
@@ -36,12 +36,12 @@ export default function JobList({
           </div>
         )}
 
-        {jobs.map((job: Job) => (
+        {jobs.map((job: JobsResponse["data"][number]) => (
           <Card key={job.id} className="hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex justify-between gap-4">
                 <div>
-                  <CardTitle className="text-xl mb-2">{job.position}</CardTitle>
+                  <CardTitle className="text-xl mb-2">{job.title}</CardTitle>
                   <div className="flex gap-4 text-gray-600">
                     <span className="flex items-center gap-1">
                       <Building2 className="h-4 w-4" />
@@ -49,7 +49,7 @@ export default function JobList({
                     </span>
                     <span className="flex items-center gap-1">
                       <MapPin className="h-4 w-4" />
-                      {job.location}
+                      {job.city}
                     </span>
                   </div>
                 </div>
@@ -66,7 +66,7 @@ export default function JobList({
 
             <CardContent>
               <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                {job.description}
+                {job.summary}
               </ReactMarkdown>
 
               <div className="flex flex-wrap gap-2 mt-3">

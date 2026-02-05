@@ -1,3 +1,4 @@
+
 import { JobsResponse } from "@/app/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -57,7 +58,7 @@ export async function fetchJobs({
 
   const url =
     typeof window === "undefined"
-      ? `https://api.baanmetcao.nl/jobs?${params.toString()}`
+      ? `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`
       : `/api/jobs?${params.toString()}`;
 
   const res = await fetch(url, { cache: "no-store" });

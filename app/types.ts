@@ -36,20 +36,36 @@ export type Job = {
 };
 
 export type JobsResponse = {
-  data: Job[];
+  data: {
+      id: string;
+      salary: {
+          symbol: string
+          min: number
+          max: number
+          interval: string
+          currency: string
+      }
+      tags: string[]
+      id: string
+      title: string
+      summary: string
+      country: string
+      city: string
+      workplace: string
+      contract: string
+      company: {
+          name: string,
+          logoUrl: string
+      },
+  }[];
   pagination: {
     limit: number;
     offset: number;
     totalCount: number;
-    isFinished: boolean;
+    hasMore: boolean;
   };
 };
 
-export type PaginationProps = {
-  loadMore: () => Promise<void>;
-  hasMore: boolean;
-  loading: boolean;
-};
 
 export type RelatedJobsProps = {
   id: number;

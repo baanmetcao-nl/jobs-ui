@@ -72,6 +72,7 @@ export type Job = {
         name: string;
         bio: string;
         logoUrl: string;
+        id: string;
     };
     salary: {
         min: number;

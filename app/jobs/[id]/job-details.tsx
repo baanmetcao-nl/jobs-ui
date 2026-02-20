@@ -21,18 +21,16 @@ import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
 import Image from 'next/image';
 import ApplyModal from '@/app/apply-modal';
-import { capitalize, formatDate } from '@/lib/utils';
+import {
+    capitalize,
+    contractFormat,
+    educationFormat,
+    formatDate,
+    intervalFormat,
+} from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { Job, MinimalJob } from '@/app/types';
-
-const contractLabels: Record<Job['contract'], string> = {
-    freelance: 'Freelance',
-    permanent: 'Vast contract',
-    temporary: 'Tijdelijk contract',
-    internship: 'Stage',
-    flex: 'Flexibel contract',
-};
 
 const workplaceLabels: Record<Job['workplace'], string> = {
     remote: 'Remote',
@@ -101,8 +99,8 @@ export default function JobDetails({
                                         <Image
                                             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`}
                                             alt={job.company.name}
-                                            width={60}
-                                            height={60}
+                                            width={80}
+                                            height={80}
                                         />
                                     </div>
                                     <div>
@@ -160,7 +158,7 @@ export default function JobDetails({
                                 <InfoItem
                                     icon={<EuroIcon color="#F1693F" />}
                                     label="Salaris"
-                                    description={`${job.salary.currency} ${job.salary.min}-${job.salary.max}`}
+                                    description={`${job.salary.symbol} ${Math.trunc(job.salary.min)}-${Math.trunc(job.salary.max)}`}
                                 />
                                 <InfoItem
                                     icon={<Award color="#F1693F" />}
@@ -170,12 +168,12 @@ export default function JobDetails({
                                 <InfoItem
                                     icon={<GraduationCap color="#F1693F" />}
                                     label="Opleiding"
-                                    description={capitalize(job.education)}
+                                    description={educationFormat(job.education)}
                                 />
                                 <InfoItem
                                     icon={<Handshake color="#F1693F" />}
                                     label="Contract"
-                                    description={contractLabels[job.contract]}
+                                    description={contractFormat(job.contract)}
                                 />
                                 <InfoItem
                                     icon={<MapPinned color="#F1693F" />}
@@ -318,7 +316,7 @@ export default function JobDetails({
                         </div>
 
                         <div>
-                            <div className="flex items-center justify-between mb-6">
+                            <div className="flex max-sm:flex-col items-center gap-2 justify-between mb-6">
                                 <h2 className="text-xl font-semibold text-gray-900">
                                     Vergelijkbare vacatures
                                 </h2>
@@ -431,8 +429,9 @@ function RelatedJobCard({ vacature }: { vacature: MinimalJob }) {
                             {vacature.city}
                         </Badge>
                         <Badge className="bg-[#F4F4F4] text-[#333333] text-xs">
-                            {vacature.salary.currency} {vacature.salary.min}-
-                            {vacature.salary.max}
+                            {vacature.salary.symbol}{' '}
+                            {Math.trunc(vacature.salary.min)}-
+                            {Math.trunc(vacature.salary.max)}
                         </Badge>
                     </div>
                 </div>
@@ -517,13 +516,10 @@ function Sidebar({
 
                         <div className="mt-4">
                             {activeTab === 'overview' && (
-                                <div className="space-y-4 text-sm text-gray-600">
-                                    <p className="leading-relaxed">
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna
-                                        aliqua....
-                                    </p>
+                                <div className="space-y-4 text-sm/6 text-gray-600">
+                                    <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                                        {job.company.bio}
+                                    </ReactMarkdown>
                                 </div>
                             )}
 
@@ -544,10 +540,15 @@ function Sidebar({
                                                         {job.workplace}
                                                     </Badge>
                                                     <span>{job.city}</span>
+                                                </div>
+                                                <div>
                                                     <Badge className="bg-[#F4F4F4] text-[#333333] text-xs">
-                                                        {job.salary.currency}{' '}
+                                                        {job.salary.symbol}{' '}
                                                         {job.salary.min}-
-                                                        {job.salary.max}
+                                                        {job.salary.max}{' '}
+                                                        {intervalFormat(
+                                                            job.salary.interval,
+                                                        )}
                                                     </Badge>
                                                 </div>
                                             </Link>

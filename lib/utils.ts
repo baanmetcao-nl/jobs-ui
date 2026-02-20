@@ -1,4 +1,4 @@
-import { Interval, JobsResponse } from '@/app/types';
+import { Interval, Job, JobsResponse } from '@/app/types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -35,6 +35,7 @@ export type FetchJobsParams = {
     search?: string;
     location?: string;
     workplace?: string;
+    niches?: string;
 };
 
 export async function fetchJobs({
@@ -44,6 +45,7 @@ export async function fetchJobs({
     contract,
     location,
     workplace,
+    niches,
 }: FetchJobsParams): Promise<JobsResponse> {
     const params = new URLSearchParams({
         limit: limit.toString(),
@@ -54,6 +56,7 @@ export async function fetchJobs({
     if (contract && contract !== 'all') params.set('contract', contract);
     if (location && location !== 'all') params.set('location', location);
     if (workplace && workplace !== 'all') params.set('workplace', workplace);
+    if (niches && niches !== 'all') params.set('niches', niches);
 
     const url =
         typeof window === 'undefined'
@@ -74,6 +77,31 @@ export function intervalFormat(interval: Interval) {
         '4_weekly': 'per 4 weken',
         yearly: 'per jaar',
     };
-
     return labels[interval];
+}
+
+export function contractFormat(contract: Job['contract']) {
+    const labels: Record<Job['contract'], string> = {
+        freelance: 'Freelance',
+        permanent: 'Vast contract',
+        temporary: 'Tijdelijk contract',
+        internship: 'Stage',
+        flex: 'Flexibel contract',
+    };
+    return labels[contract];
+}
+
+export function educationFormat(education: Job['education']) {
+    const labels: Record<Job['education'], string> = {
+        none: 'Geen',
+        primary: 'Basisonderwijs',
+        secondary: 'Voortgezet onderwijs',
+        vocational_training: 'Beroepsopleiding',
+        higher_professional: 'Hoger beroepsonderwijs',
+        university_bachelor: 'Universitair bachelor',
+        university_master: 'Universitair master',
+        doctorate: 'Doctoraat',
+        unknown: 'Niet bekend',
+    };
+    return labels[education];
 }

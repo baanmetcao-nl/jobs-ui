@@ -50,6 +50,7 @@ export default function Filters({
     const [workplace, setWorkplace] = useState(
         searchParams.get('workplace') || 'all',
     );
+    const [niches, setNiche] = useState(searchParams.get('niches') || 'all');
 
     const applyFilters = (nextParams: URLSearchParams) => {
         startTransition(() => {
@@ -64,6 +65,7 @@ export default function Filters({
         if (key === 'contract') setContract(value);
         if (key === 'location') setLocation(value);
         if (key === 'workplace') setWorkplace(value);
+        if (key === 'niches') setNiche(value);
     };
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,6 +87,7 @@ export default function Filters({
         setContract('all');
         setLocation('all');
         setWorkplace('all');
+        setNiche('all');
         startTransition(() => router.replace(pathname));
     };
 
@@ -101,7 +104,7 @@ export default function Filters({
                 />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-4">
                 <Select
                     value={contract}
                     onValueChange={(val) => handleSelectChange('contract', val)}
@@ -142,15 +145,71 @@ export default function Filters({
                     }
                 >
                     <SelectTrigger>
-                        <SelectValue placeholder="Werklocatie" />
+                        <SelectValue placeholder="Alle werklocaties" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="all">Werklocatie</SelectItem>
+                        <SelectItem value="all">Alle werklocaties</SelectItem>
                         <SelectItem value="remote">Thuiswerken</SelectItem>
                         <SelectItem value="office">Op kantoor</SelectItem>
                         <SelectItem value="hybrid">Hybride</SelectItem>
                         <SelectItem value="free_choice">Vrije keuze</SelectItem>
                         <SelectItem value="other">Anders</SelectItem>
+                    </SelectContent>
+                </Select>
+
+                <Select
+                    value={niches}
+                    onValueChange={(val) => handleSelectChange('niches', val)}
+                >
+                    <SelectTrigger>
+                        <SelectValue placeholder="Alle categorieën" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">Alle categorieën</SelectItem>
+                        <SelectItem value="communications">
+                            Communicatie
+                        </SelectItem>
+                        <SelectItem value="creative-design">
+                            Creatief & Design
+                        </SelectItem>
+                        <SelectItem value="education-training">
+                            Onderwijs & Training
+                        </SelectItem>
+                        <SelectItem value="engineering">Engineering</SelectItem>
+                        <SelectItem value="finance-accounting">
+                            Finance & Accounting
+                        </SelectItem>
+                        <SelectItem value="healthcare-medical">
+                            Zorg & Medisch
+                        </SelectItem>
+                        <SelectItem value="human-resources">
+                            Human Resources
+                        </SelectItem>
+                        <SelectItem value="legal">Juridisch</SelectItem>
+                        <SelectItem value="logistics-supply-chain">
+                            Logistiek & Supply Chain
+                        </SelectItem>
+                        <SelectItem value="marketing-advertising">
+                            Marketing & Advertising
+                        </SelectItem>
+                        <SelectItem value="public-sector-non-profit">
+                            Publieke Sector & Non-profit
+                        </SelectItem>
+                        <SelectItem value="real-estate">Vastgoed</SelectItem>
+                        <SelectItem value="sales-retail">
+                            Sales & Retail
+                        </SelectItem>
+                        <SelectItem value="science-research">
+                            Wetenschap & Onderzoek
+                        </SelectItem>
+                        <SelectItem value="technology-it">
+                            Technologie & IT
+                        </SelectItem>
+                        <SelectItem value="skilled-trades">
+                            Technische Beroepen
+                        </SelectItem>
+                        <SelectItem value="other">Anders</SelectItem>
+                        <SelectItem value="unknown">Onbekend</SelectItem>
                     </SelectContent>
                 </Select>
 

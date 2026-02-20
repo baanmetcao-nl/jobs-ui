@@ -15,6 +15,7 @@ export default async function JobBoard({
         contract?: string;
         location?: string;
         workplace?: string;
+        niches?: string;
     }>;
 }) {
     const params = await searchParams;
@@ -29,6 +30,7 @@ export default async function JobBoard({
         contract: params.contract,
         location: params.location,
         workplace: params.workplace,
+        niches: params.niches,
     });
 
     return (

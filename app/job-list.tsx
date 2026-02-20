@@ -9,7 +9,9 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import Pagination from './pagination';
-import { intervalFormat } from '@/lib/utils';
+import { contractFormat, intervalFormat } from '@/lib/utils';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function JobList({
     jobsResponse,
@@ -43,40 +45,64 @@ export default function JobList({
                         className="hover:shadow-md transition-shadow"
                     >
                         <CardHeader>
-                            <div className="flex justify-between gap-4">
+                            <div className="flex max-sm:flex-col md:flex-row justify-between gap-4">
                                 <div>
-                                    <CardTitle className="text-xl mb-2">
-                                        {job.title}
-                                    </CardTitle>
-                                    <div className="flex gap-4 text-gray-600">
-                                        <span className="flex items-center gap-1">
-                                            <Building2 className="h-4 w-4" />
-                                            {job.company.name}
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <MapPin className="h-4 w-4" />
-                                            {job.city}
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <Badge>
-                                                {job.salary.symbol}{' '}
-                                                {job.salary.min}-
-                                                {job.salary.max}{' '}
-                                                {intervalFormat(
-                                                    job.salary.interval,
-                                                )}
-                                            </Badge>
-                                        </span>
+                                    <div className="flex flex-row items-center gap-3 mb-4">
+                                        <Image
+                                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`}
+                                            alt={'logo'}
+                                            width={60}
+                                            height={60}
+                                        />{' '}
+                                        <CardTitle className="text-xl mb-2 hover:text-[#F1592A]">
+                                            <Link href={`/jobs/${job.id}`}>
+                                                {job.title}
+                                            </Link>
+                                        </CardTitle>
+                                    </div>
+                                    <div className="flex max-sm:flex-col gap-4 text-gray-600">
+                                        <div className="flex flex-row gap-4">
+                                            <span className="flex items-center gap-1">
+                                                <Building2 className="h-4 w-4" />
+                                                {job.company.name}
+                                            </span>
+                                            <span className="flex items-center gap-1">
+                                                <MapPin className="h-4 w-4" />
+                                                {job.city}
+                                            </span>
+                                        </div>
+                                        <div className="flex flex-row gap-4 max-sm:mb-2">
+                                            <span className="flex items-center gap-1">
+                                                <Badge variant={'outline'}>
+                                                    {job.salary.symbol}{' '}
+                                                    {Math.trunc(job.salary.min)}
+                                                    -
+                                                    {Math.trunc(job.salary.max)}{' '}
+                                                    {intervalFormat(
+                                                        job.salary.interval,
+                                                    )}
+                                                </Badge>
+                                            </span>
+                                            <span className="flex items-center gap-1">
+                                                <Badge>
+                                                    {contractFormat(
+                                                        job.contract,
+                                                    )}
+                                                </Badge>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <Button
-                                    size="sm"
-                                    onClick={() => openJob(job.id)}
-                                    className="bg-[#F1592A]"
-                                >
-                                    <Eye className="h-4 w-4" /> Bekijk
-                                </Button>
+                                <div>
+                                    <Button
+                                        size="sm"
+                                        onClick={() => openJob(job.id)}
+                                        className="bg-[#F1592A] max-sm:w-full"
+                                    >
+                                        <Eye className="h-4 w-4" /> Bekijk
+                                        vacature
+                                    </Button>
+                                </div>
                             </div>
                         </CardHeader>
 
@@ -86,7 +112,6 @@ export default function JobList({
                             </ReactMarkdown>
 
                             <div className="flex flex-wrap gap-2 mt-3">
-                                <Badge>{job.contract}</Badge>
                                 {job.tags.map((tag) => (
                                     <Badge key={tag} variant="outline">
                                         {tag}

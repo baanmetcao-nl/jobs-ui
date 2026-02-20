@@ -17,7 +17,7 @@ type Education =
 
 type Country = 'the_netherlands' | 'unknown';
 
-type Interval =
+export type Interval =
     | 'hourly'
     | 'monthly'
     | 'daily'

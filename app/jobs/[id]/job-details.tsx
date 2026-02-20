@@ -99,7 +99,7 @@ export default function JobDetails({
                                 <div className="flex items-start gap-4">
                                     <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center flex-shrink-0">
                                         <Image
-                                            src={job.company.logoUrl}
+                                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`}
                                             alt={job.company.name}
                                             width={60}
                                             height={60}
@@ -396,7 +396,7 @@ function RelatedJobCard({ vacature }: { vacature: MinimalJob }) {
                 >
                     <span className="text-white font-semibold text-sm">
                         <Image
-                            src={vacature.company.logoUrl}
+                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${vacature.company.logoUrl}`}
                             alt={'logo'}
                             width={60}
                             height={60}
@@ -405,7 +405,9 @@ function RelatedJobCard({ vacature }: { vacature: MinimalJob }) {
                 </div>
                 <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-gray-900 mb-1">
-                        {vacature.title}
+                        <Link href={`/jobs/${vacature.id}`}>
+                            {vacature.title}
+                        </Link>
                     </h3>
                     <div className="text-sm text-gray-600">
                         door{' '}
@@ -473,7 +475,7 @@ function Sidebar({
                     <div className="flex items-center gap-3 mb-3">
                         <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
                             <Image
-                                src={job.company.logoUrl}
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`}
                                 alt={job.company.name}
                                 width={60}
                                 height={60}

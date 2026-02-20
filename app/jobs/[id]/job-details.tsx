@@ -158,7 +158,7 @@ export default function JobDetails({
                                 <InfoItem
                                     icon={<EuroIcon color="#F1693F" />}
                                     label="Salaris"
-                                    description={`${job.salary.symbol} ${Math.trunc(job.salary.min)}-${Math.trunc(job.salary.max)}`}
+                                    description={`${job.salary.symbol} ${Math.trunc(job.salary.min)} - ${Math.trunc(job.salary.max)} ${intervalFormat(job.salary.interval)}`}
                                 />
                                 <InfoItem
                                     icon={<Award color="#F1693F" />}
@@ -430,8 +430,8 @@ function RelatedJobCard({ vacature }: { vacature: MinimalJob }) {
                         </Badge>
                         <Badge className="bg-[#F4F4F4] text-[#333333] text-xs">
                             {vacature.salary.symbol}{' '}
-                            {Math.trunc(vacature.salary.min)}-
-                            {Math.trunc(vacature.salary.max)}
+                            {Math.trunc(vacature.salary.min)} -{' '}
+                            {Math.trunc(vacature.salary.max)}{' '}
                         </Badge>
                     </div>
                 </div>
@@ -544,8 +544,13 @@ function Sidebar({
                                                 <div>
                                                     <Badge className="bg-[#F4F4F4] text-[#333333] text-xs">
                                                         {job.salary.symbol}{' '}
-                                                        {job.salary.min}-
-                                                        {job.salary.max}{' '}
+                                                        {Math.trunc(
+                                                            job.salary.min,
+                                                        )}{' '}
+                                                        -{' '}
+                                                        {Math.trunc(
+                                                            job.salary.max,
+                                                        )}{' '}
                                                         {intervalFormat(
                                                             job.salary.interval,
                                                         )}

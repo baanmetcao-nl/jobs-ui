@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
 import "../styles/globals.scss";
-import { Button } from "@/components/ui/button";
-import { Menu, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import Image from "next/image";
-import Link from "next/link";
 import { Header } from "@/components/header";
-import Script from "next/script";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import SilktideCookieBanner from "@/components/silktide-cookie";
 
 export const metadata: Metadata = {
@@ -43,6 +38,7 @@ export default function RootLayout({
         </footer>
         <SilktideCookieBanner />
       </body>
+      <GoogleAnalytics gaId="G-7ZJVYSSG4N" />
     </html>
   );
 }

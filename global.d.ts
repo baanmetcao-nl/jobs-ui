@@ -1,5 +1,5 @@
-declare module '*.scss';
+declare module "*.scss";
 
 interface Window {
-    silktideCookieBannerManager: any;
+  silktideCookieBannerManager: any;
 }

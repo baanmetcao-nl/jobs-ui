@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "../styles/globals.scss";
 import { Header } from "@/components/header";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import SilktideCookieBanner from "@/components/silktide-cookie";
 
 export const metadata: Metadata = {
@@ -39,6 +39,7 @@ export default function RootLayout({
         <SilktideCookieBanner />
       </body>
       <GoogleAnalytics gaId="G-7ZJVYSSG4N" />
+      <GoogleTagManager gtmId="GTM-59VXWLNR" />
     </html>
   );
 }

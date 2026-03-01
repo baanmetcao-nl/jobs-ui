@@ -105,11 +105,18 @@ export function Header() {
               Alle vacatures
             </Link>
             <Link
-              href="#"
+              href="/over-ons"
               className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
               onClick={() => setIsMenuOpen(false)}
             >
               Over ons
+            </Link>
+            <Link
+              href="/contact"
+              className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Contact
             </Link>
           </div>
         )}

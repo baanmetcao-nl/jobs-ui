@@ -484,7 +484,7 @@ function Sidebar({
                   {relatedCompanyJobs.map((job: MinimalJob) => (
                     <Link
                       key={job.id}
-                      href={`/vacatures/${job.id}`}
+                      href={`/vacatures/${job.id}/${slugify(job.title)}`}
                       className="block border border-gray-200 rounded-lg p-3 hover:bg-gray-50"
                     >
                       <h4 className="font-medium text-gray-900 mb-1 hover:text-teal-600">

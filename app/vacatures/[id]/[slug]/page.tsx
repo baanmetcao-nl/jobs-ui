@@ -3,55 +3,72 @@ import { notFound } from "next/navigation";
 import JobDetails from "./job-details";
 import Script from "next/script";
 
-const CACHE_TIME = 7 * 24 * 60 * 60;
+const REVALIDATE_TIME = 3600; // 1 uur
 
 async function getJob(id: string) {
-  const singleJob = await fetch(
+  const res = await fetch(
     `https://jobs-dry-breeze-1010.fly.dev/api/jobs/${id}`,
-    {
-      next: { revalidate: 0 },
-    },
+    { next: { revalidate: REVALIDATE_TIME } },
   );
-  if (singleJob.status === 404) {
-    throw notFound();
-  }
-  if (!singleJob.ok) {
-    throw new Error("Er is iets misgegaan");
-  }
-  const job: Job = await singleJob.json();
-  return job;
+
+  if (res.status === 404) notFound();
+  if (!res.ok) throw new Error("Failed to fetch job");
+
+  return res.json();
 }
 
 async function getRelatedJobs(niches: string[]): Promise<JobsResponse> {
   const params = new URLSearchParams();
   params.append("limit", "3");
-  niches.forEach((niche) => params.set("niches", niche));
-  const response = await fetch(
+
+  niches.forEach((niche) => params.append("niches", niche));
+
+  const res = await fetch(
     `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
+    { next: { revalidate: REVALIDATE_TIME } },
   );
-  if (!response.ok) {
-    throw new Error("Er is iets misgegaan");
-  }
-  return response.json();
+
+  if (!res.ok) throw new Error("Failed to fetch related jobs");
+
+  return res.json();
 }
 
 async function getRelatedCompanyJobs(companyId: string): Promise<JobsResponse> {
   const params = new URLSearchParams();
   params.append("limit", "3");
-  params.set("companyIds", companyId);
+  params.append("companyIds", companyId);
 
-  const response = await fetch(
+  const res = await fetch(
     `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
+    { next: { revalidate: REVALIDATE_TIME } },
   );
-  if (!response.ok) {
-    throw new Error("Er is iets misgegaan");
-  }
-  return response.json();
+
+  if (!res.ok) throw new Error("Failed to fetch company jobs");
+
+  return res.json();
 }
 
-// TODO: error handling & change with general route in route.ts
-export default async function Page(props: { params: Promise<{ id: string }> }) {
+export async function generateMetadata(props: {
+  params: Promise<{ id: string; slug: string }>;
+}) {
   const params = await props.params;
+
+  const job = await getJob(params.id);
+
+  return {
+    title: `${job.title} in ${job.city} | ${job.company.name}`,
+    description: job.description.slice(0, 155),
+    alternates: {
+      canonical: `/vacatures/${job.id}/${params.slug}`,
+    },
+  };
+}
+
+export default async function Page(props: {
+  params: Promise<{ id: string; slug: string }>;
+}) {
+  const params = await props.params;
+
   const job = await getJob(params.id);
 
   const [relatedJobs, relatedCompanyJobs] = await Promise.all([
@@ -62,39 +79,28 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "JobPosting",
-
     title: job.title,
     description: job.description,
-
     identifier: {
       "@type": "PropertyValue",
       name: job.company.name,
       value: job.id,
     },
-
-    employmentType: job.contract,
-
-    industry: job.niches.join(", "),
-
-    occupationalCategory: job.niches.join(", "),
-
+    datePosted: job.publishedAt,
+    employmentType: job.contract?.toUpperCase(),
     hiringOrganization: {
       "@type": "Organization",
       name: job.company.name,
       logo: job.company.logoUrl,
     },
-
     jobLocation: {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
         addressLocality: job.city,
-        addressCountry: job.country === "the_netherlands" ? "NL" : undefined,
+        addressCountry: "NL",
       },
     },
-
-    jobLocationType: job.workplace,
-
     baseSalary: job.salary?.min
       ? {
           "@type": "MonetaryAmount",
@@ -107,23 +113,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           },
         }
       : undefined,
-
-    qualifications: job.requirements?.join("\n"),
-
-    responsibilities: job.responsibilities?.join("\n"),
-
-    educationRequirements: job.education,
-
-    experienceRequirements: job.seniority,
-
-    skills: job.tags?.join(", "),
-
-    jobBenefits: Object.entries(job.benefits)
-      .filter(([_, value]) => value)
-      .map(([key]) => key)
-      .join(", "),
-
-    directApply: true,
   };
 
   return (
@@ -135,13 +124,12 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           __html: JSON.stringify(structuredData),
         }}
       />
-      <div>
-        <JobDetails
-          job={job}
-          relatedCompanyJobs={relatedCompanyJobs.data}
-          relatedJobs={relatedJobs.data}
-        />
-      </div>
+
+      <JobDetails
+        job={job}
+        relatedCompanyJobs={relatedCompanyJobs.data}
+        relatedJobs={relatedJobs.data}
+      />
     </>
   );
 }

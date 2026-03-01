@@ -25,7 +25,7 @@ export type Interval =
   | "4_weekly"
   | "yearly";
 
-type Niche =
+export type Niche =
   | "communications"
   | "creative-design"
   | "education-training"

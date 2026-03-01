@@ -27,7 +27,7 @@ export default function JobList({
   const router = useRouter();
 
   const openJob = (jobId: string, jobTitle: string) => {
-    router.push(`/jobs/${jobId}/${slugify(jobTitle)}`);
+    router.push(`/vacatures/${jobId}/${slugify(jobTitle)}`);
   };
 
   return (
@@ -52,7 +52,7 @@ export default function JobList({
                       height={60}
                     />{" "}
                     <CardTitle className="text-xl mb-2 hover:text-[#F1592A]">
-                      <Link href={`/jobs/${job.id}/${slugify(job.title)}`}>
+                      <Link href={`/vacatures/${job.id}/${slugify(job.title)}`}>
                         {job.title}
                       </Link>
                     </CardTitle>

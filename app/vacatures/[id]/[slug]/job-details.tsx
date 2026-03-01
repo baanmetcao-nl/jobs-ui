@@ -369,7 +369,7 @@ function RelatedJobCard({ vacature }: { vacature: MinimalJob }) {
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-gray-900 mb-1">
-            <Link href={`/jobs/${vacature.id}/${slugify(vacature.title)}`}>
+            <Link href={`/vacatures/${vacature.id}/${slugify(vacature.title)}`}>
               {vacature.title}
             </Link>
           </h3>
@@ -484,7 +484,7 @@ function Sidebar({
                   {relatedCompanyJobs.map((job: MinimalJob) => (
                     <Link
                       key={job.id}
-                      href={`/jobs/${job.id}`}
+                      href={`/vacatures/${job.id}`}
                       className="block border border-gray-200 rounded-lg p-3 hover:bg-gray-50"
                     >
                       <h4 className="font-medium text-gray-900 mb-1 hover:text-teal-600">

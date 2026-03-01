@@ -30,6 +30,7 @@ type Niche =
   | "creative-design"
   | "education-training"
   | "engineering"
+  | "electrical-installation"
   | "finance-accounting"
   | "healthcare-medical"
   | "human-resources"
@@ -114,5 +115,18 @@ export type JobsResponse = {
     offset: number;
     totalCount: number;
     hasMore: boolean;
+  };
+};
+
+export type BoardConfig = {
+  key: string;
+  primaryNiches: Niche[];
+  displayName: string;
+  shortName: string;
+  domain: string;
+  locale: "nl-NL";
+  seo: {
+    title: string;
+    description: string;
   };
 };

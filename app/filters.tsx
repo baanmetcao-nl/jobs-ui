@@ -170,6 +170,9 @@ export default function Filters({
               Onderwijs & Training
             </SelectItem>
             <SelectItem value="engineering">Engineering</SelectItem>
+            <SelectItem value="electrical-installation">
+              Installatietechniek (Elektro)
+            </SelectItem>
             <SelectItem value="finance-accounting">
               Finance & Accounting
             </SelectItem>

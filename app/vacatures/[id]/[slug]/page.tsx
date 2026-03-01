@@ -27,7 +27,6 @@ async function getRelatedJobs(niches: string[]): Promise<JobsResponse> {
     `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
     { next: { revalidate: REVALIDATE_TIME } },
   );
-
   if (!res.ok) throw new Error("Failed to fetch related jobs");
 
   return res.json();

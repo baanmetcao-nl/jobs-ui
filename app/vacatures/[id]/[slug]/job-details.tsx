@@ -32,6 +32,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { Job, MinimalJob } from "@/app/types";
+import CompanyLogo from "@/components/image-fallback";
 
 const workplaceLabels: Record<Job["workplace"], string> = {
   remote: "Remote",
@@ -97,11 +98,14 @@ export default function JobDetails({
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-4">
                 <div className="flex items-start gap-4">
                   <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`}
-                      alt={job.company.name}
-                      width={80}
-                      height={80}
+                    <CompanyLogo
+                      src={
+                        job.company.logoUrl
+                          ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`
+                          : undefined
+                      }
+                      alt={"logo"}
+                      size={60}
                     />
                   </div>
                   <div>

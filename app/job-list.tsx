@@ -12,6 +12,7 @@ import Pagination from "./pagination";
 import { contractFormat, intervalFormat, slugify } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
+import CompanyLogo from "@/components/image-fallback";
 
 export default function JobList({
   jobsResponse,
@@ -45,11 +46,14 @@ export default function JobList({
               <div className="flex max-sm:flex-col md:flex-row justify-between gap-4">
                 <div>
                   <div className="flex flex-row items-center gap-3 mb-4">
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`}
+                    <CompanyLogo
+                      src={
+                        job.company.logoUrl
+                          ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`
+                          : undefined
+                      }
                       alt={"logo"}
-                      width={60}
-                      height={60}
+                      size={60}
                     />{" "}
                     <CardTitle className="text-xl mb-2 hover:text-[#F1592A]">
                       <Link href={`/vacatures/${job.id}/${slugify(job.title)}`}>

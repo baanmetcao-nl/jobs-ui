@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Script from "next/script";
 import Filters from "@/app/filters";
 import JobList from "@/app/job-list";
+import Link from "next/link";
 
 const LIMIT = 10;
 
@@ -102,9 +103,9 @@ export default async function NichePage(props: {
 
       <main className="max-w-7xl mx-auto px-4 pt-8 pb-20">
         <nav className="text-sm text-gray-500 mb-4">
-          <a href="/vacatures" className="hover:underline">
+          <Link href="/" className="hover:underline">
             Vacatures
-          </a>{" "}
+          </Link>{" "}
           › {config.heading}
         </nav>
 

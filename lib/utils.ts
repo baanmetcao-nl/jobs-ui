@@ -63,7 +63,7 @@ export async function fetchJobs({
       ? `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`
       : `/api/jobs?${params.toString()}`;
 
-  const res = await fetch(url, { cache: "no-store" });
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch jobs");
   return res.json();
 }

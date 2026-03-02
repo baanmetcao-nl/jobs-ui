@@ -6,6 +6,7 @@ import Script from "next/script";
 import Filters from "@/app/filters";
 import JobList from "@/app/job-list";
 import Link from "next/link";
+export const revalidate = 3600;
 
 const LIMIT = 10;
 

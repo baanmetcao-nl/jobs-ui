@@ -6,7 +6,7 @@ import { useState } from "react";
 type Props = {
   src?: string;
   alt: string;
-  size?: 60;
+  size?: number;
 };
 
 export default function CompanyLogo({ src, alt, size = 60 }: Props) {
@@ -24,7 +24,7 @@ export default function CompanyLogo({ src, alt, size = 60 }: Props) {
         height={size}
         onError={() => setImgSrc("/logo.png")}
         style={{ objectFit: "contain" }}
-        className="object-contain"
+        className="w-full h-full object-contain"
         unoptimized
       />
     </div>

@@ -3,12 +3,11 @@ import { notFound } from "next/navigation";
 import JobDetails from "./job-details";
 import Script from "next/script";
 
-const REVALIDATE_TIME = 3600; // 1 uur
+export const revalidate = 3600;
 
 async function getJob(id: string) {
   const res = await fetch(
     `https://jobs-dry-breeze-1010.fly.dev/api/jobs/${id}`,
-    { next: { revalidate: REVALIDATE_TIME } },
   );
 
   if (res.status === 404) notFound();
@@ -25,7 +24,6 @@ async function getRelatedJobs(niches: string[]): Promise<JobsResponse> {
 
   const res = await fetch(
     `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
-    { next: { revalidate: REVALIDATE_TIME } },
   );
   if (!res.ok) throw new Error("Failed to fetch related jobs");
 
@@ -39,7 +37,6 @@ async function getRelatedCompanyJobs(companyId: string): Promise<JobsResponse> {
 
   const res = await fetch(
     `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
-    { next: { revalidate: REVALIDATE_TIME } },
   );
 
   if (!res.ok) throw new Error("Failed to fetch company jobs");

@@ -2,7 +2,7 @@ import Filters from "./filters";
 import JobList from "./job-list";
 import { fetchJobs } from "@/lib/utils";
 import { JobsResponse } from "./types";
-export const revalidate = 60;
+export const revalidate = 600;
 const LIMIT = 10;
 
 export default async function JobBoard({

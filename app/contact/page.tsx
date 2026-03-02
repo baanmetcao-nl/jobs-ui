@@ -45,6 +45,7 @@ export default function ContactPage() {
       e.currentTarget.reset();
     } catch (err) {
       setStatus("error");
+      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -109,8 +110,8 @@ export default function ContactPage() {
           )}
 
           {status === "error" && (
-            <p className="text-green-600 text-sm">
-              ✅ Je bericht is succesvol verzonden!
+            <p className="text-red-600 text-sm">
+              ❌ Er ging iets mis. Probeer het later opnieuw.
             </p>
           )}
         </form>

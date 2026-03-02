@@ -13,16 +13,20 @@ export default function ContactPage() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (loading) return;
+
+    const form = e.currentTarget;
     setLoading(true);
     setStatus("idle");
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
 
     const payload = {
       name: formData.get("name"),
       email: formData.get("email"),
       subject: formData.get("subject"),
       message: formData.get("message"),
+      company: formData.get("company"),
     };
 
     try {
@@ -34,18 +38,16 @@ export default function ContactPage() {
         body: JSON.stringify(payload),
       });
 
-      if (res.ok) {
-        setStatus("success");
-        e.currentTarget.reset();
-      } else {
+      if (!res.ok) {
         setStatus("error");
+        return;
       }
 
       setStatus("success");
-      e.currentTarget.reset();
-    } catch (err) {
+      form.reset();
+    } catch (error) {
+      console.error("Network error:", error);
       setStatus("error");
-      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -67,23 +69,37 @@ export default function ContactPage() {
 
       <div className="container max-w-4xl mx-auto px-8">
         <form onSubmit={handleSubmit} className="space-y-6">
+          <input
+            type="text"
+            name="company"
+            style={{ position: "absolute", left: "-9999px" }}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+
           <div className="space-y-2">
             <Label htmlFor="name">Naam *</Label>
-            <Input id="name" name="name" required />
+            <Input id="name" name="name" required disabled={loading} />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="email">E-mailadres *</Label>
-            <Input id="email" name="email" type="email" required />
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              required
+              disabled={loading}
+            />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="subject">Onderwerp *</Label>
+            <Label htmlFor="subject">Onderwerp</Label>
             <Input
               id="subject"
               name="subject"
               placeholder="Vraag over een vacature"
-              required
+              disabled={loading}
             />
           </div>
 
@@ -95,6 +111,7 @@ export default function ContactPage() {
               required
               placeholder="Vertel ons hoe we je kunnen helpen..."
               className="min-h-[150px] resize-none"
+              disabled={loading}
             />
           </div>
 

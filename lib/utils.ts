@@ -64,8 +64,10 @@ export async function fetchJobs({
     next: { revalidate: 600 },
   });
 
-  if (!res.ok) {
-    throw new Error(`Failed to fetch jobs (${res.status})`);
+  const contentType = res.headers.get("content-type");
+
+  if (!res.ok || !contentType?.includes("application/json")) {
+    throw new Error(`(${res.status})`);
   }
 
   return res.json();

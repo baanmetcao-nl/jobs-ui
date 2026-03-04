@@ -23,7 +23,8 @@ function updateParam(params: URLSearchParams, key: string, value: string) {
     next.set(key, value);
   }
 
-  next.set("page", "0");
+  next.delete("page");
+
   return next;
 }
 

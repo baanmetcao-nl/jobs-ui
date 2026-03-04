@@ -22,10 +22,10 @@ export default async function JobBoard({
 }) {
   const params = await searchParams;
 
-  const page = Number.parseInt(params.page ?? "0", 10);
-  const safePage = Math.max(0, page || 0);
+  const page = Number.parseInt(params.page ?? "1", 10);
+  const safePage = Math.max(1, page || 1);
 
-  const offset = safePage * LIMIT;
+  const offset = (safePage - 1) * LIMIT;
 
   const jobsResponse: JobsResponse = await fetchJobs({
     limit: LIMIT,
@@ -45,7 +45,7 @@ export default async function JobBoard({
           totalJobCount={jobsResponse.pagination.totalCount}
         />
 
-        <JobList jobsResponse={jobsResponse} page={safePage} />
+        <JobList jobsResponse={jobsResponse} page={safePage - 1} />
       </main>
     </div>
   );

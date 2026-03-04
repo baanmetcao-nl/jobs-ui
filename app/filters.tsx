@@ -73,14 +73,18 @@ export default function Filters({
   };
 
   useEffect(() => {
+    const currentSearch = searchParams.get("search") || "";
+
+    if (searchTerm === currentSearch) return;
+
     const handler = setTimeout(() => {
-      const params = new URLSearchParams(window.location.search);
+      const params = new URLSearchParams(searchParams.toString());
       const next = updateParam(params, "search", searchTerm);
       applyFilters(next);
     }, 400);
 
     return () => clearTimeout(handler);
-  }, [searchTerm, pathname]);
+  }, [searchTerm]);
 
   const resetFilters = () => {
     setSearchTerm("");

@@ -20,7 +20,7 @@ export default function Pagination({
     if (p === 0) {
       params.delete("page");
     } else {
-      params.set("page", p.toString());
+      params.set("page", (p + 1).toString());
     }
 
     const url = params.toString()
@@ -33,14 +33,16 @@ export default function Pagination({
 
   if (totalPages <= 1) return null;
 
-  const pages: (number | "ellipsis")[] = [];
-
   const start = Math.max(0, page - 2);
   const end = Math.min(totalPages - 1, page + 2);
 
+  const pages: (number | "ellipsis")[] = [];
+
   if (start > 0) {
     pages.push(0);
-    if (start > 1) pages.push("ellipsis");
+    if (start > 1) {
+      pages.push("ellipsis");
+    }
   }
 
   for (let i = start; i <= end; i++) {
@@ -48,7 +50,9 @@ export default function Pagination({
   }
 
   if (end < totalPages - 1) {
-    if (end < totalPages - 2) pages.push("ellipsis");
+    if (end < totalPages - 2) {
+      pages.push("ellipsis");
+    }
     pages.push(totalPages - 1);
   }
 
@@ -64,12 +68,15 @@ export default function Pagination({
 
       {pages.map((p, i) =>
         p === "ellipsis" ? (
-          <span key={i} className="px-2 flex items-center text-gray-500">
+          <span
+            key={`ellipsis-${i}`}
+            className="px-2 flex items-center text-gray-500"
+          >
             ...
           </span>
         ) : (
           <Button
-            key={p}
+            key={`page-${p}`}
             variant={p === page ? "default" : "outline"}
             onClick={() => goToPage(p)}
           >

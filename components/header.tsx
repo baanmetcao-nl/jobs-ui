@@ -28,7 +28,11 @@ export function Header() {
 
     params.set("page", "0");
 
-    router.push(`/?${params.toString()}`);
+    const url = params.toString()
+      ? `${pathname}?${params.toString()}`
+      : pathname;
+
+    router.push(url);
   };
 
   const pathname = usePathname();

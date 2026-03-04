@@ -1,7 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Pagination({
   page,
@@ -10,26 +12,13 @@ export default function Pagination({
   page: number;
   totalPages: number;
 }) {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const currentPage = searchParams.get("page") ?? "1";
 
-  const goToPage = (p: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (p === 0) {
-      params.delete("page");
-    } else {
-      params.set("page", (p + 1).toString());
-    }
-
-    const url = params.toString()
-      ? `${pathname}?${params.toString()}`
-      : pathname;
-
-    router.push(url);
+  useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  }, [currentPage]);
 
   if (totalPages <= 1) return null;
 
@@ -56,15 +45,32 @@ export default function Pagination({
     pages.push(totalPages - 1);
   }
 
+  const createUrl = (p: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (p === 0) {
+      params.delete("page");
+    } else {
+      params.set("page", String(p + 1));
+    }
+
+    const query = params.toString();
+    return query ? `${pathname}?${query}` : pathname;
+  };
+
   return (
     <div className="flex justify-center gap-2 mt-12 flex-wrap">
-      <Button disabled={page === 0} onClick={() => goToPage(0)}>
-        {"<<"}
-      </Button>
+      {page > 0 && (
+        <Link href={createUrl(0)} scroll={false}>
+          <Button>{"<<"}</Button>
+        </Link>
+      )}
 
-      <Button disabled={page === 0} onClick={() => goToPage(page - 1)}>
-        {"<"}
-      </Button>
+      {page > 0 && (
+        <Link href={createUrl(page - 1)} scroll={false}>
+          <Button>{"<"}</Button>
+        </Link>
+      )}
 
       {pages.map((p, i) =>
         p === "ellipsis" ? (
@@ -75,29 +81,25 @@ export default function Pagination({
             ...
           </span>
         ) : (
-          <Button
-            key={`page-${p}`}
-            variant={p === page ? "default" : "outline"}
-            onClick={() => goToPage(p)}
-          >
-            {p + 1}
-          </Button>
+          <Link key={`page-${p}`} href={createUrl(p)} scroll={false}>
+            <Button variant={p === page ? "default" : "outline"}>
+              {p + 1}
+            </Button>
+          </Link>
         ),
       )}
 
-      <Button
-        disabled={page >= totalPages - 1}
-        onClick={() => goToPage(page + 1)}
-      >
-        {">"}
-      </Button>
+      {page < totalPages - 1 && (
+        <Link href={createUrl(page + 1)} scroll={false}>
+          <Button>{">"}</Button>
+        </Link>
+      )}
 
-      <Button
-        disabled={page >= totalPages - 1}
-        onClick={() => goToPage(totalPages - 1)}
-      >
-        {">>"}
-      </Button>
+      {page < totalPages - 1 && (
+        <Link href={createUrl(totalPages - 1)} scroll={false}>
+          <Button>{">>"}</Button>
+        </Link>
+      )}
     </div>
   );
 }

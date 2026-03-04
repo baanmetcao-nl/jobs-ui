@@ -6,9 +6,40 @@ import Script from "next/script";
 import Filters from "@/app/filters";
 import JobList from "@/app/job-list";
 import Link from "next/link";
-export const revalidate = 3600;
 
 const LIMIT = 10;
+
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
+
+  const data = getNicheFromSlug(params.slug);
+  if (!data) return {};
+
+  const { config } = data;
+
+  const page = Number(searchParams.page ?? "1");
+
+  const base = `/vacatures/categorie/${config.slug}`;
+  const canonical = page <= 1 ? base : `${base}?page=${page}`;
+
+  return {
+    title: config.title,
+    description: config.description,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title: config.title,
+      description: config.description,
+      url: canonical,
+      type: "website",
+    },
+  };
+}
 
 function getNicheFromSlug(slug: string) {
   const entry = Object.entries(nicheSeo).find(
@@ -27,31 +58,6 @@ export async function generateStaticParams() {
   return Object.values(nicheSeo).map((n) => ({
     slug: n.slug,
   }));
-}
-
-export async function generateMetadata(props: {
-  params: Promise<{ slug: string }>;
-}) {
-  const params = await props.params;
-
-  const data = getNicheFromSlug(params.slug);
-  if (!data) return {};
-
-  const { config } = data;
-
-  return {
-    title: config.title,
-    description: config.description,
-    alternates: {
-      canonical: `/vacatures/categorie/${config.slug}`,
-    },
-    openGraph: {
-      title: config.title,
-      description: config.description,
-      url: `/vacatures/categorie/${config.slug}`,
-      type: "website",
-    },
-  };
 }
 
 export default async function NichePage({

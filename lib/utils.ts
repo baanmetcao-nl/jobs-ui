@@ -64,10 +64,14 @@ export async function fetchJobs({
     next: { revalidate: 600 },
   });
 
-  const contentType = res.headers.get("content-type");
+  const contentType = res.headers.get("content-type") || "";
 
-  if (!res.ok || !contentType?.includes("application/json")) {
-    throw new Error(`(${res.status})`);
+  if (!res.ok) {
+    throw new Error(`API request failed (${res.status})`);
+  }
+
+  if (!contentType.includes("application/json")) {
+    throw new Error("API returned non-JSON response");
   }
 
   return res.json();

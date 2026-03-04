@@ -3,9 +3,23 @@ import JobList from "./job-list";
 import { fetchJobs } from "@/lib/utils";
 import { JobsResponse } from "./types";
 
-export const revalidate = 600;
-
 const LIMIT = 10;
+
+export async function generateMetadata(props: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const searchParams = await props.searchParams;
+
+  const page = Number(searchParams.page ?? "1");
+
+  const canonical = page <= 1 ? "/" : `/?page=${page}`;
+
+  return {
+    alternates: {
+      canonical,
+    },
+  };
+}
 
 export default async function JobBoard({
   searchParams,

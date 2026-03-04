@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     }
 
     await resend.emails.send({
-      from: "info@baanmetcao.nl",
+      from: "BaanmetCAO contactformulier <info@baanmetcao.nl>",
       to: process.env.CONTACT_EMAIL!,
       replyTo: email,
       subject: subject || "Nieuw bericht via contactformulier",

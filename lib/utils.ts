@@ -85,7 +85,6 @@ export function contractFormat(contract: Job["contract"]) {
     freelance: "Freelance",
     permanent: "Vast contract",
     temporary: "Tijdelijk contract",
-    internship: "Stage",
     flex: "Flexibel contract",
   };
   return labels[contract];

@@ -2,7 +2,7 @@ type Seniority = "trainee" | "junior" | "medior" | "senior" | "principal";
 
 type Workplace = "remote" | "hybrid" | "office" | "other" | "free_choice";
 
-type Contract = "freelance" | "temporary" | "permanent" | "internship" | "flex";
+type Contract = "freelance" | "temporary" | "permanent" | "flex";
 
 type Education =
   | "none"

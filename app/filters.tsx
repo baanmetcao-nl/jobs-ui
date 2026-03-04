@@ -117,7 +117,6 @@ export default function Filters({
             <SelectItem value="permanent">Vast</SelectItem>
             <SelectItem value="temporary">Tijdelijk</SelectItem>
             <SelectItem value="freelance">Freelance</SelectItem>
-            <SelectItem value="internship">Stage</SelectItem>
           </SelectContent>
         </Select>
 

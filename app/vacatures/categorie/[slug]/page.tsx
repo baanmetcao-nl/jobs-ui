@@ -54,26 +54,26 @@ export async function generateMetadata(props: {
   };
 }
 
-export default async function NichePage(props: {
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<{
+export default async function NichePage({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: {
     page?: string;
     search?: string;
     contract?: string;
     location?: string;
     workplace?: string;
-  }>;
+  };
 }) {
-  const params = await props.params;
-  const searchParams = await props.searchParams;
-
   const data = getNicheFromSlug(params.slug);
   if (!data) return notFound();
 
   const { niche, config } = data;
 
-  const page = Math.max(0, Number(searchParams.page) || 0);
-  const offset = page * LIMIT;
+  const page = Math.max(0, Number(searchParams.page ?? "1"));
+  const offset = (page - 1) * LIMIT;
 
   const jobsResponse: JobsResponse = await fetchJobs({
     limit: LIMIT,

@@ -58,13 +58,16 @@ export async function fetchJobs({
   if (workplace && workplace !== "all") params.set("workplace", workplace);
   if (niches && niches !== "all") params.set("niches", niches);
 
-  const url =
-    typeof window === "undefined"
-      ? `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`
-      : `/api/jobs?${params.toString()}`;
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?${params.toString()}`;
 
-  const res = await fetch(url);
-  if (!res.ok) throw new Error("Failed to fetch jobs");
+  const res = await fetch(url, {
+    next: { revalidate: 600 },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch jobs (${res.status})`);
+  }
+
   return res.json();
 }
 

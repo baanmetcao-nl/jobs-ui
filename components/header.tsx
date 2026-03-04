@@ -15,10 +15,17 @@ export function Header() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+
     const trimmed = searchQuery.trim();
 
-    const params = new URLSearchParams();
-    if (trimmed) params.set("search", trimmed);
+    const params = new URLSearchParams(window.location.search);
+
+    if (trimmed) {
+      params.set("search", trimmed);
+    } else {
+      params.delete("search");
+    }
+
     params.set("page", "0");
 
     router.push(`/?${params.toString()}`);

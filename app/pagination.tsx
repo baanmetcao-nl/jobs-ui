@@ -3,12 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-type Props = {
+export default function Pagination({
+  page,
+  totalPages,
+}: {
   page: number;
   totalPages: number;
-};
-
-export default function Pagination({ page, totalPages }: Props) {
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -16,19 +17,20 @@ export default function Pagination({ page, totalPages }: Props) {
   const goToPage = (p: number) => {
     const params = new URLSearchParams(searchParams.toString());
 
-    if (p === 1) {
+    if (p === 0) {
       params.delete("page");
     } else {
-      params.set("page", String(p));
+      params.set("page", p.toString());
     }
 
-    const query = params.toString();
-    const url = query ? `${pathname}?${query}` : pathname;
+    const url = params.toString()
+      ? `${pathname}?${params.toString()}`
+      : pathname;
 
     router.push(url);
-
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
   if (totalPages <= 1) return null;
 
   const pages: (number | "ellipsis")[] = [];
@@ -62,7 +64,7 @@ export default function Pagination({ page, totalPages }: Props) {
 
       {pages.map((p, i) =>
         p === "ellipsis" ? (
-          <span key={i} className="px-2 flex items-center">
+          <span key={i} className="px-2 flex items-center text-gray-500">
             ...
           </span>
         ) : (

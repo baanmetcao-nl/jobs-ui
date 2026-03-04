@@ -10,7 +10,7 @@ const LIMIT = 10;
 export default async function JobBoard({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
     jobId?: string;
     search?: string;
@@ -18,23 +18,23 @@ export default async function JobBoard({
     location?: string;
     workplace?: string;
     niches?: string;
-  };
+  }>;
 }) {
-  const page = Number.parseInt(searchParams.page ?? "0", 10);
+  const params = await searchParams;
+
+  const page = Number.parseInt(params.page ?? "0", 10);
   const safePage = Math.max(0, page || 0);
 
   const offset = safePage * LIMIT;
-  console.log(searchParams);
-  console.log("PAGE:", searchParams.page);
-  console.log("OFFSET:", offset);
+
   const jobsResponse: JobsResponse = await fetchJobs({
     limit: LIMIT,
     offset,
-    search: searchParams.search,
-    contract: searchParams.contract,
-    location: searchParams.location,
-    workplace: searchParams.workplace,
-    niches: searchParams.niches,
+    search: params.search,
+    contract: params.contract,
+    location: params.location,
+    workplace: params.workplace,
+    niches: params.niches,
   });
 
   return (

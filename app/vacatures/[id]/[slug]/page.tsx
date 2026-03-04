@@ -4,6 +4,7 @@ import JobDetails from "./job-details";
 import Script from "next/script";
 
 export const revalidate = 3600;
+export const dynamic = "force-static";
 
 async function getJob(id: string) {
   const res = await fetch(

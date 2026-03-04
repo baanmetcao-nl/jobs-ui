@@ -72,8 +72,8 @@ export default async function NichePage({
 
   const { niche, config } = data;
 
-  const page = Math.max(0, Number(searchParams.page ?? "1"));
-  const offset = (page - 1) * LIMIT;
+  const page = Math.max(0, Number(searchParams.page) || 0);
+  const offset = page * LIMIT;
 
   const jobsResponse: JobsResponse = await fetchJobs({
     limit: LIMIT,

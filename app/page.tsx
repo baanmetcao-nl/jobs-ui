@@ -2,7 +2,7 @@ import Filters from "./filters";
 import JobList from "./job-list";
 import { formatNumber } from "@/lib/utils";
 import { JobsResponse } from "./types";
-import { fetchJobs } from "../lib/api/jobs";
+import { fetchJobCount, fetchJobs } from "../lib/api/jobs";
 
 const LIMIT = 10;
 
@@ -42,6 +42,11 @@ export default async function JobBoard({
 
   const offset = (safePage - 1) * LIMIT;
 
+  const jobCountResponse: { count: number } = await fetchJobCount({
+    contract: params.contract,
+    niches: params.niches,
+  });
+
   const jobsResponse: JobsResponse = await fetchJobs({
     limit: LIMIT,
     offset,
@@ -66,8 +71,8 @@ export default async function JobBoard({
               <span className="text-[#F1592A]">baan met CAO</span>
             </h1>
             <p>
-              Ontdek {formatNumber(jobsResponse.pagination.totalCount)}{" "}
-              vacatures met eerlijke salarissen en goede arbeidsvoorwaarden.
+              Ontdek {formatNumber(jobCountResponse.count)} vacatures met
+              eerlijke salarissen en goede arbeidsvoorwaarden.
             </p>
           </div>
         </div>

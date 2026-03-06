@@ -32,9 +32,13 @@ function updateParam(params: URLSearchParams, key: string, value: string) {
 export default function Filters({
   jobCount,
   totalJobCount,
+  showNicheFilter = true,
+  showLocationFilter = true,
 }: {
   jobCount: number;
   totalJobCount: number;
+  showNicheFilter?: boolean;
+  showLocationFilter?: boolean;
 }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -110,7 +114,7 @@ export default function Filters({
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
         <Select
           value={contract}
           onValueChange={(val) => handleSelectChange("contract", val)}
@@ -126,22 +130,24 @@ export default function Filters({
           </SelectContent>
         </Select>
 
-        <Select
-          value={location}
-          onValueChange={(val) => handleSelectChange("location", val)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Locatie" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Alle locaties</SelectItem>
-            <SelectItem value="Amsterdam">Amsterdam</SelectItem>
-            <SelectItem value="Rotterdam">Rotterdam</SelectItem>
-            <SelectItem value="Utrecht">Utrecht</SelectItem>
-            <SelectItem value="Eindhoven">Eindhoven</SelectItem>
-            <SelectItem value="Den Haag">Den Haag</SelectItem>
-          </SelectContent>
-        </Select>
+        {showLocationFilter && (
+          <Select
+            value={location}
+            onValueChange={(val) => handleSelectChange("location", val)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Locatie" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Alle locaties</SelectItem>
+              <SelectItem value="Amsterdam">Amsterdam</SelectItem>
+              <SelectItem value="Rotterdam">Rotterdam</SelectItem>
+              <SelectItem value="Utrecht">Utrecht</SelectItem>
+              <SelectItem value="Eindhoven">Eindhoven</SelectItem>
+              <SelectItem value="Den Haag">Den Haag</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
 
         <Select
           value={workplace}
@@ -160,50 +166,54 @@ export default function Filters({
           </SelectContent>
         </Select>
 
-        <Select
-          value={niches}
-          onValueChange={(val) => handleSelectChange("niches", val)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Alle categorieën" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Alle categorieën</SelectItem>
-            <SelectItem value="communications">Communicatie</SelectItem>
-            <SelectItem value="creative-design">Creatief & Design</SelectItem>
-            <SelectItem value="education-training">
-              Onderwijs & Training
-            </SelectItem>
-            <SelectItem value="engineering">Engineering</SelectItem>
-            <SelectItem value="electrical-installation">
-              Installatietechniek (Elektro)
-            </SelectItem>
-            <SelectItem value="finance-accounting">
-              Finance & Accounting
-            </SelectItem>
-            <SelectItem value="healthcare-medical">Zorg & Medisch</SelectItem>
-            <SelectItem value="human-resources">Human Resources</SelectItem>
-            <SelectItem value="legal">Juridisch</SelectItem>
-            <SelectItem value="logistics-supply-chain">
-              Logistiek & Supply Chain
-            </SelectItem>
-            <SelectItem value="marketing-advertising">
-              Marketing & Advertising
-            </SelectItem>
-            <SelectItem value="public-sector-non-profit">
-              Publieke Sector & Non-profit
-            </SelectItem>
-            <SelectItem value="real-estate">Vastgoed</SelectItem>
-            <SelectItem value="sales-retail">Sales & Retail</SelectItem>
-            <SelectItem value="science-research">
-              Wetenschap & Onderzoek
-            </SelectItem>
-            <SelectItem value="technology-it">Technologie & IT</SelectItem>
-            <SelectItem value="skilled-trades">Technische Beroepen</SelectItem>
-            <SelectItem value="other">Anders</SelectItem>
-            <SelectItem value="unknown">Onbekend</SelectItem>
-          </SelectContent>
-        </Select>
+        {showNicheFilter && (
+          <Select
+            value={niches}
+            onValueChange={(val) => handleSelectChange("niches", val)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Alle categorieën" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Alle categorieën</SelectItem>
+              <SelectItem value="communications">Communicatie</SelectItem>
+              <SelectItem value="creative-design">Creatief & Design</SelectItem>
+              <SelectItem value="education-training">
+                Onderwijs & Training
+              </SelectItem>
+              <SelectItem value="engineering">Engineering</SelectItem>
+              <SelectItem value="electrical-installation">
+                Installatietechniek (Elektro)
+              </SelectItem>
+              <SelectItem value="finance-accounting">
+                Finance & Accounting
+              </SelectItem>
+              <SelectItem value="healthcare-medical">Zorg & Medisch</SelectItem>
+              <SelectItem value="human-resources">Human Resources</SelectItem>
+              <SelectItem value="legal">Juridisch</SelectItem>
+              <SelectItem value="logistics-supply-chain">
+                Logistiek & Supply Chain
+              </SelectItem>
+              <SelectItem value="marketing-advertising">
+                Marketing & Advertising
+              </SelectItem>
+              <SelectItem value="public-sector-non-profit">
+                Publieke Sector & Non-profit
+              </SelectItem>
+              <SelectItem value="real-estate">Vastgoed</SelectItem>
+              <SelectItem value="sales-retail">Sales & Retail</SelectItem>
+              <SelectItem value="science-research">
+                Wetenschap & Onderzoek
+              </SelectItem>
+              <SelectItem value="technology-it">Technologie & IT</SelectItem>
+              <SelectItem value="skilled-trades">
+                Technische Beroepen
+              </SelectItem>
+              <SelectItem value="other">Anders</SelectItem>
+              <SelectItem value="unknown">Onbekend</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
 
         <Button
           variant="outline"

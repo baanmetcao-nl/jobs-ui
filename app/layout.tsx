@@ -4,6 +4,7 @@ import { Header } from "@/components/header";
 import { Inter } from "next/font/google";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import SilktideCookieBanner from "@/components/silktide-cookie";
+import { Footer } from "@/components/footer";
 
 const interFont = Inter({
   subsets: ["latin"],
@@ -43,15 +44,7 @@ export default function RootLayout({
       <body className={`flex flex-col min-h-screen ${interFont.className}`}>
         <Header />
         <main className="flex-1">{children}</main>
-        <footer className="bg-gray-900 text-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="text-center">
-              <p>
-                &copy; 2026 Baan met CAO. Hetzelfde werk, betere voorwaarden.
-              </p>
-            </div>
-          </div>
-        </footer>
+        <Footer />
         <SilktideCookieBanner />
       </body>
       <GoogleAnalytics gaId="G-7ZJVYSSG4N" />

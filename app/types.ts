@@ -61,6 +61,10 @@ export type Job = {
   responsibilities: string[];
   publishedAt: string;
   niches: Niche[];
+  hours: {
+    min: number;
+    max: number;
+  };
   benefits: {
     extraFixedPayment: boolean;
     extraVariablePayment: boolean;

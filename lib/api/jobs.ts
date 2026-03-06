@@ -1,4 +1,5 @@
 import { Contract, JobsResponse } from "@/app/types";
+import { ALLOWED_CONTRACTS } from "../contracts";
 
 const DEFAULT_LIMIT = 10;
 
@@ -17,17 +18,11 @@ export async function fetchJobCount({
   contract,
 }: FetchJobsParams): Promise<{ count: number }> {
   const params = new URLSearchParams();
-  const allowedContracts: Contract[] = [
-    "freelance",
-    "temporary",
-    "permanent",
-    "flex",
-  ];
 
   if (contract && contract !== "all") {
     params.set("contract", contract);
   } else {
-    allowedContracts.forEach((c) => params.append("contracts", c));
+    ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
   }
 
   if (niches && niches !== "all") params.set("niches", niches);

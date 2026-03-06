@@ -10,6 +10,7 @@ import {
   Award,
   BookUser,
   Calendar,
+  Clock,
   EuroIcon,
   GraduationCap,
   Handshake,
@@ -73,6 +74,11 @@ export default function JobDetails({
     notFound();
   }
 
+  const hoursText =
+    job.hours.min === job.hours.max
+      ? `${job.hours.min} uur`
+      : `${job.hours.min} - ${job.hours.max} uur`;
+
   return (
     <div className="min-h-screen bg-white">
       <div className="border-b border-gray-100">
@@ -82,9 +88,7 @@ export default function JobDetails({
               Start
             </Link>
             <span>›</span>
-            <Link href="/" className="hover:text-gray-700">
-              Ontwikkeling & IT
-            </Link>
+            <Link href="/" className="hover:text-gray-700"></Link>
             <span>›</span>
             <span className="text-gray-900">{job.title}</span>
           </nav>
@@ -121,7 +125,7 @@ export default function JobDetails({
                       </span>
                       <span>in</span>
                       <Link href="#" className="text-teal-600 hover:underline">
-                        Ontwikkeling & IT
+                        {capitalize(job.niches[0])}
                       </Link>
                     </div>
                   </div>
@@ -178,17 +182,14 @@ export default function JobDetails({
                   description={capitalize(job.city)}
                 />
                 <InfoItem
-                  icon={<BookUser color="#F1693F" />}
-                  label="Beroep"
-                  description={job.niches.map(capitalize).join(", ")}
+                  icon={<Clock color="#F1693F" />}
+                  label="Uren per week"
+                  description={hoursText}
                 />
               </div>
             </div>
 
             <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-gray-900">
-                Beschrijving
-              </h2>
               <div className="prose max-w-none text-gray-700">
                 <ReactMarkdown rehypePlugins={[rehypeRaw]}>
                   {job.description}
@@ -373,14 +374,14 @@ function RelatedJobCard({ vacature }: { vacature: MinimalJob }) {
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-gray-900 mb-1">
-            <Link href={`/vacatures/${vacature.id}/${slugify(vacature.title)}`}>
+            <Link href={`/vacature/${vacature.id}/${slugify(vacature.title)}`}>
               {vacature.title}
             </Link>
           </h3>
           <div className="text-sm text-gray-600">
             door <span className="font-medium">{vacature.company.name}</span> in
             <Link href="#" className="text-teal-600 hover:underline ml-1">
-              {vacature.niches.join(", ")}
+              {capitalize(vacature.niches[0])}
             </Link>
           </div>
           <div className="flex flex-wrap items-center gap-2 mt-2">
@@ -488,7 +489,7 @@ function Sidebar({
                   {relatedCompanyJobs.map((job: MinimalJob) => (
                     <Link
                       key={job.id}
-                      href={`/vacatures/${job.id}/${slugify(job.title)}`}
+                      href={`/vacature/${job.id}/${slugify(job.title)}`}
                       className="block border border-gray-200 rounded-lg p-3 hover:bg-gray-50"
                     >
                       <h4 className="font-medium text-gray-900 mb-1 hover:text-teal-600">

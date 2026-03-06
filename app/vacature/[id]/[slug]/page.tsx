@@ -1,7 +1,8 @@
-import { Job, JobsResponse } from "@/app/types";
+import { Contract, Job, JobsResponse } from "@/app/types";
 import { notFound } from "next/navigation";
 import JobDetails from "./job-details";
 import Script from "next/script";
+import { ALLOWED_CONTRACTS } from "@/lib/contracts";
 
 export const revalidate = 3600;
 export const dynamic = "force-static";
@@ -21,6 +22,8 @@ async function getRelatedJobs(niches: string[]): Promise<JobsResponse> {
   const params = new URLSearchParams();
   params.append("limit", "3");
 
+  ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
+
   niches.forEach((niche) => params.append("niches", niche));
 
   const res = await fetch(
@@ -36,9 +39,13 @@ async function getRelatedCompanyJobs(companyId: string): Promise<JobsResponse> {
   params.append("limit", "3");
   params.append("companyIds", companyId);
 
+  ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
+
   const res = await fetch(
     `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
   );
+
+  console.log(res);
 
   if (!res.ok) throw new Error("Failed to fetch company jobs");
 
@@ -56,7 +63,7 @@ export async function generateMetadata(props: {
     title: `${job.title} in ${job.city} | ${job.company.name}`,
     description: job.description.slice(0, 155),
     alternates: {
-      canonical: `/vacatures/${job.id}/${params.slug}`,
+      canonical: `/vacature/${job.id}/${params.slug}`,
     },
   };
 }

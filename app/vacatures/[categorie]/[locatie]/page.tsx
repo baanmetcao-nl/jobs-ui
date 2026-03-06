@@ -6,6 +6,8 @@ import Script from "next/script";
 import JobList from "@/app/job-list";
 import Filters from "@/app/filters";
 import { capitalize } from "@/lib/utils";
+import Link from "next/link";
+import { NoJobsFound } from "@/components/noJobsFound";
 
 const LIMIT = 10;
 
@@ -86,9 +88,7 @@ export default async function LocationPage({
     location: locatie,
   });
 
-  if (jobsResponse.pagination.totalCount === 0) {
-    return notFound();
-  }
+  const hasJobs = jobsResponse.pagination.totalCount > 0;
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -117,13 +117,20 @@ export default async function LocationPage({
           {config.heading} in {capitalize(locatie)}
         </h1>
 
-        <Filters
-          jobCount={jobsResponse.data.length}
-          totalJobCount={jobCountResponse.count}
-          showLocationFilter={false}
-          showNicheFilter={false}
-        />
-        <JobList jobsResponse={jobsResponse} page={0} />
+        {hasJobs ? (
+          <>
+            <Filters
+              jobCount={jobsResponse.data.length}
+              totalJobCount={jobCountResponse.count}
+              showLocationFilter={false}
+              showNicheFilter={false}
+            />
+
+            <JobList jobsResponse={jobsResponse} page={0} />
+          </>
+        ) : (
+          <NoJobsFound config={config} />
+        )}
       </main>
     </div>
   );

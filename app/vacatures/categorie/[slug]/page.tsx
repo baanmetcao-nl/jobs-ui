@@ -1,4 +1,3 @@
-import { fetchJobs } from "@/lib/utils";
 import { JobsResponse } from "@/app/types";
 import { nicheSeo } from "@/lib/niches";
 import { notFound } from "next/navigation";
@@ -6,6 +5,7 @@ import Script from "next/script";
 import Filters from "@/app/filters";
 import JobList from "@/app/job-list";
 import Link from "next/link";
+import { fetchJobs } from "@/lib/api/jobs";
 
 const LIMIT = 10;
 

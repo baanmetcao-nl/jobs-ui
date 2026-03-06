@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { startTransition } from "react";
+import { formatNumber } from "@/lib/utils";
 
 function updateParam(params: URLSearchParams, key: string, value: string) {
   const next = new URLSearchParams(params);
@@ -109,7 +110,7 @@ export default function Filters({
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-4">
         <Select
           value={contract}
           onValueChange={(val) => handleSelectChange("contract", val)}
@@ -211,10 +212,6 @@ export default function Filters({
         >
           <Filter className="h-4 w-4" /> Filters wissen
         </Button>
-      </div>
-
-      <div className="text-sm text-gray-600">
-        {jobCount} van {totalJobCount} vacatures
       </div>
     </div>
   );

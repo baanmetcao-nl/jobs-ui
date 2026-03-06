@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
 import "../styles/globals.scss";
 import { Header } from "@/components/header";
+import { Inter } from "next/font/google";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import SilktideCookieBanner from "@/components/silktide-cookie";
+
+const interFont = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Baan met CAO",
@@ -24,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="nl">
       <head>
         {/* CSS van Silktide Consent Manager */}
         <link
@@ -33,7 +40,7 @@ export default function RootLayout({
           href="/silktide-consent/silktide-consent-manager.css"
         />
       </head>
-      <body className="flex flex-col min-h-screen">
+      <body className={`flex flex-col min-h-screen ${interFont.className}`}>
         <Header />
         <main className="flex-1">{children}</main>
         <footer className="bg-gray-900 text-white">

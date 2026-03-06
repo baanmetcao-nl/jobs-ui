@@ -1,17 +1,16 @@
 "use client";
 
-import { JobsResponse, Job } from "./types";
+import { JobsResponse } from "./types";
 import { MapPin, Building2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import Pagination from "./pagination";
 import { contractFormat, intervalFormat, slugify } from "@/lib/utils";
 import Link from "next/link";
-import Image from "next/image";
 import CompanyLogo from "@/components/image-fallback";
 
 export default function JobList({

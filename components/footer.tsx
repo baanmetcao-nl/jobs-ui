@@ -12,6 +12,7 @@ export function Footer() {
             {Object.values(nicheSeo).map((niche) => (
               <li key={niche.slug}>
                 <Link
+                  prefetch={false}
                   href={`/vacatures/${niche.slug}`}
                   className="hover:text-white hover:underline"
                 >

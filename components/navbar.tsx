@@ -51,6 +51,7 @@ export function NavBar() {
 
             <nav className="hidden md:flex items-center gap-6">
               <Link
+                prefetch={false}
                 href="/"
                 className="text-sm font-medium text-gray-700 hover:text-gray-900"
               >
@@ -105,6 +106,7 @@ export function NavBar() {
         {isMenuOpen && (
           <div className="lg:hidden border-t py-4 space-y-2">
             <Link
+              prefetch={false}
               href="/"
               className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
               onClick={() => setIsMenuOpen(false)}

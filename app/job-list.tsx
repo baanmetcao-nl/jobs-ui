@@ -55,7 +55,10 @@ export default function JobList({
                       size={60}
                     />{" "}
                     <CardTitle className="text-xl mb-2 hover:text-[#F1592A]">
-                      <Link href={`/vacature/${job.id}/${slugify(job.title)}`}>
+                      <Link
+                        prefetch={false}
+                        href={`/vacature/${job.id}/${slugify(job.title)}`}
+                      >
                         {job.title}
                       </Link>
                     </CardTitle>

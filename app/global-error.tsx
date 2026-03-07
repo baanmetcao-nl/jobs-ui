@@ -27,6 +27,7 @@ export default function GlobalError({
 
           <div className="flex gap-4 justify-center">
             <Link
+              prefetch={false}
               href="/"
               className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
             >

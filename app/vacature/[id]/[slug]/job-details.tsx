@@ -84,11 +84,15 @@ export default function JobDetails({
       <div className="border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex items-center space-x-2 text-sm text-gray-500">
-            <Link href="/" className="hover:text-gray-700">
+            <Link prefetch={false} href="/" className="hover:text-gray-700">
               Start
             </Link>
             <span>›</span>
-            <Link href="/" className="hover:text-gray-700"></Link>
+            <Link
+              prefetch={false}
+              href="/"
+              className="hover:text-gray-700"
+            ></Link>
             <span>›</span>
             <span className="text-gray-900">{job.title}</span>
           </nav>
@@ -124,7 +128,11 @@ export default function JobDetails({
                         {job.company.name}
                       </span>
                       <span>in</span>
-                      <Link href="#" className="text-teal-600 hover:underline">
+                      <Link
+                        prefetch={false}
+                        href="#"
+                        className="text-teal-600 hover:underline"
+                      >
                         {capitalize(job.niches[0])}
                       </Link>
                     </div>
@@ -294,6 +302,7 @@ export default function JobDetails({
                   Vergelijkbare vacatures
                 </h2>
                 <Link
+                  prefetch={false}
                   href="/"
                   className="text-teal-600 hover:underline text-sm font-medium"
                 >
@@ -374,13 +383,20 @@ function RelatedJobCard({ vacature }: { vacature: MinimalJob }) {
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-gray-900 mb-1">
-            <Link href={`/vacature/${vacature.id}/${slugify(vacature.title)}`}>
+            <Link
+              prefetch={false}
+              href={`/vacature/${vacature.id}/${slugify(vacature.title)}`}
+            >
               {vacature.title}
             </Link>
           </h3>
           <div className="text-sm text-gray-600">
             door <span className="font-medium">{vacature.company.name}</span> in
-            <Link href="#" className="text-teal-600 hover:underline ml-1">
+            <Link
+              prefetch={false}
+              href="#"
+              className="text-teal-600 hover:underline ml-1"
+            >
               {capitalize(vacature.niches[0])}
             </Link>
           </div>
@@ -488,6 +504,7 @@ function Sidebar({
                 <div className="space-y-3">
                   {relatedCompanyJobs.map((job: MinimalJob) => (
                     <Link
+                      prefetch={false}
                       key={job.id}
                       href={`/vacature/${job.id}/${slugify(job.title)}`}
                       className="block border border-gray-200 rounded-lg p-3 hover:bg-gray-50"

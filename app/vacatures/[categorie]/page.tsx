@@ -126,7 +126,7 @@ export default async function NichePage({
 
       <main className="max-w-7xl mx-auto px-4 pt-8 pb-20">
         <nav className="text-sm text-gray-500 mb-4">
-          <Link href="/" className="hover:underline">
+          <Link prefetch={false} href="/" className="hover:underline">
             Vacatures
           </Link>{" "}
           › {config.heading}
@@ -154,6 +154,7 @@ export default async function NichePage({
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {locations.map((loc) => (
               <Link
+                prefetch={false}
                 key={loc}
                 href={`/vacatures/${config.slug}/${loc}`}
                 className="block bg-white border border-gray-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-sm transition"

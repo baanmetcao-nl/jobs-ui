@@ -197,7 +197,7 @@ export default function AboutUsPage() {
             Bekijk ons aanbod van 1,200+ vacatures bij werkgevers met CAO.
             Hetzelfde werk, betere voorwaarden.
           </p>
-          <Link href="/">
+          <Link href="/" prefetch={false}>
             <Button
               size="lg"
               className="bg-[#F1592A] hover:bg-[#d94d22] text-white"

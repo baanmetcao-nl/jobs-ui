@@ -33,14 +33,16 @@ export function NoJobsFound({ config }: NoJobsFoundProps) {
         <div className="flex sm:flex-col md:flex-row justify-center gap-4">
           <div className="flex sm:flex-row gap-3 justify-center">
             <Button asChild className="bg-[#F1592A]">
-              <Link href={`/vacatures/${config.slug}`}>
+              <Link prefetch={false} href={`/vacatures/${config.slug}`}>
                 Bekijk alle {config.heading}
               </Link>
             </Button>
           </div>
           <div className="flex sm:flex-row gap-3 justify-center">
             <Button asChild className="bg-[#F1592A]">
-              <Link href="/">Bekijk alle vacatures</Link>
+              <Link prefetch={false} href="/">
+                Bekijk alle vacatures
+              </Link>
             </Button>
           </div>
         </div>

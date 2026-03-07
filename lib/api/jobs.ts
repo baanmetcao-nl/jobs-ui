@@ -59,12 +59,7 @@ export async function fetchJobs({
     limit: limit.toString(),
     offset: offset.toString(),
   });
-  const allowedContracts: Contract[] = [
-    "freelance",
-    "temporary",
-    "permanent",
-    "flex",
-  ];
+  const allowedContracts: Contract[] = ["temporary", "permanent"];
 
   if (search) params.set("search", search);
   if (contract && contract !== "all") {

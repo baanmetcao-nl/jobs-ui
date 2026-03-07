@@ -72,6 +72,7 @@ export async function fetchJobs({
   if (niches && niches !== "all") params.set("niches", niches);
 
   const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?${params.toString()}`;
+  console.log(url);
 
   const res = await fetch(url, {
     next: { revalidate: 600 },

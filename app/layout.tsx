@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "../styles/globals.scss";
+import "../styles/globals.css";
 import { Header } from "@/components/header";
 import { Inter } from "next/font/google";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";

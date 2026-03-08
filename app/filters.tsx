@@ -43,7 +43,7 @@ const filterConfig = [
       { label: "Junior", value: "junior" },
       { label: "Medior", value: "medior" },
       { label: "Senior", value: "senior" },
-      { label: "Lead", value: "principal" },
+      { label: "Lead", value: "lead" },
     ],
   },
   {
@@ -276,7 +276,11 @@ export default function Filters({
           );
         })}
 
-        <Button variant="outline" onClick={resetFilters} className="flex gap-2">
+        <Button
+          variant="outline"
+          onClick={resetFilters}
+          className="flex gap-2 cursor-pointer"
+        >
           <Filter className="h-4 w-4" />
           Filters wissen
         </Button>

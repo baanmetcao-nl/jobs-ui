@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import ApplyModal from "@/app/apply-modal";
 import {
@@ -76,6 +76,55 @@ export default function JobDetails({
   const searchParams = useSearchParams();
   const updatedSearchParams = new URLSearchParams(searchParams);
   const [activeTab, setActiveTab] = useState("overview");
+  const detailpageBadgesRef = useRef<HTMLDivElement>(null);
+  const mainApplyBlockRef = useRef<HTMLDivElement>(null);
+  const stickyBarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (
+            !detailpageBadgesRef.current ||
+            !mainApplyBlockRef.current ||
+            !stickyBarRef.current
+          ) {
+            ticking = false;
+            return;
+          }
+
+          const badgesRect =
+            detailpageBadgesRef.current.getBoundingClientRect();
+          const applyBlockRect =
+            mainApplyBlockRef.current.getBoundingClientRect();
+          const navbarHeight = 64;
+          const stickyBarHeight = 70;
+
+          const badgesPassed = badgesRect.bottom <= navbarHeight;
+          const reachedApplyBlock =
+            applyBlockRect.top <= window.innerHeight - stickyBarHeight;
+
+          if (badgesPassed && !reachedApplyBlock) {
+            stickyBarRef.current.classList.remove("translate-y-full");
+            stickyBarRef.current.classList.add("translate-y-0");
+          } else {
+            stickyBarRef.current.classList.remove("translate-y-0");
+            stickyBarRef.current.classList.add("translate-y-full");
+          }
+
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   if (!job) {
     notFound();
@@ -87,7 +136,29 @@ export default function JobDetails({
       : `${job.hours.min} - ${job.hours.max} uur`;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-20 md:pb-0">
+      <div
+        ref={stickyBarRef}
+        className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg md:hidden transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] translate-y-full"
+      >
+        <div className="flex flex-col items-center justify-between px-4 py-3">
+          <div>
+            <p className="text-sm font-semibold text-gray-900 line-clamp-1">
+              {job.title}
+            </p>
+          </div>
+          <Button
+            onClick={() => {
+              updatedSearchParams.set("exitModal", "true");
+              router.push(`${pathname}?${updatedSearchParams.toString()}`);
+            }}
+            className="bg-[#F1592A] hover:bg-[#F1592A]/90 text-white font-medium px-6 py-2"
+          >
+            Solliciteer
+          </Button>
+        </div>
+      </div>
+
       <div className="border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex items-center space-x-2 text-sm text-gray-500">
@@ -100,7 +171,6 @@ export default function JobDetails({
               href="/"
               className="hover:text-gray-700"
             ></Link>
-            <span>›</span>
             <span className="text-gray-900">{job.title}</span>
           </nav>
         </div>
@@ -147,7 +217,11 @@ export default function JobDetails({
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2">
+              <div
+                ref={detailpageBadgesRef}
+                id="detailpage-badges"
+                className="flex flex-wrap gap-2"
+              >
                 {job.tags.map((tag: string) => (
                   <Badge key={tag} className="bg-[#E6F4F1] text-[#3FAFA1]">
                     {tag}
@@ -282,7 +356,11 @@ export default function JobDetails({
               </div>
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-6 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div
+              ref={mainApplyBlockRef}
+              id="main-apply-block"
+              className="bg-gray-50 rounded-lg p-6 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+            >
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-1 mt-1">
                   Geïnteresseerd in de vacature?
@@ -471,11 +549,11 @@ function Sidebar({
             </div>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-4">
             <div className="flex border-b border-gray-200">
               <button
                 onClick={() => setActiveTab("overview")}
-                className={`px-4 py-2 text-sm font-medium ${
+                className={`px-4 py-2 text-sm font-medium cursor-pointer ${
                   activeTab === "overview"
                     ? "text-gray-900 border-b-2 border-gray-900"
                     : "text-gray-500"
@@ -485,7 +563,7 @@ function Sidebar({
               </button>
               <button
                 onClick={() => setActiveTab("jobs")}
-                className={`px-4 py-2 text-sm font-medium ${
+                className={`px-4 py-2 text-sm font-medium cursor-pointer ${
                   activeTab === "jobs"
                     ? "text-gray-900 border-b-2 border-gray-900"
                     : "text-gray-500"
@@ -516,7 +594,7 @@ function Sidebar({
                       href={`/vacature/${job.id}/${slugify(job.title)}`}
                       className="block border border-gray-200 rounded-lg p-3 hover:bg-gray-50"
                     >
-                      <h4 className="font-medium text-gray-900 mb-1 hover:text-teal-600">
+                      <h4 className="font-medium text-gray-900 mb-1 hover:text-teal-600 mt-0">
                         {job.title}
                       </h4>
                       <div className="flex items-center gap-2 text-xs text-gray-600 mb-2">

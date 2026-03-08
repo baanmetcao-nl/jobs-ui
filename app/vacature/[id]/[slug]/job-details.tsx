@@ -119,7 +119,7 @@ export default function JobDetails({
                           ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`
                           : undefined
                       }
-                      alt={"logo"}
+                      alt={`${job.company.name} logo`}
                       size={60}
                     />
                   </div>
@@ -382,7 +382,7 @@ function RelatedJobCard({ vacature }: { vacature: MinimalJob }) {
           <span className="text-white font-semibold text-sm">
             <Image
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${vacature.company.logoUrl}`}
-              alt={"logo"}
+              alt={`${vacature.company.name} logo`}
               width={60}
               height={60}
             />

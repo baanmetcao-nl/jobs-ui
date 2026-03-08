@@ -13,8 +13,62 @@ const interFont = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Baan met CAO",
-  description: "Hetzelfde werk, betere voorwaarden",
+  title: {
+    default: "Baan met CAO - Vacatures met eerlijke arbeidsvoorwaarden",
+    template: "%s | Baan met CAO",
+  },
+  description:
+    "Ontdek vacatures met CAO, eerlijke salarissen en goede arbeidsvoorwaarden. Werk met zekerheid.",
+  keywords: [
+    "vacatures",
+    "baan met CAO",
+    "werk",
+    "arbeidsvoorwaarden",
+    "Nederland",
+  ],
+  authors: [{ name: "Baan met CAO" }],
+  creator: "Baan met CAO",
+  publisher: "Baan met CAO",
+  openGraph: {
+    type: "website",
+    locale: "nl_NL",
+    url: "https://baanmcao.nl",
+    siteName: "Baan met CAO",
+    title: "Baan met CAO - Vacatures met eerlijke arbeidsvoorwaarden",
+    description:
+      "Ontdek vacatures met CAO, eerlijke salarissen en goede arbeidsvoorwaarden. Werk met zekerheid.",
+    images: [
+      {
+        url: "/og-image.svg",
+        width: 1200,
+        height: 630,
+        alt: "Baan met CAO",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Baan met CAO - Vacatures met eerlijke arbeidsvoorwaarden",
+    description:
+      "Ontdek vacatures met CAO, eerlijke salarissen en goede arbeidsvoorwaarden.",
+    images: ["/og-image.svg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    languages: {
+      nl: "https://baanmcao.nl",
+    },
+  },
   icons: {
     icon: [
       { url: "/favicon.ico" },

@@ -24,7 +24,7 @@ export function NavBar() {
       params.delete("search");
     }
 
-    params.set("page", "0");
+    params.set("page", "1");
 
     const url = `/?${params.toString()}`;
 

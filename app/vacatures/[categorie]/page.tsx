@@ -5,7 +5,7 @@ import Script from "next/script";
 import Filters from "@/app/filters";
 import JobList from "@/app/job-list";
 import Link from "next/link";
-import { fetchJobCount, fetchJobs } from "@/lib/api/jobs";
+import { fetchJobs } from "@/lib/api/jobs";
 import { getLocationName, locations } from "@/lib/locations";
 import { capitalize } from "@/lib/utils";
 
@@ -71,6 +71,7 @@ export default async function NichePage({
     page?: string;
     search?: string;
     contract?: string;
+    seniorities?: string;
     location?: string;
     workplace?: string;
   }>;
@@ -85,20 +86,28 @@ export default async function NichePage({
   const page = Math.max(1, Number(sp.page) || 1);
   const offset = (page - 1) * LIMIT;
 
-  const jobCountResponse: { count: number } = await fetchJobCount({
-    contract: sp.contract,
-    niches: [niche],
-  });
+  let jobsResponse: JobsResponse = {
+    data: [],
+    pagination: { limit: 10, offset: 0, totalCount: 0, hasMore: false },
+  };
 
-  const jobsResponse: JobsResponse = await fetchJobs({
-    limit: LIMIT,
-    offset,
-    search: sp.search,
-    contract: sp.contract,
-    location: sp.location ? [getLocationName(sp.location)] : undefined,
-    workplace: sp.workplace,
-    niches: [niche],
-  });
+  try {
+    jobsResponse = await fetchJobs({
+      limit: LIMIT,
+      offset,
+      search: sp.search,
+      contract: sp.contract,
+      seniorities: sp.seniorities ? [sp.seniorities] : undefined,
+      location: sp.location ? [getLocationName(sp.location)] : undefined,
+      workplace: sp.workplace,
+      niches: [niche],
+    });
+  } catch (error) {
+    console.error("Failed to fetch jobs:", error);
+  }
+
+  const hasJobs = jobsResponse.pagination.totalCount > 0;
+  const totalJobCount = jobsResponse.pagination.totalCount;
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -140,7 +149,7 @@ export default async function NichePage({
 
         <Filters
           jobCount={jobsResponse.data.length}
-          totalJobCount={jobCountResponse.count}
+          totalJobCount={totalJobCount}
           showNicheFilter={false}
         />
 

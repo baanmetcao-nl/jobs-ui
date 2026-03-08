@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 import JobDetails from "./job-details";
 import Script from "next/script";
 import { ALLOWED_CONTRACTS } from "@/lib/contracts";
+import { cache } from "react";
 
 export const revalidate = 3600;
 export const dynamic = "force-static";
 
-async function getJob(id: string) {
+const getJob = cache(async function getJob(id: string) {
   const res = await fetch(
     `https://jobs-dry-breeze-1010.fly.dev/api/jobs/${id}`,
   );
@@ -16,9 +17,11 @@ async function getJob(id: string) {
   if (!res.ok) throw new Error("Failed to fetch job");
 
   return res.json();
-}
+});
 
-async function getRelatedJobs(niches: string[]): Promise<JobsResponse> {
+const getRelatedJobs = cache(async function getRelatedJobs(
+  niches: string[],
+): Promise<JobsResponse> {
   const params = new URLSearchParams();
   params.append("limit", "3");
 
@@ -32,9 +35,11 @@ async function getRelatedJobs(niches: string[]): Promise<JobsResponse> {
   if (!res.ok) throw new Error("Failed to fetch related jobs");
 
   return res.json();
-}
+});
 
-async function getRelatedCompanyJobs(companyId: string): Promise<JobsResponse> {
+const getRelatedCompanyJobs = cache(async function getRelatedCompanyJobs(
+  companyId: string,
+): Promise<JobsResponse> {
   const params = new URLSearchParams();
   params.append("limit", "3");
   params.append("companyIds", companyId);
@@ -48,7 +53,7 @@ async function getRelatedCompanyJobs(companyId: string): Promise<JobsResponse> {
   if (!res.ok) throw new Error("Failed to fetch company jobs");
 
   return res.json();
-}
+});
 
 export async function generateMetadata(props: {
   params: Promise<{ id: string; slug: string }>;

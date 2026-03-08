@@ -6,7 +6,7 @@ function debounce<Fn extends (...args: any[]) => void>(
   fn: Fn,
   options: { timeout: number },
 ) {
-  let handle: Timer | null;
+  let handle: ReturnType<typeof setTimeout> | null;
 
   return (...args: any[]) => {
     clearTimeout(handle!);

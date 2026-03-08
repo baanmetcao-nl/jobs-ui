@@ -38,6 +38,7 @@ export async function fetchJobCount({
   niches?.forEach((n) => params.append("niches", n));
 
   const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs/count?${params.toString()}`;
+  console.log("fetchJobCount URL:", url);
 
   const res = await fetch(url, {
     next: { revalidate: 60 },
@@ -88,7 +89,8 @@ export async function fetchJobs({
   niches?.forEach((n) => params.append("niches", n));
 
   const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?${params.toString()}`;
-  console.log("REQUEST:", url);
+  console.log("fetchJobs URL:", url);
+
   const res = await fetch(url, {
     next: { revalidate: 60 },
   });
@@ -104,8 +106,6 @@ export async function fetchJobs({
   }
 
   const data = await res.json();
-
-  console.log("RESPONSE:", data);
 
   return data;
 }

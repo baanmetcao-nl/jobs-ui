@@ -51,9 +51,9 @@ export default function JobList({
                           ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`
                           : undefined
                       }
-                      alt={"logo"}
+                      alt={`${job.company.name} logo`}
                       size={60}
-                    />{" "}
+                    />
                     <CardTitle className="text-xl mb-2 hover:text-[#F1592A]">
                       <Link
                         prefetch={false}

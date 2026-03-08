@@ -1,6 +1,15 @@
 import { JobsResponse } from "@/app/types";
 import { ALLOWED_CONTRACTS } from "../contracts";
 
+function formatLocationForAPI(location: string): string {
+  const formatted = location
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+
+  return `the_netherlands__${formatted}`;
+}
+
 const DEFAULT_LIMIT = 10;
 
 type FetchJobsParams = {
@@ -9,7 +18,7 @@ type FetchJobsParams = {
   contract?: string;
   seniorities?: string[];
   search?: string;
-  location?: string[];
+  locations?: string[];
   workplace?: string;
   niches?: string[];
 };
@@ -18,7 +27,7 @@ export async function fetchJobCount({
   niches,
   contract,
   seniorities,
-  location,
+  locations,
   workplace,
 }: FetchJobsParams): Promise<{ count: number }> {
   const params = new URLSearchParams();
@@ -34,7 +43,9 @@ export async function fetchJobCount({
   }
 
   seniorities?.forEach((s) => params.append("seniorities", s));
-  location?.forEach((l) => params.append("location", l));
+  locations?.forEach((l) =>
+    params.append("locations", formatLocationForAPI(l)),
+  );
   niches?.forEach((n) => params.append("niches", n));
 
   const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs/count?${params.toString()}`;
@@ -63,7 +74,7 @@ export async function fetchJobs({
   search,
   contract,
   seniorities,
-  location,
+  locations,
   workplace,
   niches,
 }: FetchJobsParams): Promise<JobsResponse> {
@@ -85,7 +96,9 @@ export async function fetchJobs({
   }
 
   seniorities?.forEach((s) => params.append("seniorities", s));
-  location?.forEach((l) => params.append("location", l));
+  locations?.forEach((l) =>
+    params.append("locations", formatLocationForAPI(l)),
+  );
   niches?.forEach((n) => params.append("niches", n));
 
   const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?${params.toString()}`;

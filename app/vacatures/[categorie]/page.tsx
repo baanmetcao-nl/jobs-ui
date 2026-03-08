@@ -6,7 +6,7 @@ import Filters from "@/app/filters";
 import JobList from "@/app/job-list";
 import Link from "next/link";
 import { fetchJobs } from "@/lib/api/jobs";
-import { getLocationName, locations } from "@/lib/locations";
+import { locations } from "@/lib/locations";
 import { capitalize } from "@/lib/utils";
 
 const LIMIT = 10;
@@ -72,7 +72,7 @@ export default async function NichePage({
     search?: string;
     contract?: string;
     seniorities?: string;
-    location?: string;
+    locations?: string;
     workplace?: string;
   }>;
 }) {
@@ -91,14 +91,28 @@ export default async function NichePage({
     pagination: { limit: 10, offset: 0, totalCount: 0, hasMore: false },
   };
 
+  const locationsParam = sp.locations;
+  const locationValues = Array.isArray(locationsParam)
+    ? locationsParam
+    : locationsParam
+      ? [locationsParam]
+      : undefined;
+
+  const senioritiesParam = sp.seniorities;
+  const senioritiesValues = Array.isArray(senioritiesParam)
+    ? senioritiesParam
+    : senioritiesParam
+      ? [senioritiesParam]
+      : undefined;
+
   try {
     jobsResponse = await fetchJobs({
       limit: LIMIT,
       offset,
       search: sp.search,
       contract: sp.contract,
-      seniorities: sp.seniorities ? [sp.seniorities] : undefined,
-      location: sp.location ? [getLocationName(sp.location)] : undefined,
+      seniorities: senioritiesValues,
+      locations: locationValues,
       workplace: sp.workplace,
       niches: [niche],
     });

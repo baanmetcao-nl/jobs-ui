@@ -3,7 +3,6 @@ import JobList from "./job-list";
 import { formatNumber } from "@/lib/utils";
 import { JobsResponse } from "./types";
 import { fetchJobs } from "../lib/api/jobs";
-import { getLocationName } from "@/lib/locations";
 
 const LIMIT = 10;
 
@@ -32,7 +31,7 @@ export default async function JobBoard({
     search?: string;
     contract?: string;
     seniorities?: string;
-    location?: string;
+    locations?: string;
     workplace?: string;
     niches?: string;
   }>;
@@ -44,15 +43,36 @@ export default async function JobBoard({
 
   const offset = (safePage - 1) * LIMIT;
 
+  const locationsParam = params.locations;
+  const locationValues = Array.isArray(locationsParam)
+    ? locationsParam
+    : locationsParam
+      ? [locationsParam]
+      : undefined;
+
+  const senioritiesParam = params.seniorities;
+  const senioritiesValues = Array.isArray(senioritiesParam)
+    ? senioritiesParam
+    : senioritiesParam
+      ? [senioritiesParam]
+      : undefined;
+
+  const nichesParam = params.niches;
+  const nichesValues = Array.isArray(nichesParam)
+    ? nichesParam
+    : nichesParam
+      ? [nichesParam]
+      : undefined;
+
   const jobsResponse: JobsResponse = await fetchJobs({
     limit: LIMIT,
     offset,
     search: params.search,
     contract: params.contract,
-    seniorities: params.seniorities ? [params.seniorities] : undefined,
-    location: params.location ? [getLocationName(params.location)] : undefined,
+    seniorities: senioritiesValues,
+    locations: locationValues,
     workplace: params.workplace,
-    niches: params.niches ? [params.niches] : undefined,
+    niches: nichesValues,
   });
 
   return (

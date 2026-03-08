@@ -96,14 +96,21 @@ export default async function LocationPage({
     pagination: { limit: 10, offset: 0, totalCount: 0, hasMore: false },
   };
 
+  const senioritiesParam = sp.seniorities;
+  const senioritiesValues = Array.isArray(senioritiesParam)
+    ? senioritiesParam
+    : senioritiesParam
+      ? [senioritiesParam]
+      : undefined;
+
   try {
     jobsResponse = await fetchJobs({
       limit: LIMIT,
       offset,
       search: sp.search,
       contract: sp.contract,
-      seniorities: sp.seniorities ? [sp.seniorities] : undefined,
-      location: [cityName],
+      seniorities: senioritiesValues,
+      locations: [cityName],
       workplace: sp.workplace,
       niches: [niche],
     });

@@ -47,7 +47,7 @@ const filterConfig = [
     ],
   },
   {
-    key: "location",
+    key: "locations",
     label: "Locatie",
     type: "multi",
     options: [
@@ -290,7 +290,7 @@ export default function Filters({
         <div className="flex flex-wrap gap-2 mt-6">
           {activeFilters.map((f) => (
             <Badge key={`${f.key}-${f.value}`} variant="secondary">
-              {f.value}
+              {getFilterLabel(f.key, f.value)}
               <X
                 className="ml-2 h-3 w-3 cursor-pointer"
                 onClick={() => removeFilter(f.key, f.value)}
@@ -301,6 +301,14 @@ export default function Filters({
       )}
     </div>
   );
+}
+
+function getFilterLabel(key: string, value: string): string {
+  const filter = filterConfig.find((f) => f.key === key);
+  if (!filter) return value;
+
+  const option = filter.options.find((o) => o.value === value);
+  return option ? option.label : value;
 }
 
 function MultiSelect({
@@ -322,9 +330,7 @@ function MultiSelect({
 
   if (selected.length === 1) {
     triggerLabel = selectedLabels[0];
-  } else if (selected.length === 2) {
-    triggerLabel = selectedLabels.join(", ");
-  } else if (selected.length > 2) {
+  } else if (selected.length >= 2) {
     triggerLabel = `${selected.length} geselecteerd`;
   }
 

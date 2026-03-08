@@ -1,13 +1,13 @@
 export function jobQuery({
   searchParams,
   niche,
-  location,
+  locations,
   limit,
   page,
 }: {
   searchParams: any;
   niche?: string;
-  location?: string;
+  locations?: string;
   limit: number;
   page: number;
 }) {
@@ -25,10 +25,10 @@ export function jobQuery({
       : searchParams.niches
         ? [searchParams.niches]
         : undefined,
-    location: location
-      ? [location]
-      : searchParams.location
-        ? [searchParams.location]
+    locations: locations
+      ? [locations]
+      : searchParams.locations
+        ? [searchParams.locations]
         : undefined,
   };
 }

@@ -45,8 +45,6 @@ async function getRelatedCompanyJobs(companyId: string): Promise<JobsResponse> {
     `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
   );
 
-  console.log(res);
-
   if (!res.ok) throw new Error("Failed to fetch company jobs");
 
   return res.json();

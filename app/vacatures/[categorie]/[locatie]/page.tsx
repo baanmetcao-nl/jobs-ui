@@ -5,9 +5,8 @@ import { JobsResponse } from "@/app/types";
 import Script from "next/script";
 import JobList from "@/app/job-list";
 import Filters from "@/app/filters";
-import { capitalize } from "@/lib/utils";
-import Link from "next/link";
 import { NoJobsFound } from "@/components/noJobsFound";
+import { getLocationName } from "@/lib/locations";
 
 const LIMIT = 10;
 
@@ -48,10 +47,11 @@ export async function generateMetadata({
   if (!data) return {};
 
   const { config } = data;
+  const cityName = getLocationName(locatie);
 
   return {
-    title: `${config.heading} in ${locatie}`,
-    description: `Bekijk de nieuwste ${config.heading.toLowerCase()} in ${locatie}.`,
+    title: `${config.heading} in ${cityName}`,
+    description: `Bekijk de nieuwste ${config.heading.toLowerCase()} in ${cityName}.`,
     alternates: {
       canonical: `/vacatures/${categorie}/${locatie}`,
     },
@@ -63,29 +63,40 @@ export default async function LocationPage({
   searchParams,
 }: {
   params: Promise<{ categorie: string; locatie: string }>;
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{
+    page?: string;
+    search?: string;
+    contract?: string;
+    seniorities?: string;
+    workplace?: string;
+  }>;
 }) {
   const { categorie, locatie } = await params;
-  const { page } = await searchParams;
+  const sp = await searchParams;
 
   const data = getNicheFromSlug(categorie);
   if (!data) return notFound();
 
   const { niche, config } = data;
 
-  const pageNumber = Math.max(0, Number(page) || 0);
+  const pageNumber = Math.max(0, Number(sp.page) || 0);
   const offset = pageNumber * LIMIT;
+  const cityName = getLocationName(locatie);
 
   const jobCountResponse: { count: number } = await fetchJobCount({
-    niches: niche,
-    location: locatie,
+    niches: [niche],
+    location: [cityName],
   });
 
   const jobsResponse: JobsResponse = await fetchJobs({
     limit: LIMIT,
     offset,
-    niches: niche,
-    location: locatie,
+    search: sp.search,
+    contract: sp.contract,
+    seniorities: sp.seniorities ? [sp.seniorities] : undefined,
+    workplace: sp.workplace,
+    niches: [niche],
+    location: [cityName],
   });
 
   const hasJobs = jobsResponse.pagination.totalCount > 0;
@@ -93,7 +104,7 @@ export default async function LocationPage({
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: `${config.heading} in ${locatie}`,
+    name: `${config.heading} in ${cityName} | Baan met CAO`,
     numberOfItems: jobsResponse.pagination.totalCount,
     itemListElement: jobsResponse.data.map((job: any, index: number) => ({
       "@type": "ListItem",
@@ -114,7 +125,7 @@ export default async function LocationPage({
 
       <main className="max-w-7xl mx-auto px-4 pt-8 pb-20">
         <h1 className="text-3xl font-bold mb-6">
-          {config.heading} in {capitalize(locatie)}
+          {config.heading} in {cityName}
         </h1>
 
         {hasJobs ? (

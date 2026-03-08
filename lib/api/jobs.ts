@@ -1,4 +1,4 @@
-import { Contract, JobsResponse } from "@/app/types";
+import { JobsResponse } from "@/app/types";
 import { ALLOWED_CONTRACTS } from "../contracts";
 
 const DEFAULT_LIMIT = 10;
@@ -7,30 +7,40 @@ type FetchJobsParams = {
   limit?: number;
   offset?: number;
   contract?: string;
+  seniorities?: string[];
   search?: string;
-  location?: string;
+  location?: string[];
   workplace?: string;
-  niches?: string;
+  niches?: string[];
 };
 
 export async function fetchJobCount({
   niches,
   contract,
+  seniorities,
+  location,
+  workplace,
 }: FetchJobsParams): Promise<{ count: number }> {
   const params = new URLSearchParams();
 
   if (contract && contract !== "all") {
-    params.set("contract", contract);
+    params.set("contracts", contract);
   } else {
     ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
   }
 
-  if (niches && niches !== "all") params.set("niches", niches);
+  if (workplace && workplace !== "all") {
+    params.set("workplace", workplace);
+  }
+
+  seniorities?.forEach((s) => params.append("seniorities", s));
+  location?.forEach((l) => params.append("location", l));
+  niches?.forEach((n) => params.append("niches", n));
 
   const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs/count?${params.toString()}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 600 },
+    next: { revalidate: 60 },
   });
 
   const contentType = res.headers.get("content-type") || "";
@@ -51,31 +61,36 @@ export async function fetchJobs({
   offset = 0,
   search,
   contract,
+  seniorities,
   location,
   workplace,
   niches,
 }: FetchJobsParams): Promise<JobsResponse> {
-  const params = new URLSearchParams({
-    limit: limit.toString(),
-    offset: offset.toString(),
-  });
-  const allowedContracts: Contract[] = ["temporary", "permanent"];
+  const params = new URLSearchParams();
+
+  params.set("limit", limit.toString());
+  params.set("offset", offset.toString());
 
   if (search) params.set("search", search);
+
   if (contract && contract !== "all") {
-    params.set("contract", contract);
+    params.set("contracts", contract);
   } else {
-    allowedContracts.forEach((c) => params.append("contracts", c));
+    ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
   }
-  if (location && location !== "all") params.set("location", location);
-  if (workplace && workplace !== "all") params.set("workplace", workplace);
-  if (niches && niches !== "all") params.set("niches", niches);
+
+  if (workplace && workplace !== "all") {
+    params.set("workplace", workplace);
+  }
+
+  seniorities?.forEach((s) => params.append("seniorities", s));
+  location?.forEach((l) => params.append("location", l));
+  niches?.forEach((n) => params.append("niches", n));
 
   const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?${params.toString()}`;
-  console.log(url);
-
+  console.log("REQUEST:", url);
   const res = await fetch(url, {
-    next: { revalidate: 600 },
+    next: { revalidate: 60 },
   });
 
   const contentType = res.headers.get("content-type") || "";
@@ -88,5 +103,9 @@ export async function fetchJobs({
     throw new Error("API returned non-JSON response");
   }
 
-  return res.json();
+  const data = await res.json();
+
+  console.log("RESPONSE:", data);
+
+  return data;
 }

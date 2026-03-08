@@ -9,15 +9,48 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Over ons | Baan met CAO",
+  description:
+    "Baan met CAO verzamelt vacatures van werkgevers die onder een collectieve arbeidsovereenkomst vallen. Transparante salarissen, duidelijke arbeidsvoorwaarden en geen verrassingen achteraf.",
+  keywords: [
+    "vacatures met cao",
+    "werken met cao",
+    "transparante vacatures",
+    "eerlijk salaris",
+    "arbeidsvoorwaarden vacatures",
+  ],
+  alternates: {
+    canonical: "https://baanmetcao.nl/over-ons",
+  },
+  openGraph: {
+    title: "Over Baan met CAO",
+    description:
+      "Wij verzamelen alleen vacatures van werkgevers met een CAO. Zo weet je precies waar je aan toe bent.",
+    url: "https://baanmetcao.nl/over-ons",
+    siteName: "Baan met CAO",
+    locale: "nl_NL",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Over Baan met CAO",
+    description:
+      "Vacatures met transparante arbeidsvoorwaarden en eerlijke salarissen.",
+  },
+};
 
 export default function AboutUsPage() {
   return (
     <>
-      <section className="py-16 md:py-24 bg-gray-50">
+      <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
             Vacatures met een <span className="text-[#F1592A]">CAO</span>. Punt.
           </h1>
+          <p className="sr-only">Over Baan met CAO</p>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
             Geen verborgen voorwaarden, geen onduidelijke contracten. Alleen
             banen bij werkgevers die hun arbeidsvoorwaarden zwart op wit hebben
@@ -95,7 +128,7 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      <section className="py-16 md:py-20 bg-gray-50">
+      <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
             Onze principes
@@ -137,9 +170,9 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      <section className="py-16 md:py-20">
+      <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center mt-0">
             Wat is een CAO eigenlijk?
           </h2>
           <div className="bg-gray-50 rounded-2xl p-6 md:p-8">
@@ -188,7 +221,7 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      <section className="py-16 md:py-20 bg-gray-900 text-white">
+      <section className="py-16 bg-gray-50 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
             Klaar om je droombaan te vinden?
@@ -200,7 +233,7 @@ export default function AboutUsPage() {
           <Link href="/" prefetch={false}>
             <Button
               size="lg"
-              className="bg-[#F1592A] hover:bg-[#d94d22] text-white"
+              className="bg-[#F1592A] hover:bg-[#d94d22] text-white cursor-pointer"
             >
               Bekijk alle vacatures
             </Button>

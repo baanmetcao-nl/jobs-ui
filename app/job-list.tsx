@@ -92,7 +92,7 @@ export default function JobList({
                   <Button
                     size="sm"
                     onClick={() => openJob(job.id, job.title)}
-                    className="bg-[#F1592A] max-sm:w-full"
+                    className="bg-[#F1592A] max-sm:w-full cursor-pointer"
                   >
                     <Eye className="h-4 w-4" /> Bekijk vacature
                   </Button>

@@ -43,6 +43,13 @@ const workplaceLabels: Record<Job["workplace"], string> = {
   free_choice: "Vrije keuze",
 };
 
+const seniorityLabels: Record<Job["seniority"], string> = {
+  junior: "Junior",
+  medior: "Medior",
+  senior: "Senior",
+  principal: "Lead",
+};
+
 type JobDetailsProps = {
   job: Job;
   relatedJobs: MinimalJob[];
@@ -171,8 +178,8 @@ export default function JobDetails({
                 />
                 <InfoItem
                   icon={<Award color="#F1693F" />}
-                  label="Carrièreniveau"
-                  description={capitalize(job.seniority)}
+                  label="Ervaringsniveau"
+                  description={capitalize(seniorityLabels[job.seniority])}
                 />
                 <InfoItem
                   icon={<GraduationCap color="#F1693F" />}
@@ -277,7 +284,7 @@ export default function JobDetails({
 
             <div className="bg-gray-50 rounded-lg p-6 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-1 mt-1">
                   Geïnteresseerd in de vacature?
                 </h3>
                 <p className="text-[#F1592A] text-sm font-medium">
@@ -432,7 +439,7 @@ function Sidebar({
     <div className="lg:w-80 lg:flex-shrink-0">
       <div className="lg:sticky lg:top-24 space-y-6">
         <div className="bg-gray-50 rounded-lg p-6 max-sm:hidden">
-          <h3 className="text-lg font-semibold mb-4 text-gray-900">
+          <h3 className="text-lg font-semibold mb-4 mt-0 text-gray-900">
             Geïnteresseerd in de vacature?
           </h3>
 

@@ -13,49 +13,94 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
 type Option = { label: string; value: string };
 
-const contractOptions: Option[] = [
-  { label: "Vast", value: "permanent" },
-  { label: "Tijdelijk", value: "temporary" },
-  { label: "Freelance", value: "freelance" },
-];
-
-const locationOptions: Option[] = [
-  { label: "Amsterdam", value: "amsterdam" },
-  { label: "Rotterdam", value: "rotterdam" },
-  { label: "Utrecht", value: "utrecht" },
-  { label: "Eindhoven", value: "eindhoven" },
-  { label: "Den Haag", value: "den-haag" },
-];
-
-const workplaceOptions: Option[] = [
-  { label: "Thuiswerken", value: "remote" },
-  { label: "Op kantoor", value: "office" },
-  { label: "Hybride", value: "hybrid" },
-  { label: "Vrije keuze", value: "free_choice" },
-];
-
-const nicheOptions: Option[] = [
-  { label: "Communicatie", value: "communications" },
-  { label: "Creatief & Design", value: "creative-design" },
-  { label: "Onderwijs & Training", value: "education-training" },
-  { label: "Engineering", value: "engineering" },
-  { label: "Installatietechniek (Elektro)", value: "electrical-installation" },
-  { label: "Finance & Accounting", value: "finance-accounting" },
-  { label: "Zorg & Medisch", value: "healthcare-medical" },
-  { label: "Human Resources", value: "human-resources" },
-  { label: "Juridisch", value: "legal" },
-  { label: "Logistiek & Supply Chain", value: "logistics-supply-chain" },
-  { label: "Marketing & Advertising", value: "marketing-advertising" },
-  { label: "Publieke Sector & Non-profit", value: "public-sector-non-profit" },
-  { label: "Vastgoed", value: "real-estate" },
-  { label: "Sales & Retail", value: "sales-retail" },
-  { label: "Wetenschap & Onderzoek", value: "science-research" },
-  { label: "Technologie & IT", value: "technology-it" },
-  { label: "Technische Beroepen", value: "skilled-trades" },
-  { label: "Anders", value: "other" },
+const filterConfig = [
+  {
+    key: "contracts",
+    label: "Contract",
+    type: "single",
+    options: [
+      { label: "Alle contracten", value: "all" },
+      { label: "Vast", value: "permanent" },
+      { label: "Tijdelijk", value: "temporary" },
+      { label: "Freelance", value: "freelance" },
+    ],
+  },
+  {
+    key: "seniorities",
+    label: "Ervaringsniveau",
+    type: "multi",
+    options: [
+      { label: "Junior", value: "junior" },
+      { label: "Medior", value: "medior" },
+      { label: "Senior", value: "senior" },
+      { label: "Lead", value: "principal" },
+    ],
+  },
+  {
+    key: "location",
+    label: "Locatie",
+    type: "multi",
+    options: [
+      { label: "Amsterdam", value: "amsterdam" },
+      { label: "Rotterdam", value: "rotterdam" },
+      { label: "Utrecht", value: "utrecht" },
+      { label: "Eindhoven", value: "eindhoven" },
+      { label: "Den Haag", value: "den-haag" },
+    ],
+  },
+  {
+    key: "workplace",
+    label: "Werklocatie",
+    type: "single",
+    options: [
+      { label: "Alle werklocaties", value: "all" },
+      { label: "Thuiswerken", value: "remote" },
+      { label: "Op kantoor", value: "office" },
+      { label: "Hybride", value: "hybrid" },
+      { label: "Vrije keuze", value: "free_choice" },
+    ],
+  },
+  {
+    key: "niches",
+    label: "Categorie",
+    type: "multi",
+    options: [
+      { label: "Communicatie", value: "communications" },
+      { label: "Creatief & Design", value: "creative-design" },
+      { label: "Onderwijs & Training", value: "education-training" },
+      { label: "Engineering", value: "engineering" },
+      {
+        label: "Installatietechniek (Elektro)",
+        value: "electrical-installation",
+      },
+      { label: "Finance & Accounting", value: "finance-accounting" },
+      { label: "Zorg & Medisch", value: "healthcare-medical" },
+      { label: "Human Resources", value: "human-resources" },
+      { label: "Juridisch", value: "legal" },
+      { label: "Logistiek & Supply Chain", value: "logistics-supply-chain" },
+      { label: "Marketing & Advertising", value: "marketing-advertising" },
+      {
+        label: "Publieke Sector & Non-profit",
+        value: "public-sector-non-profit",
+      },
+      { label: "Vastgoed", value: "real-estate" },
+      { label: "Sales & Retail", value: "sales-retail" },
+      { label: "Wetenschap & Onderzoek", value: "science-research" },
+      { label: "Technologie & IT", value: "technology-it" },
+      { label: "Technische Beroepen", value: "skilled-trades" },
+      { label: "Anders", value: "other" },
+    ],
+  },
 ];
 
 function getValues(params: URLSearchParams, key: string) {
@@ -66,6 +111,18 @@ function setValues(params: URLSearchParams, key: string, values: string[]) {
   const next = new URLSearchParams(params.toString());
   next.delete(key);
   values.forEach((v) => next.append(key, v));
+  next.delete("page");
+  return next;
+}
+
+function setSingleValue(
+  params: URLSearchParams,
+  key: string,
+  value: string,
+): URLSearchParams {
+  const next = new URLSearchParams(params.toString());
+  if (!value || value === "all") next.delete(key);
+  else next.set(key, value);
   next.delete("page");
   return next;
 }
@@ -89,12 +146,7 @@ export default function Filters({
     searchParams.get("search") || "",
   );
 
-  const contracts = getValues(searchParams, "contracts");
-  const locations = getValues(searchParams, "location");
-  const workplaces = getValues(searchParams, "workplace");
-  const niches = getValues(searchParams, "niches");
-
-  const updateFilter = (key: string, value: string) => {
+  const updateMultiFilter = (key: string, value: string) => {
     const current = getValues(searchParams, key);
 
     const nextValues = current.includes(value)
@@ -108,8 +160,25 @@ export default function Filters({
     });
   };
 
+  const updateSingleFilter = (key: string, value: string) => {
+    const next = setSingleValue(searchParams, key, value);
+
+    startTransition(() => {
+      router.replace(`${pathname}?${next.toString()}`, { scroll: false });
+    });
+  };
+
   const removeFilter = (key: string, value: string) => {
+    const filter = filterConfig.find((f) => f.key === key);
+
+    if (filter?.type === "single") {
+      const next = setSingleValue(searchParams, key, "all");
+      router.replace(`${pathname}?${next.toString()}`, { scroll: false });
+      return;
+    }
+
     const current = getValues(searchParams, key);
+
     const next = setValues(
       searchParams,
       key,
@@ -139,12 +208,23 @@ export default function Filters({
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  const activeFilters = [
-    ...contracts.map((v) => ({ key: "contracts", value: v })),
-    ...locations.map((v) => ({ key: "location", value: v })),
-    ...workplaces.map((v) => ({ key: "workplace", value: v })),
-    ...niches.map((v) => ({ key: "niches", value: v })),
-  ];
+  const visibleFilters = filterConfig.filter((f) => {
+    if (!showLocationFilter && f.key === "location") return false;
+    if (!showNicheFilter && f.key === "niches") return false;
+    return true;
+  });
+
+  const activeFilters = visibleFilters.flatMap((filter) => {
+    if (filter.type === "single") {
+      const value = searchParams.get(filter.key);
+      return value && value !== "all" ? [{ key: filter.key, value }] : [];
+    }
+
+    return getValues(searchParams, filter.key).map((v) => ({
+      key: filter.key,
+      value: v,
+    }));
+  });
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
@@ -159,37 +239,42 @@ export default function Filters({
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
-        <MultiSelect
-          label="Contract"
-          options={contractOptions}
-          selected={contracts}
-          onToggle={(v) => updateFilter("contracts", v)}
-        />
+        {visibleFilters.map((filter) => {
+          if (filter.type === "single") {
+            const value = searchParams.get(filter.key) || "all";
 
-        {showLocationFilter && (
-          <MultiSelect
-            label="Locatie"
-            options={locationOptions}
-            selected={locations}
-            onToggle={(v) => updateFilter("location", v)}
-          />
-        )}
+            return (
+              <Select
+                key={filter.key}
+                value={value}
+                onValueChange={(v) => updateSingleFilter(filter.key, v)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={filter.label} />
+                </SelectTrigger>
+                <SelectContent>
+                  {filter.options.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>
+                      {o.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            );
+          }
 
-        <MultiSelect
-          label="Werklocatie"
-          options={workplaceOptions}
-          selected={workplaces}
-          onToggle={(v) => updateFilter("workplace", v)}
-        />
+          const selected = getValues(searchParams, filter.key);
 
-        {showNicheFilter && (
-          <MultiSelect
-            label="Categorie"
-            options={nicheOptions}
-            selected={niches}
-            onToggle={(v) => updateFilter("niches", v)}
-          />
-        )}
+          return (
+            <MultiSelect
+              key={filter.key}
+              label={filter.label}
+              options={filter.options}
+              selected={selected}
+              onToggle={(v) => updateMultiFilter(filter.key, v)}
+            />
+          );
+        })}
 
         <Button variant="outline" onClick={resetFilters} className="flex gap-2">
           <Filter className="h-4 w-4" />
@@ -225,6 +310,20 @@ function MultiSelect({
   selected: string[];
   onToggle: (value: string) => void;
 }) {
+  const selectedLabels = options
+    .filter((o) => selected.includes(o.value))
+    .map((o) => o.label);
+
+  let triggerLabel = label;
+
+  if (selected.length === 1) {
+    triggerLabel = selectedLabels[0];
+  } else if (selected.length === 2) {
+    triggerLabel = selectedLabels.join(", ");
+  } else if (selected.length > 2) {
+    triggerLabel = `${selected.length} geselecteerd`;
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -232,7 +331,7 @@ function MultiSelect({
           variant="outline"
           className="w-full justify-between font-normal"
         >
-          {selected.length > 0 ? `${label} (${selected.length})` : label}
+          {triggerLabel}
           <ChevronDown className="h-4 w-4 ml-2 opacity-50" />
         </Button>
       </PopoverTrigger>

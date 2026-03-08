@@ -3,6 +3,7 @@ import JobList from "./job-list";
 import { formatNumber } from "@/lib/utils";
 import { JobsResponse } from "./types";
 import { fetchJobCount, fetchJobs } from "../lib/api/jobs";
+import { getLocationName } from "@/lib/locations";
 
 const LIMIT = 10;
 
@@ -30,6 +31,7 @@ export default async function JobBoard({
     jobId?: string;
     search?: string;
     contract?: string;
+    seniorities?: string;
     location?: string;
     workplace?: string;
     niches?: string;
@@ -44,7 +46,7 @@ export default async function JobBoard({
 
   const jobCountResponse: { count: number } = await fetchJobCount({
     contract: params.contract,
-    niches: params.niches,
+    niches: params.niches ? [params.niches] : undefined,
   });
 
   const jobsResponse: JobsResponse = await fetchJobs({
@@ -52,9 +54,10 @@ export default async function JobBoard({
     offset,
     search: params.search,
     contract: params.contract,
-    location: params.location,
+    seniorities: params.seniorities ? [params.seniorities] : undefined,
+    location: params.location ? [getLocationName(params.location)] : undefined,
     workplace: params.workplace,
-    niches: params.niches,
+    niches: params.niches ? [params.niches] : undefined,
   });
 
   return (
@@ -66,11 +69,11 @@ export default async function JobBoard({
         />
         <div className="relative rounded-lg bg-gray-50 flex mt-4 mb-8 items-center relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden py-8">
           <div className="flex flex-col gap-3 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-2xl font-bold text-white">
               Werk met zekerheid. Kies voor een{" "}
               <span className="text-[#F1592A]">baan met CAO</span>
             </h1>
-            <p>
+            <p className="text-white">
               Ontdek {formatNumber(jobCountResponse.count)} vacatures met
               eerlijke salarissen en goede arbeidsvoorwaarden.
             </p>

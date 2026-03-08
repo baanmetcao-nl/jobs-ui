@@ -6,7 +6,7 @@ import Filters from "@/app/filters";
 import JobList from "@/app/job-list";
 import Link from "next/link";
 import { fetchJobCount, fetchJobs } from "@/lib/api/jobs";
-import { locations } from "@/lib/locations";
+import { getLocationName, locations } from "@/lib/locations";
 import { capitalize } from "@/lib/utils";
 
 const LIMIT = 10;
@@ -82,12 +82,12 @@ export default async function NichePage({
 
   const { niche, config } = data;
 
-  const page = Math.max(0, Number(sp.page) || 0);
-  const offset = page * LIMIT;
+  const page = Math.max(1, Number(sp.page) || 1);
+  const offset = (page - 1) * LIMIT;
 
   const jobCountResponse: { count: number } = await fetchJobCount({
     contract: sp.contract,
-    niches: niche,
+    niches: [niche],
   });
 
   const jobsResponse: JobsResponse = await fetchJobs({
@@ -95,9 +95,9 @@ export default async function NichePage({
     offset,
     search: sp.search,
     contract: sp.contract,
-    location: sp.location,
+    location: sp.location ? [getLocationName(sp.location)] : undefined,
     workplace: sp.workplace,
-    niches: niche,
+    niches: [niche],
   });
 
   const structuredData = {

@@ -11,6 +11,12 @@ import { capitalize } from "@/lib/utils";
 
 const LIMIT = 10;
 
+function toArray<T>(value: T | T[] | undefined): T[] | undefined {
+  if (Array.isArray(value)) return value;
+  if (value) return [value];
+  return undefined;
+}
+
 export async function generateMetadata(props: {
   params: Promise<{ categorie: string }>;
   searchParams: Promise<{ page?: string }>;
@@ -70,7 +76,7 @@ export default async function NichePage({
   searchParams: Promise<{
     page?: string;
     search?: string;
-    contract?: string;
+    contracts?: string;
     seniorities?: string;
     locations?: string;
     workplace?: string;
@@ -91,26 +97,15 @@ export default async function NichePage({
     pagination: { limit: 10, offset: 0, totalCount: 0, hasMore: false },
   };
 
-  const locationsParam = sp.locations;
-  const locationValues = Array.isArray(locationsParam)
-    ? locationsParam
-    : locationsParam
-      ? [locationsParam]
-      : undefined;
-
-  const senioritiesParam = sp.seniorities;
-  const senioritiesValues = Array.isArray(senioritiesParam)
-    ? senioritiesParam
-    : senioritiesParam
-      ? [senioritiesParam]
-      : undefined;
+  const locationValues = toArray(sp.locations);
+  const senioritiesValues = toArray(sp.seniorities);
 
   try {
     jobsResponse = await fetchJobs({
       limit: LIMIT,
       offset,
       search: sp.search,
-      contract: sp.contract,
+      contracts: sp.contracts,
       seniorities: senioritiesValues,
       locations: locationValues,
       workplace: sp.workplace,

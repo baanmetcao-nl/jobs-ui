@@ -6,6 +6,12 @@ import { fetchJobs } from "../lib/api/jobs";
 
 const LIMIT = 10;
 
+function toArray<T>(value: T | T[] | undefined): T[] | undefined {
+  if (Array.isArray(value)) return value;
+  if (value) return [value];
+  return undefined;
+}
+
 export async function generateMetadata(props: {
   searchParams: Promise<{ page?: string }>;
 }) {
@@ -29,7 +35,7 @@ export default async function JobBoard({
     page?: string;
     jobId?: string;
     search?: string;
-    contract?: string;
+    contracts?: string;
     seniorities?: string;
     locations?: string;
     workplace?: string;
@@ -43,32 +49,15 @@ export default async function JobBoard({
 
   const offset = (safePage - 1) * LIMIT;
 
-  const locationsParam = params.locations;
-  const locationValues = Array.isArray(locationsParam)
-    ? locationsParam
-    : locationsParam
-      ? [locationsParam]
-      : undefined;
-
-  const senioritiesParam = params.seniorities;
-  const senioritiesValues = Array.isArray(senioritiesParam)
-    ? senioritiesParam
-    : senioritiesParam
-      ? [senioritiesParam]
-      : undefined;
-
-  const nichesParam = params.niches;
-  const nichesValues = Array.isArray(nichesParam)
-    ? nichesParam
-    : nichesParam
-      ? [nichesParam]
-      : undefined;
+  const locationValues = toArray(params.locations);
+  const senioritiesValues = toArray(params.seniorities);
+  const nichesValues = toArray(params.niches);
 
   const jobsResponse: JobsResponse = await fetchJobs({
     limit: LIMIT,
     offset,
     search: params.search,
-    contract: params.contract,
+    contracts: params.contracts,
     seniorities: senioritiesValues,
     locations: locationValues,
     workplace: params.workplace,

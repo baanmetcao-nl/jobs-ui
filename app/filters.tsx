@@ -33,6 +33,7 @@ const filterConfig = [
       { label: "Vast", value: "permanent" },
       { label: "Tijdelijk", value: "temporary" },
       { label: "Freelance", value: "freelance" },
+      { label: "Flexibel", value: "flex" },
     ],
   },
   {

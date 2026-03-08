@@ -15,7 +15,7 @@ const DEFAULT_LIMIT = 10;
 type FetchJobsParams = {
   limit?: number;
   offset?: number;
-  contract?: string;
+  contracts?: string;
   seniorities?: string[];
   search?: string;
   locations?: string[];
@@ -25,15 +25,15 @@ type FetchJobsParams = {
 
 export async function fetchJobCount({
   niches,
-  contract,
+  contracts,
   seniorities,
   locations,
   workplace,
 }: FetchJobsParams): Promise<{ count: number }> {
   const params = new URLSearchParams();
 
-  if (contract && contract !== "all") {
-    params.set("contracts", contract);
+  if (contracts && contracts !== "all") {
+    params.set("contracts", contracts);
   } else {
     ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
   }
@@ -72,7 +72,7 @@ export async function fetchJobs({
   limit = DEFAULT_LIMIT,
   offset = 0,
   search,
-  contract,
+  contracts,
   seniorities,
   locations,
   workplace,
@@ -85,8 +85,8 @@ export async function fetchJobs({
 
   if (search) params.set("search", search);
 
-  if (contract && contract !== "all") {
-    params.set("contracts", contract);
+  if (contracts && contracts !== "all") {
+    params.set("contracts", contracts);
   } else {
     ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
   }

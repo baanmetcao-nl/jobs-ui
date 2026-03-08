@@ -12,6 +12,12 @@ import { NoJobsFound } from "@/components/noJobsFound";
 
 const LIMIT = 10;
 
+function toArray<T>(value: T | T[] | undefined): T[] | undefined {
+  if (Array.isArray(value)) return value;
+  if (value) return [value];
+  return undefined;
+}
+
 function getNicheFromSlug(slug: string) {
   const entry = Object.entries(nicheSeo).find(
     ([_, config]) => config.slug === slug,
@@ -74,7 +80,7 @@ export default async function LocationPage({
   searchParams: Promise<{
     page?: string;
     search?: string;
-    contract?: string;
+    contracts?: string;
     seniorities?: string;
     workplace?: string;
   }>;
@@ -96,19 +102,14 @@ export default async function LocationPage({
     pagination: { limit: 10, offset: 0, totalCount: 0, hasMore: false },
   };
 
-  const senioritiesParam = sp.seniorities;
-  const senioritiesValues = Array.isArray(senioritiesParam)
-    ? senioritiesParam
-    : senioritiesParam
-      ? [senioritiesParam]
-      : undefined;
+  const senioritiesValues = toArray(sp.seniorities);
 
   try {
     jobsResponse = await fetchJobs({
       limit: LIMIT,
       offset,
       search: sp.search,
-      contract: sp.contract,
+      contracts: sp.contracts,
       seniorities: senioritiesValues,
       locations: [cityName],
       workplace: sp.workplace,

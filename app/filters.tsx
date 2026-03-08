@@ -44,7 +44,7 @@ const filterConfig = [
       { label: "Junior", value: "junior" },
       { label: "Medior", value: "medior" },
       { label: "Senior", value: "senior" },
-      { label: "Lead", value: "lead" },
+      { label: "Lead", value: "principal" },
     ],
   },
   {

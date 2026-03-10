@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { nicheSeo } from "@/lib/niches";
 import { locations } from "@/lib/locations";
 
-const BASE_URL = "https://baanmcao.nl";
+const BASE_URL = "https://baanmetcao.nl";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [

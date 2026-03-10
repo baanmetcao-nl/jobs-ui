@@ -144,19 +144,19 @@ export default async function LocationPage({
         "@type": "ListItem",
         position: 1,
         name: "Vacatures",
-        item: "https://baanmcao.nl/",
+        item: "https://baanmetcao.nl/",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: config.heading,
-        item: `https://baanmcao.nl/vacatures/${categorie}`,
+        item: `https://baanmetcao.nl/vacatures/${categorie}`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: cityName,
-        item: `https://baanmcao.nl/vacatures/${categorie}/${locatie}`,
+        item: `https://baanmetcao.nl/vacatures/${categorie}/${locatie}`,
       },
     ],
   };

@@ -13,7 +13,7 @@ const interFont = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://baanmcao.nl"),
+  metadataBase: new URL("https://baanmetcao.nl"),
   title: {
     default: "Baan met CAO - Vacatures met eerlijke arbeidsvoorwaarden",
     template: "%s | Baan met CAO",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "nl_NL",
-    url: "https://baanmcao.nl",
+    url: "https://baanmetcao.nl",
     siteName: "Baan met CAO",
     title: "Baan met CAO - Vacatures met eerlijke arbeidsvoorwaarden",
     description:
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   },
   alternates: {
     languages: {
-      nl: "https://baanmcao.nl",
+      nl: "https://baanmetcao.nl",
     },
   },
   icons: {
@@ -101,15 +101,15 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Baan met CAO",
-              url: "https://baanmcao.nl",
-              logo: "https://baanmcao.nl/logo.png",
+              url: "https://baanmetcao.nl",
+              logo: "https://baanmetcao.nl/logo.png",
               description:
                 "Ontdek vacatures met CAO, eerlijke salarissen en goede arbeidsvoorwaarden. Werk met zekerheid.",
               sameAs: [],
               contactPoint: {
                 "@type": "ContactPoint",
                 contactType: "customer service",
-                email: "info@baanmcao.nl",
+                email: "info@baanmetcao.nl",
               },
               address: {
                 "@type": "PostalAddress",
@@ -126,13 +126,13 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               name: "Baan met CAO",
-              url: "https://baanmcao.nl",
+              url: "https://baanmetcao.nl",
               potentialAction: {
                 "@type": "SearchAction",
                 target: {
                   "@type": "EntryPoint",
                   urlTemplate:
-                    "https://baanmcao.nl/?search={search_term_string}",
+                    "https://baanmetcao.nl/?search={search_term_string}",
                 },
                 "query-input": "required name=search_term_string",
               },

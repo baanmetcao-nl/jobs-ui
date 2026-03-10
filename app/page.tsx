@@ -77,7 +77,7 @@ export default async function JobBoard({
               Werk met zekerheid. Kies voor een{" "}
               <span className="text-[#F1592A]">baan met CAO</span>
             </h1>
-            <p className="text-white">
+            <p className="text-white mb-0">
               Ontdek {formatNumber(jobsResponse.pagination.totalCount)}{" "}
               vacatures met eerlijke salarissen en goede arbeidsvoorwaarden.
             </p>

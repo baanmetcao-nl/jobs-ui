@@ -1,8 +1,14 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useState, useEffect, startTransition } from "react";
-import { Search, Filter, X, ChevronDown } from "lucide-react";
+import { useState, useEffect, useTransition } from "react";
+import {
+  Search,
+  Filter,
+  X,
+  ChevronDown,
+  Loader2 as Spinner,
+} from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -142,6 +148,7 @@ export default function Filters({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const [searchTerm, setSearchTerm] = useState(
     searchParams.get("search") || "",
@@ -210,7 +217,7 @@ export default function Filters({
   }, [searchTerm]);
 
   const visibleFilters = filterConfig.filter((f) => {
-    if (!showLocationFilter && f.key === "location") return false;
+    if (!showLocationFilter && f.key === "locations") return false;
     if (!showNicheFilter && f.key === "niches") return false;
     return true;
   });
@@ -228,7 +235,12 @@ export default function Filters({
   });
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
+    <div className="bg-white rounded-lg shadow-sm border p-6 mb-8 relative">
+      {isPending && (
+        <div className="absolute inset-0 bg-white/70 z-50 rounded-lg flex items-center justify-center">
+          <Spinner className="h-8 w-8 animate-spin text-teal-600" />
+        </div>
+      )}
       <div className="relative mb-6">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
         <Input

@@ -5,8 +5,10 @@ export const runtime = "nodejs";
 
 const resend = new Resend(process.env.RESEND_API_KEY!);
 
-// Simple in-memory rate limiter
-// Note: In production, use Redis or similar for distributed rate limiting
+const MAX_NAME_LENGTH = 100;
+const MAX_SUBJECT_LENGTH = 200;
+const MAX_MESSAGE_LENGTH = 5000;
+
 interface RateLimitEntry {
   count: number;
   resetTime: number;
@@ -14,8 +16,59 @@ interface RateLimitEntry {
 
 const rateLimitMap = new Map<string, RateLimitEntry>();
 
-const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
-const RATE_LIMIT_MAX_REQUESTS = 3; // Max 3 requests per hour per IP
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 3;
+
+// Detect dangerous content
+function containsDangerous(input: string): boolean {
+  return /<script|<iframe|javascript:|on\w+=/i.test(input);
+}
+
+// Escape HTML entities
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, String.fromCharCode(38) + "amp;")
+    .replace(/</g, String.fromCharCode(38) + "lt;")
+    .replace(/>/g, String.fromCharCode(38) + "gt;")
+    .replace(/"/g, String.fromCharCode(38) + "quot;")
+    .replace(/'/g, String.fromCharCode(38) + "#39;")
+    .replace(/\n/g, "<br/>");
+}
+
+interface ValidationResult {
+  valid: boolean;
+  value: string;
+  error?: string;
+}
+
+function validateString(
+  input: unknown,
+  maxLen: number,
+  name: string,
+): ValidationResult {
+  if (typeof input !== "string") {
+    return { valid: false, value: "", error: name + " moet een tekst zijn." };
+  }
+  const trimmed = input.trim();
+  if (!trimmed) {
+    return { valid: false, value: "", error: name + " is verplicht." };
+  }
+  if (trimmed.length > maxLen) {
+    return {
+      valid: false,
+      value: "",
+      error: name + " mag maximaal " + maxLen + " karakters bevatten.",
+    };
+  }
+  if (containsDangerous(trimmed)) {
+    return {
+      valid: false,
+      value: "",
+      error: name + " bevat ongeoorloofde content.",
+    };
+  }
+  return { valid: true, value: trimmed };
+}
 
 function getRateLimitKey(ip: string): string {
   return `contact:${ip}`;
@@ -28,15 +81,10 @@ function checkRateLimit(ip: string): {
 } {
   const key = getRateLimitKey(ip);
   const now = Date.now();
-
   const entry = rateLimitMap.get(key);
 
   if (!entry || now > entry.resetTime) {
-    // New window, reset the count
-    rateLimitMap.set(key, {
-      count: 1,
-      resetTime: now + RATE_LIMIT_WINDOW_MS,
-    });
+    rateLimitMap.set(key, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
     return {
       allowed: true,
       remaining: RATE_LIMIT_MAX_REQUESTS - 1,
@@ -45,18 +93,11 @@ function checkRateLimit(ip: string): {
   }
 
   if (entry.count >= RATE_LIMIT_MAX_REQUESTS) {
-    // Rate limit exceeded
-    return {
-      allowed: false,
-      remaining: 0,
-      resetTime: entry.resetTime,
-    };
+    return { allowed: false, remaining: 0, resetTime: entry.resetTime };
   }
 
-  // Increment count
   entry.count++;
   rateLimitMap.set(key, entry);
-
   return {
     allowed: true,
     remaining: RATE_LIMIT_MAX_REQUESTS - entry.count,
@@ -66,9 +107,7 @@ function checkRateLimit(ip: string): {
 
 function getClientIP(request: Request): string {
   const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) {
-    return forwarded.split(",")[0].trim();
-  }
+  if (forwarded) return forwarded.split(",")[0].trim();
   return request.headers.get("x-real-ip") || "unknown";
 }
 
@@ -77,8 +116,13 @@ export async function POST(req: Request) {
     const clientIP = getClientIP(req);
     const rateLimit = checkRateLimit(clientIP);
 
-    // Set rate limit headers
+    const securityHeaders = {
+      "X-Content-Type-Options": "nosniff",
+      "Content-Type": "application/json",
+    };
+
     const headers = {
+      ...securityHeaders,
       "X-RateLimit-Limit": RATE_LIMIT_MAX_REQUESTS.toString(),
       "X-RateLimit-Remaining": rateLimit.remaining.toString(),
       "X-RateLimit-Reset": new Date(rateLimit.resetTime).toISOString(),
@@ -91,50 +135,76 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           error: `Te veel aanvragen. Probeer het over ${resetMinutes} minuut${resetMinutes > 1 ? "en" : ""} opnieuw.`,
-          retryAfter: resetMinutes,
         },
-        {
-          status: 429,
-          headers,
-        },
+        { status: 429, headers },
       );
     }
 
-    const { name, email, subject, message, company } = await req.json();
+    const body = await req.json();
+    const { name, email, subject, message, company } = body;
 
-    // Honeypot check - if company field is filled, silently succeed
-    if (company && company.trim() !== "") {
+    if (company && typeof company === "string" && company.trim() !== "") {
       return NextResponse.json({ success: true });
     }
 
-    // Validate required fields
-    if (!name || !email || !message) {
+    const nameVal = validateString(name, MAX_NAME_LENGTH, "Naam");
+    if (!nameVal.valid)
       return NextResponse.json(
-        { error: "Vul alle verplichte velden in." },
+        { error: nameVal.error || "Ongeldige naam" },
         { status: 400, headers },
       );
-    }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    const emailVal = validateString(email, 254, "E-mailadres");
+    if (!emailVal.valid)
+      return NextResponse.json(
+        { error: emailVal.error || "Ongeldig e-mailadres" },
+        { status: 400, headers },
+      );
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal.value)) {
       return NextResponse.json(
         { error: "Voer een geldig e-mailadres in." },
         { status: 400, headers },
       );
     }
 
+    const msgVal = validateString(message, MAX_MESSAGE_LENGTH, "Bericht");
+    if (!msgVal.valid)
+      return NextResponse.json(
+        { error: msgVal.error || "Ongeldig bericht" },
+        { status: 400, headers },
+      );
+
+    let subjVal: ValidationResult = { valid: true, value: "" };
+    if (subject !== undefined && subject !== null) {
+      subjVal = validateString(subject, MAX_SUBJECT_LENGTH, "Onderwerp");
+      if (!subjVal.valid)
+        return NextResponse.json(
+          { error: subjVal.error || "Ongeldig onderwerp" },
+          { status: 400, headers },
+        );
+    }
+
+    const safeName = escapeHtml(nameVal.value);
+    const safeEmail = escapeHtml(emailVal.value);
+    const safeMessage = escapeHtml(msgVal.value);
+    const safeSubject = subjVal.value
+      ? escapeHtml(subjVal.value)
+      : "Nieuw bericht via contactformulier";
+
     await resend.emails.send({
       from: "BaanmetCAO contactformulier <info@baanmetcao.nl>",
       to: process.env.CONTACT_EMAIL!,
-      replyTo: email,
-      subject: subject || "Nieuw bericht via contactformulier",
-      html: `
-        <h3>Nieuw bericht</h3>
-        <p><strong>Naam:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Bericht:</strong><br/>${message}</p>
-      `,
+      replyTo: safeEmail,
+      subject: safeSubject,
+      html:
+        "<h3>Nieuw bericht</h3><p><strong>Naam:</strong> " +
+        safeName +
+        "</p><p><strong>Email:</strong> " +
+        safeEmail +
+        "</p><p><strong>Bericht:</strong><br/>" +
+        safeMessage +
+        "</p>",
     });
 
     return NextResponse.json({ success: true }, { headers });

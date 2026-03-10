@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -18,6 +19,7 @@ export default function ContactPage() {
     const form = e.currentTarget;
     setLoading(true);
     setStatus("idle");
+    setErrorMessage("");
 
     const formData = new FormData(form);
 
@@ -38,8 +40,13 @@ export default function ContactPage() {
         body: JSON.stringify(payload),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
         setStatus("error");
+        setErrorMessage(
+          data.error || "Er ging iets mis. Probeer het later opnieuw.",
+        );
         return;
       }
 
@@ -48,6 +55,7 @@ export default function ContactPage() {
     } catch (error) {
       console.error("Network error:", error);
       setStatus("error");
+      setErrorMessage("Er ging iets mis. Probeer het later opnieuw.");
     } finally {
       setLoading(false);
     }
@@ -126,10 +134,8 @@ export default function ContactPage() {
             </p>
           )}
 
-          {status === "error" && (
-            <p className="text-red-600 text-sm">
-              ❌ Er ging iets mis. Probeer het later opnieuw.
-            </p>
+          {status === "error" && errorMessage && (
+            <p className="text-red-600 text-sm">❌ {errorMessage}</p>
           )}
         </form>
       </div>

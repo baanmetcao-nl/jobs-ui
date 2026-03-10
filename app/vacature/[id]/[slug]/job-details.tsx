@@ -420,6 +420,10 @@ export default function JobDetails({
             router.push(`${pathname}?${updatedSearchParams.toString()}`);
           }}
           onAccept={() => {
+            updatedSearchParams.delete("exitModal");
+            router.replace(`${pathname}?${updatedSearchParams.toString()}`, {
+              scroll: false,
+            });
             window.open(job.url, "_blank");
           }}
         />

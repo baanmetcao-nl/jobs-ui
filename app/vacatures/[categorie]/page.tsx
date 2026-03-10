@@ -162,7 +162,7 @@ export default async function NichePage({
           showNicheFilter={false}
         />
 
-        <JobList jobsResponse={jobsResponse} page={page} />
+        <JobList jobsResponse={jobsResponse} page={page - 1} />
 
         <div className="mt-16">
           <h2 className="text-xl font-semibold mb-6">

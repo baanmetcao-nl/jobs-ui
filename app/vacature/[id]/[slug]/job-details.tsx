@@ -139,7 +139,7 @@ export default function JobDetails({
     <div className="min-h-screen bg-white pb-20 md:pb-0">
       <div
         ref={stickyBarRef}
-        className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg md:hidden transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] translate-y-full"
+        className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg md:hidden transition-transform duration-500 ease-in-out translate-y-full"
       >
         <div className="flex flex-col items-center justify-between px-4 py-3">
           <div>
@@ -182,7 +182,7 @@ export default function JobDetails({
             <div className="mb-8">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-4">
                 <div className="flex items-start gap-4">
-                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shrink-0">
                     <CompanyLogo
                       src={
                         job.company.logoUrl
@@ -455,7 +455,7 @@ function RelatedJobCard({ vacature }: { vacature: MinimalJob }) {
     <div className="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
       <div className="flex items-start gap-4">
         <div
-          className={`w-12 rounded-full flex items-center justify-center flex-shrink-0`}
+          className={`w-12 rounded-full flex items-center justify-center shrink-0`}
         >
           <span className="text-white font-semibold text-sm">
             <Image
@@ -514,7 +514,7 @@ function Sidebar({
   pathname,
 }: SidebarProps) {
   return (
-    <div className="lg:w-80 lg:flex-shrink-0">
+    <div className="lg:w-80 lg:shrink-0">
       <div className="lg:sticky lg:top-24 space-y-6">
         <div className="bg-gray-50 rounded-lg p-6 max-sm:hidden">
           <h3 className="text-lg font-semibold mb-4 mt-0 text-gray-900">

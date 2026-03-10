@@ -71,7 +71,7 @@ export default async function JobBoard({
           jobCount={jobsResponse.data.length}
           totalJobCount={jobsResponse.pagination.totalCount}
         />
-        <div className="relative rounded-lg bg-gray-50 flex mt-4 mb-8 items-center relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden py-8">
+        <div className="relative rounded-lg bg-gray-50 flex mt-4 mb-8 items-center  bg-linear-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden py-8">
           <div className="flex flex-col gap-3 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
             <h1 className="text-2xl font-bold text-white">
               Werk met zekerheid. Kies voor een{" "}

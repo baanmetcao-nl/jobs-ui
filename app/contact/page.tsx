@@ -110,7 +110,7 @@ export default function ContactPage() {
               name="message"
               required
               placeholder="Vertel ons hoe we je kunnen helpen..."
-              className="min-h-[150px] resize-none"
+              className="min-h-37.5 resize-none"
               disabled={loading}
             />
           </div>

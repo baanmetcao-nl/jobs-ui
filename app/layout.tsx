@@ -13,6 +13,7 @@ const interFont = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://baanmcao.nl"),
   title: {
     default: "Baan met CAO - Vacatures met eerlijke arbeidsvoorwaarden",
     template: "%s | Baan met CAO",
@@ -88,11 +89,55 @@ export default function RootLayout({
   return (
     <html lang="nl">
       <head>
-        {/* CSS van Silktide Consent Manager */}
         <link
           rel="stylesheet"
           id="silktide-consent-manager-css"
           href="/silktide-consent/silktide-consent-manager.css"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Baan met CAO",
+              url: "https://baanmcao.nl",
+              logo: "https://baanmcao.nl/logo.png",
+              description:
+                "Ontdek vacatures met CAO, eerlijke salarissen en goede arbeidsvoorwaarden. Werk met zekerheid.",
+              sameAs: [],
+              contactPoint: {
+                "@type": "ContactPoint",
+                contactType: "customer service",
+                email: "info@baanmcao.nl",
+              },
+              address: {
+                "@type": "PostalAddress",
+                addressCountry: "NL",
+                addressLocality: "Nederland",
+              },
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Baan met CAO",
+              url: "https://baanmcao.nl",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: {
+                  "@type": "EntryPoint",
+                  urlTemplate:
+                    "https://baanmcao.nl/?search={search_term_string}",
+                },
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
         />
       </head>
       <body className={`flex flex-col min-h-screen ${interFont.className}`}>

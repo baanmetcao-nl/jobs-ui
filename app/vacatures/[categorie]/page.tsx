@@ -132,6 +132,25 @@ export default async function NichePage({
     })),
   };
 
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Vacatures",
+        item: "https://baanmcao.nl/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: config.heading,
+        item: `https://baanmcao.nl/vacatures/${categorie}`,
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Script
@@ -139,6 +158,13 @@ export default async function NichePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData),
+        }}
+      />
+      <Script
+        id="category-breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbData),
         }}
       />
 

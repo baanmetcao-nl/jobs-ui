@@ -136,6 +136,31 @@ export default async function LocationPage({
       }
     : null;
 
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Vacatures",
+        item: "https://baanmcao.nl/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: config.heading,
+        item: `https://baanmcao.nl/vacatures/${categorie}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: cityName,
+        item: `https://baanmcao.nl/vacatures/${categorie}/${locatie}`,
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {structuredData && (
@@ -147,6 +172,13 @@ export default async function LocationPage({
           }}
         />
       )}
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbData),
+        }}
+      />
 
       <main className="max-w-7xl mx-auto px-4 pt-8 pb-20">
         <nav className="text-sm text-gray-500 mb-4">

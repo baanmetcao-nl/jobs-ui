@@ -136,7 +136,6 @@ export default function JobDetails({
       ? `${job.hours.min} uur`
       : `${job.hours.min} - ${job.hours.max} uur`;
 
-  // Sanitize HTML from TipTap editor to prevent XSS
   const sanitizedDescription = DOMPurify.sanitize(job.description);
 
   return (

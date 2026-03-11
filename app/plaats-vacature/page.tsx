@@ -169,7 +169,7 @@ export default function PlaceJobPage() {
             Plaats je vacature
           </h1>
           <p className="text-gray-600">
-            Bereik duizenden werkzoekenden met een CAO-vacature
+            Bereik duizenden werkzoekenden met jouw vacature
           </p>
         </div>
 

@@ -282,7 +282,7 @@ export function JobDetailsForm({
           Contract & Salaris
         </h2>
 
-        <div className="space-y-4">
+        <div className="space-y-9">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="contract" className="mb-4">
@@ -802,7 +802,7 @@ export function JobDetailsForm({
           <div>
             <Label
               htmlFor="niche"
-              className={errors.niches ? "text-red-500" : ""}
+              className={`${errors.niches ? "text-red-500" : ""} mb-3`}
             >
               Categorieën <span className="text-red-500">*</span>
             </Label>

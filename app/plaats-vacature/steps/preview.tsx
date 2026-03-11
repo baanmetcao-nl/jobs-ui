@@ -207,13 +207,23 @@ export function PreviewStep({
       </div>
 
       <div className="flex justify-between pt-4 border-t">
-        <Button type="button" variant="outline" onClick={onBack}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            onBack();
+          }}
+        >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Vorige
         </Button>
         <Button
           type="button"
-          onClick={onNext}
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            onNext();
+          }}
           className="bg-[#F1592A] hover:bg-[#e04d1f] text-white min-w-[200px]"
         >
           Verder naar prijzen

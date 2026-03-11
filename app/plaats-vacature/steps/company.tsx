@@ -56,6 +56,7 @@ export function CompanyForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       onNext();
     }
   };
@@ -257,7 +258,14 @@ export function CompanyForm({
       </div>
 
       <div className="flex justify-between pt-4 border-t">
-        <Button type="button" variant="outline" onClick={onBack}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            onBack();
+          }}
+        >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Vorige
         </Button>

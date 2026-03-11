@@ -66,6 +66,7 @@ export function AccountStep({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       onComplete();
     }
   };

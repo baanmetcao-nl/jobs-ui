@@ -29,7 +29,7 @@ export type JobDetailsFormData = {
     stockPlan: boolean;
   };
   tags: string[];
-  niches: Niche[];
+  niche: Niche | null;
   applicationMethod: "email" | "external" | "mollie";
   applicationEmail?: string;
 };

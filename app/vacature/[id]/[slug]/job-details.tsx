@@ -245,7 +245,7 @@ export default function JobDetails({
                 />
                 <InfoItem
                   icon={<Calendar color="#F1693F" />}
-                  label="Remote"
+                  label="Werkplek"
                   description={capitalize(workplaceLabels[job.workplace])}
                 />
                 <InfoItem

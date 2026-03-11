@@ -120,8 +120,8 @@ export function JobDetailsForm({
       }
     }
 
-    if (!data.niches || data.niches.length === 0) {
-      newErrors.niches = "Minimaal 1 categorie is verplicht";
+    if (!data.niche) {
+      newErrors.niches = "Categorie is verplicht";
     }
 
     setErrors(newErrors);
@@ -141,6 +141,7 @@ export function JobDetailsForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       onNext();
     }
   };
@@ -164,15 +165,7 @@ export function JobDetailsForm({
   };
 
   const addNiche = (niche: string) => {
-    const currentNiches = data.niches || [];
-    if (niche && !currentNiches.includes(niche as Niche)) {
-      onChange({ niches: [...currentNiches, niche as Niche] });
-    }
-  };
-
-  const removeNiche = (niche: string) => {
-    const currentNiches = data.niches || [];
-    onChange({ niches: currentNiches.filter((n) => n !== niche) });
+    onChange({ niche: niche as Niche });
   };
 
   const tagCount = data.tags?.length || 0;
@@ -804,11 +797,11 @@ export function JobDetailsForm({
               htmlFor="niche"
               className={`${errors.niches ? "text-red-500" : ""} mb-3`}
             >
-              Categorieën <span className="text-red-500">*</span>
+              Categorie <span className="text-red-500">*</span>
             </Label>
-            <Select onValueChange={addNiche}>
+            <Select value={data.niche || ""} onValueChange={addNiche}>
               <SelectTrigger className={errors.niches ? "border-red-500" : ""}>
-                <SelectValue placeholder="Kies categorieën" />
+                <SelectValue placeholder="Kies een categorie" />
               </SelectTrigger>
               <SelectContent>
                 {Object.values(nicheSeo)
@@ -823,23 +816,6 @@ export function JobDetailsForm({
             {errors.niches && (
               <p className="text-sm text-red-500 mt-1">{errors.niches}</p>
             )}
-            <div className="flex flex-wrap gap-2 mt-2">
-              {data.niches?.map((niche) => (
-                <span
-                  key={niche}
-                  className="inline-flex items-center gap-1 px-3 py-1 bg-[#F1592A]/10 text-[#F1592A] rounded-full text-sm"
-                >
-                  {niche}
-                  <button
-                    type="button"
-                    onClick={() => removeNiche(niche)}
-                    className="hover:text-red-500"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </span>
-              ))}
-            </div>
           </div>
         </div>
       </div>

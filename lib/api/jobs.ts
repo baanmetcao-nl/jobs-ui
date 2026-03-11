@@ -23,6 +23,23 @@ type FetchJobsParams = {
   niches?: string[];
 };
 
+// Fetch total job count without any filters (for homepage banner)
+export async function fetchTotalJobCount(): Promise<number> {
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs/count`;
+
+  const res = await fetch(url, {
+    next: { revalidate: 300 }, // Cache for 5 minutes
+  });
+
+  if (!res.ok) {
+    console.error("Failed to fetch total job count:", res.status);
+    return 0;
+  }
+
+  const data = await res.json();
+  return data.count || 0;
+}
+
 export async function fetchJobCount({
   niches,
   contracts,
@@ -49,7 +66,6 @@ export async function fetchJobCount({
   niches?.forEach((n) => params.append("niches", n));
 
   const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs/count?${params.toString()}`;
-  console.log("fetchJobCount URL:", url);
 
   const res = await fetch(url, {
     next: { revalidate: 60 },

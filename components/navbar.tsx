@@ -41,7 +41,7 @@ export function NavBar() {
           <div className="flex items-center gap-6 lg:gap-8">
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src="/logo-header.png"
+                src="/logo-nav.svg"
                 alt="Job Board Logo"
                 width={160}
                 height={62}

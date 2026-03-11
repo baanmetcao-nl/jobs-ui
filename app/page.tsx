@@ -2,7 +2,7 @@ import Filters from "./filters";
 import JobList from "./job-list";
 import { formatNumber } from "@/lib/utils";
 import { JobsResponse } from "./types";
-import { fetchJobs } from "../lib/api/jobs";
+import { fetchJobs, fetchTotalJobCount } from "../lib/api/jobs";
 
 const LIMIT = 10;
 
@@ -64,6 +64,8 @@ export default async function JobBoard({
     niches: nichesValues,
   });
 
+  const totalJobCount = await fetchTotalJobCount();
+
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="max-w-7xl mx-auto px-4 pt-8 pb-20">
@@ -78,8 +80,8 @@ export default async function JobBoard({
               <span className="text-[#F1592A]">baan met CAO</span>
             </h1>
             <p className="text-white mb-0">
-              Ontdek {formatNumber(jobsResponse.pagination.totalCount)}{" "}
-              vacatures met eerlijke salarissen en goede arbeidsvoorwaarden.
+              Ontdek {formatNumber(totalJobCount)} vacatures met eerlijke
+              salarissen en goede arbeidsvoorwaarden.
             </p>
           </div>
         </div>

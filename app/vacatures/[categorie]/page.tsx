@@ -5,7 +5,7 @@ import Script from "next/script";
 import Filters from "@/app/filters";
 import JobList from "@/app/job-list";
 import Link from "next/link";
-import { fetchJobs } from "@/lib/api/jobs";
+import { fetchJobs, fetchTotalJobCount } from "@/lib/api/jobs";
 import { locations } from "@/lib/locations";
 import { capitalize } from "@/lib/utils";
 
@@ -116,7 +116,7 @@ export default async function NichePage({
   }
 
   const hasJobs = jobsResponse.pagination.totalCount > 0;
-  const totalJobCount = jobsResponse.pagination.totalCount;
+  const totalJobCount = await fetchTotalJobCount();
 
   const structuredData = {
     "@context": "https://schema.org",

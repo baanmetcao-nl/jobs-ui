@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Briefcase, Search } from "lucide-react";
 import { NicheSeoConfig } from "@/lib/niches";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 
 type NoJobsFoundProps = {
   config: NicheSeoConfig;

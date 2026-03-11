@@ -136,12 +136,10 @@ function setSingleValue(
 
 export default function Filters({
   jobCount,
-  totalJobCount,
   showNicheFilter = true,
   showLocationFilter = true,
 }: {
   jobCount: number;
-  totalJobCount: number;
   showNicheFilter?: boolean;
   showLocationFilter?: boolean;
 }) {

@@ -1,8 +1,12 @@
 type Seniority = "junior" | "medior" | "senior" | "principal";
 
+export type { Seniority };
+
 type Workplace = "remote" | "hybrid" | "office" | "other" | "free_choice";
 
 export type Contract = "freelance" | "temporary" | "permanent" | "flex";
+
+export type { Workplace };
 
 type Education =
   | "none"
@@ -15,7 +19,11 @@ type Education =
   | "doctorate"
   | "unknown";
 
+export type { Education };
+
 type Country = "the_netherlands" | "unknown";
+
+export type { Country };
 
 export type Interval =
   | "hourly"
@@ -49,6 +57,7 @@ export type Niche =
 export type Job = {
   id: string;
   title: string;
+  slug?: string;
   description: string;
   country: Country;
   city: string;
@@ -91,6 +100,7 @@ export type Job = {
 
 export type MinimalJob = {
   id: string;
+  slug?: string;
   salary: {
     symbol: string;
     min: number;

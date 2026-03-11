@@ -10,7 +10,7 @@ export const dynamic = "force-static";
 
 const getJob = cache(async function getJob(id: string) {
   const res = await fetch(
-    `https://jobs-dry-breeze-1010.fly.dev/api/jobs/${id}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs/${id}`,
   );
 
   if (res.status === 404) notFound();
@@ -30,7 +30,7 @@ const getRelatedJobs = cache(async function getRelatedJobs(
   niches.forEach((niche) => params.append("niches", niche));
 
   const res = await fetch(
-    `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?${params.toString()}`,
   );
   if (!res.ok) throw new Error("Failed to fetch related jobs");
 
@@ -47,7 +47,7 @@ const getRelatedCompanyJobs = cache(async function getRelatedCompanyJobs(
   ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
 
   const res = await fetch(
-    `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?${params.toString()}`,
   );
 
   if (!res.ok) throw new Error("Failed to fetch company jobs");

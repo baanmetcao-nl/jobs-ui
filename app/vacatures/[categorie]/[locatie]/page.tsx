@@ -4,10 +4,10 @@ import Script from "next/script";
 import Filters from "@/app/filters";
 import JobList from "@/app/job-list";
 import Link from "next/link";
-import { fetchJobs, fetchTotalJobCount } from "@/lib/api/jobs";
+import { fetchJobs } from "@/lib/api/jobs";
 import { getLocationName, locations } from "@/lib/locations";
 import { capitalize } from "@/lib/utils";
-import { JobsResponse } from "@/app/types";
+import { JobsResponse, MinimalJob } from "@/app/types";
 import { NoJobsFound } from "@/components/noJobsFound";
 
 const LIMIT = 10;
@@ -120,7 +120,6 @@ export default async function LocationPage({
   }
 
   const hasJobs = jobsResponse.pagination.totalCount > 0;
-  const totalJobCount = await fetchTotalJobCount();
 
   const structuredData = hasJobs
     ? {
@@ -128,11 +127,13 @@ export default async function LocationPage({
         "@type": "ItemList",
         name: `${config.heading} in ${cityName} | Baan met CAO`,
         numberOfItems: jobsResponse.pagination.totalCount,
-        itemListElement: jobsResponse.data.map((job: any, index: number) => ({
-          "@type": "ListItem",
-          position: index + 1,
-          url: `https://baanmetcao.nl/vacature/${job.id}/${job.slug}`,
-        })),
+        itemListElement: jobsResponse.data.map(
+          (job: MinimalJob, index: number) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            url: `https://baanmetcao.nl/vacature/${job.id}/${job.slug}`,
+          }),
+        ),
       }
     : null;
 
@@ -204,7 +205,6 @@ export default async function LocationPage({
           <>
             <Filters
               jobCount={jobsResponse.data.length}
-              totalJobCount={totalJobCount}
               showLocationFilter={false}
               showNicheFilter={false}
             />

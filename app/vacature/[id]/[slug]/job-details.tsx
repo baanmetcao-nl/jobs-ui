@@ -32,6 +32,7 @@ import {
 } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+import DOMPurify from "dompurify";
 import { Job, MinimalJob } from "@/app/types";
 import CompanyLogo from "@/components/image-fallback";
 
@@ -134,6 +135,9 @@ export default function JobDetails({
     job.hours.min === job.hours.max
       ? `${job.hours.min} uur`
       : `${job.hours.min} - ${job.hours.max} uur`;
+
+  // Sanitize HTML from TipTap editor to prevent XSS
+  const sanitizedDescription = DOMPurify.sanitize(job.description);
 
   return (
     <div className="min-h-screen bg-white pb-20 md:pb-0">
@@ -281,7 +285,7 @@ export default function JobDetails({
             <div className="mb-8">
               <div className="prose max-w-none text-gray-700">
                 <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                  {job.description}
+                  {sanitizedDescription}
                 </ReactMarkdown>
 
                 <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">

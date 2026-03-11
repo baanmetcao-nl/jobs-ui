@@ -89,6 +89,11 @@ export function NavBar() {
             </form>
           )}
           <div className="flex items-center gap-2">
+            <Link href="/plaats-vacature">
+              <Button className="hidden md:inline-flex bg-[#F1592A] hover:bg-[#e04d1f] text-white">
+                Plaats vacature
+              </Button>
+            </Link>
             <Button
               variant="ghost"
               size="icon"
@@ -112,6 +117,13 @@ export function NavBar() {
               onClick={() => setIsMenuOpen(false)}
             >
               Alle vacatures
+            </Link>
+            <Link
+              href="/plaats-vacature"
+              className="block px-4 py-2 text-sm font-medium text-[#F1592A] hover:bg-gray-50 rounded-md"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Plaats vacature
             </Link>
             <Link
               href="/over-ons"

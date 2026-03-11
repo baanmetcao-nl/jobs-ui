@@ -1,6 +1,6 @@
 "use client";
 
-import { JobsResponse } from "./types";
+import { JobsResponse } from "@/app/types";
 import { MapPin, Building2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

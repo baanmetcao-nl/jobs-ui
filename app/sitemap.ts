@@ -52,7 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const jobsRes = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL || "https://jobs-dry-breeze-1010.fly.dev"}/api/jobs?limit=1000`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?limit=1000`,
       {
         next: { revalidate: 3600 },
       },

@@ -117,11 +117,11 @@ export function PricingStep({
           💡 Extra informatie
         </h3>
         <ul className="text-sm text-blue-800 space-y-2">
-          <li>• Alle pakketten zijn 30 dagen geldig vanaf publicatiedatum</li>
-          <li>• Verlengen kan altijd voor €99 per vacature</li>
-          <li>• Betaling via iDEAL, Bancontact of factuur (zakelijk)</li>
-          <li>• Btw wordt apart in rekening gebracht</li>
-          <li>• Niet tevreden? Volledige refund binnen 7 dagen</li>
+          <li>Alle pakketten zijn 30 dagen geldig vanaf publicatiedatum</li>
+          <li>Verlengen kan altijd voor €99 per vacature</li>
+          <li>Betaling via iDEAL, Bancontact of factuur (zakelijk)</li>
+          <li>Btw wordt apart in rekening gebracht</li>
+          <li>Niet tevreden? Volledige refund binnen 7 dagen</li>
         </ul>
       </div>
 

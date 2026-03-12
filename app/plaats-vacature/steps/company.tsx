@@ -352,7 +352,7 @@ export function CompanyForm({
         </Button>
         <Button
           type="submit"
-          className="bg-[#F1592A] hover:bg-[#e04d1f] text-white min-w-[200px]"
+          className="hover:bg-[#e04d1f] text-white min-w-[100px] outline"
         >
           Volgende stap
           <ArrowRight className="w-4 h-4 ml-2" />

@@ -124,7 +124,7 @@ export function PreviewStep({
           <div className="flex items-start gap-4">
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shrink-0">
               <img
-                src={companyData.logoUrl}
+                src={companyData.logoUrl || "/web-app-manifest-512x512.png"}
                 alt={companyData.name || "Bedrijf"}
                 className="w-16 h-16 object-contain rounded-full"
               />
@@ -259,7 +259,7 @@ export function PreviewStep({
           </p>
         </div>
         <Button className="bg-[#F1592A] hover:bg-[#F1592A]/90 text-white font-medium px-8 py-2 sm:w-auto w-full">
-          Solliciteer nu (preview)
+          Solliciteer nu (preview button)
         </Button>
       </div>
 
@@ -300,9 +300,9 @@ export function PreviewStep({
             window.scrollTo({ top: 0, behavior: "smooth" });
             onNext();
           }}
-          className="bg-[#F1592A] hover:bg-[#e04d1f] text-white min-w-[200px]"
+          className="hover:bg-[#e04d1f] text-white min-w-[100px]"
         >
-          Verder naar prijzen
+          Volgende stap
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </div>

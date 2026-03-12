@@ -226,7 +226,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       "Statistieken dashboard",
       "Verlengen mogelijk",
       "Voorrang in lijst",
-      "API toegang",
     ],
   },
 ];

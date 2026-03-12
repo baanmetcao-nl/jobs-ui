@@ -2,8 +2,19 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Heading from "@tiptap/extension-heading";
 import Placeholder from "@tiptap/extension-placeholder";
-import { Bold, Italic, List, ListOrdered, Undo, Redo } from "lucide-react";
+import {
+  Bold,
+  Italic,
+  List,
+  ListOrdered,
+  Undo,
+  Redo,
+  Heading1,
+  Heading2,
+  Heading3,
+} from "lucide-react";
 import { useEffect } from "react";
 
 interface RichTextEditorProps {
@@ -22,6 +33,9 @@ export function RichTextEditor({
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Heading.configure({
+        levels: [2, 3, 4],
+      }),
       Placeholder.configure({
         placeholder,
       }),
@@ -107,6 +121,26 @@ export function RichTextEditor({
           title="Genummerde lijst"
         >
           <ListOrdered className="w-4 h-4" />
+        </ToolbarButton>
+        <div className="w-px h-6 bg-gray-300 mx-1" />
+        {/* Headings */}
+        <ToolbarButton
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+          }
+          isActive={editor.isActive("heading", { level: 2 })}
+          title="Kop 2"
+        >
+          <Heading2 className="w-4 h-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 3 }).run()
+          }
+          isActive={editor.isActive("heading", { level: 3 })}
+          title="Kop 3"
+        >
+          <Heading3 className="w-4 h-4" />
         </ToolbarButton>
         <div className="w-px h-6 bg-gray-300 mx-1" />
         <ToolbarButton

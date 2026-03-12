@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -41,12 +41,39 @@ export function CompanyForm({
   onBack,
 }: CompanyFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [bioLength, setBioLength] = useState(0);
+
+  React.useEffect(() => {
+    setBioLength((data.bio || "").length);
+  }, [data.bio]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!data.name?.trim()) {
-      newErrors.name = "Bedrijfsnaam is verplicht";
+    if (!data.name?.trim() || data.name!.trim().length < 2) {
+      newErrors.name = "Bedrijfsnaam is verplicht en minimaal 2 tekens";
+    }
+
+    if (!data.bio?.trim()) {
+      newErrors.bio = "Beschrijving over het bedrijf is verplicht";
+    } else if (data.bio.length > 500) {
+      newErrors.bio = "Beschrijving mag maximaal 500 tekens bevatten";
+    }
+
+    if (!data.industry) {
+      newErrors.industry = "Branche is verplicht";
+    }
+
+    if (!data.location?.trim() || data.location!.trim().length < 2) {
+      newErrors.location = "Locatie is verplicht en minimaal 2 tekens";
+    }
+
+    if (data.website?.trim()) {
+      try {
+        new URL(data.website);
+      } catch {
+        newErrors.website = "Ongeldige website URL";
+      }
     }
 
     setErrors(newErrors);
@@ -98,14 +125,17 @@ export function CompanyForm({
 
         <div className="space-y-4">
           <div>
-            <Label htmlFor="name">
+            <Label htmlFor="name" className="mb-2">
               Bedrijfsnaam <span className="text-red-500">*</span>
             </Label>
             <Input
               id="name"
               placeholder="Bijv. Acme B.V."
               value={data.name || ""}
-              onChange={(e) => onChange({ name: e.target.value })}
+              onChange={(e) =>
+                onChange({ name: sanitizeInput(e.target.value) })
+              }
+              onBlur={() => validateForm()}
               className={errors.name ? "border-red-500" : ""}
             />
             {errors.name && (
@@ -114,22 +144,49 @@ export function CompanyForm({
           </div>
 
           <div>
-            <Label htmlFor="bio">Over het bedrijf</Label>
+            <Label htmlFor="bio" className="mb-2">
+              Over het bedrijf <span className="text-red-500">*</span>
+            </Label>
             <Textarea
               id="bio"
               placeholder="Vertel iets over je bedrijf, cultuur en werkomgeving..."
               value={data.bio || ""}
-              onChange={(e) => onChange({ bio: e.target.value })}
+              onChange={(e) => {
+                const value = sanitizeInput(e.target.value.slice(0, 500));
+                onChange({ bio: value });
+                setBioLength(value.length);
+              }}
+              onBlur={() => validateForm()}
+              className={errors.bio ? "border-red-500" : ""}
               rows={4}
             />
-            <p className="text-xs text-gray-500 mt-1">
-              Een goede beschrijving helpt om talent aan te trekken
-            </p>
+            <div className="flex justify-between text-xs mt-1">
+              <p className={errors.bio ? "text-red-500" : "text-gray-500"}>
+                Een goede beschrijving helpt om talent aan te trekken
+              </p>
+              <p
+                className={
+                  bioLength > 500 || errors.bio
+                    ? "text-red-500"
+                    : "text-gray-500"
+                }
+              >
+                {bioLength}/500
+              </p>
+            </div>
+            {errors.bio && (
+              <p className="text-sm text-red-500 mt-1">{errors.bio}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="website">Website</Label>
+              <Label htmlFor="website" className="mb-2">
+                Website
+              </Label>
+              {errors.website && (
+                <p className="text-sm text-red-500 mt-1">{errors.website}</p>
+              )}
               <div className="relative">
                 <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
@@ -137,17 +194,22 @@ export function CompanyForm({
                   type="url"
                   placeholder="https://bedrijf.nl"
                   value={data.website || ""}
-                  onChange={(e) => onChange({ website: e.target.value })}
-                  className="pl-10"
+                  onChange={(e) =>
+                    onChange({ website: sanitizeInput(e.target.value) })
+                  }
+                  onBlur={() => validateForm()}
+                  className={`pl-10 ${errors.website ? "border-red-500" : ""}`}
                 />
               </div>
             </div>
 
             <div>
-              <Label>Bedrijfsgrootte</Label>
+              <Label className="mb-2">Bedrijfsgrootte</Label>
               <Select
                 value={data.size || ""}
-                onValueChange={(value) => onChange({ size: value })}
+                onValueChange={(value) => {
+                  onChange({ size: value });
+                }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Kies grootte" />
@@ -165,12 +227,19 @@ export function CompanyForm({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label>Branche</Label>
+              <Label className="mb-2">
+                Branche <span className="text-red-500">*</span>
+              </Label>
               <Select
                 value={data.industry || ""}
-                onValueChange={(value) => onChange({ industry: value })}
+                onValueChange={(value) => {
+                  onChange({ industry: value });
+                  if (errors.industry) validateForm();
+                }}
               >
-                <SelectTrigger>
+                <SelectTrigger
+                  className={errors.industry ? "border-red-500" : ""}
+                >
                   <SelectValue placeholder="Kies branche" />
                 </SelectTrigger>
                 <SelectContent>
@@ -181,16 +250,28 @@ export function CompanyForm({
                   ))}
                 </SelectContent>
               </Select>
+              {errors.industry && (
+                <p className="text-sm text-red-500 mt-1">{errors.industry}</p>
+              )}
             </div>
 
             <div>
-              <Label htmlFor="location">Locatie (hoofdkantoor)</Label>
+              <Label htmlFor="location" className="mb-2">
+                Locatie (hoofdkantoor) <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="location"
                 placeholder="Bijv. Amsterdam"
                 value={data.location || ""}
-                onChange={(e) => onChange({ location: e.target.value })}
+                onChange={(e) =>
+                  onChange({ location: sanitizeInput(e.target.value) })
+                }
+                onBlur={() => validateForm()}
+                className={errors.location ? "border-red-500" : ""}
               />
+              {errors.location && (
+                <p className="text-sm text-red-500 mt-1">{errors.location}</p>
+              )}
             </div>
           </div>
         </div>

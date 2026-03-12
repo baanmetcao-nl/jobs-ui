@@ -339,12 +339,13 @@ export function JobDetailsForm({
                 <Euro className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
                   type="number"
+                  min="0"
                   placeholder="3000"
                   value={data.salary?.min || ""}
                   onChange={(e) =>
                     onChange({
                       salary: {
-                        min: Number(e.target.value),
+                        min: Math.max(0, Number(e.target.value)),
                         max: data.salary?.max ?? 0,
                         interval: data.salary?.interval ?? "monthly",
                       },
@@ -366,13 +367,14 @@ export function JobDetailsForm({
                 <Euro className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
                   type="number"
+                  min="0"
                   placeholder="4000"
                   value={data.salary?.max || ""}
                   onChange={(e) =>
                     onChange({
                       salary: {
                         min: data.salary?.min ?? 0,
-                        max: Number(e.target.value),
+                        max: Math.max(0, Number(e.target.value)),
                         interval: data.salary?.interval ?? "monthly",
                       },
                     })
@@ -452,12 +454,13 @@ export function JobDetailsForm({
               </Label>
               <Input
                 type="number"
+                min="0"
                 placeholder="32"
                 value={data.hours?.min || ""}
                 onChange={(e) =>
                   onChange({
                     hours: {
-                      min: Number(e.target.value),
+                      min: Math.max(0, Number(e.target.value)),
                       max: data.hours?.max ?? 0,
                     },
                   })
@@ -475,13 +478,14 @@ export function JobDetailsForm({
               </Label>
               <Input
                 type="number"
+                min="0"
                 placeholder="40"
                 value={data.hours?.max || ""}
                 onChange={(e) =>
                   onChange({
                     hours: {
                       min: data.hours?.min ?? 0,
-                      max: Number(e.target.value),
+                      max: Math.max(0, Number(e.target.value)),
                     },
                   })
                 }

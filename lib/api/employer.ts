@@ -12,18 +12,14 @@ import type {
   EmployerProfile,
   PricingPlan,
 } from "@/app/types-employer";
+import { backendFetch } from "./backend";
 
 export async function createJobDraft(
   jobData: Partial<JobDetailsFormData>,
   companyData: Partial<CompanyFormData>,
 ): Promise<{ draftId: string }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs/draft`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/jobs/draft", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({
       job: jobData,
       company: companyData,
@@ -42,13 +38,8 @@ export async function updateJobDraft(
   jobData: Partial<JobDetailsFormData>,
   companyData?: Partial<CompanyFormData>,
 ): Promise<{ success: boolean }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs/draft/${draftId}`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/employer/jobs/draft/${draftId}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({
       job: jobData,
       company: companyData,
@@ -67,13 +58,8 @@ export async function publishJob(
   pricing: PricingPlan,
   accountData: AccountFormData,
 ): Promise<CreateJobResponse> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs/publish`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/jobs/publish", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({
       draftId,
       pricing,
@@ -96,9 +82,7 @@ export async function getDraft(draftId: string): Promise<{
   job: Partial<JobDetailsFormData>;
   company: Partial<CompanyFormData>;
 }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/drafts/${draftId}`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/employer/drafts/${draftId}`, {
     next: { revalidate: 0 },
   });
 
@@ -110,9 +94,7 @@ export async function getDraft(draftId: string): Promise<{
 }
 
 export async function getEmployerDashboard(): Promise<EmployerDashboardResponse> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/dashboard`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/dashboard", {
     next: { revalidate: 60 },
     credentials: "include",
   });
@@ -125,9 +107,7 @@ export async function getEmployerDashboard(): Promise<EmployerDashboardResponse>
 }
 
 export async function getEmployerJobs(): Promise<DashboardJob[]> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/jobs", {
     next: { revalidate: 60 },
     credentials: "include",
   });
@@ -140,9 +120,7 @@ export async function getEmployerJobs(): Promise<DashboardJob[]> {
 }
 
 export async function getEmployerStats(): Promise<DashboardStats> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/stats`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/stats", {
     next: { revalidate: 60 },
     credentials: "include",
   });
@@ -158,13 +136,8 @@ export async function updateJob(
   jobId: string,
   jobData: Partial<JobDetailsFormData>,
 ): Promise<{ success: boolean }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs/${jobId}`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/employer/jobs/${jobId}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(jobData),
     credentials: "include",
   });
@@ -179,9 +152,7 @@ export async function updateJob(
 export async function duplicateJob(
   jobId: string,
 ): Promise<DuplicateJobResponse> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs/${jobId}/duplicate`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/employer/jobs/${jobId}/duplicate`, {
     method: "POST",
     credentials: "include",
   });
@@ -197,13 +168,8 @@ export async function extendJob(
   jobId: string,
   durationDays: number = 30,
 ): Promise<ExtendJobResponse> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs/${jobId}/extend`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/employer/jobs/${jobId}/extend`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({ durationDays }),
     credentials: "include",
   });
@@ -218,9 +184,7 @@ export async function extendJob(
 export async function republishJob(
   jobId: string,
 ): Promise<{ success: boolean; newExpiryDate: string }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs/${jobId}/republish`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/employer/jobs/${jobId}/republish`, {
     method: "POST",
     credentials: "include",
   });
@@ -233,9 +197,7 @@ export async function republishJob(
 }
 
 export async function pauseJob(jobId: string): Promise<{ success: boolean }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs/${jobId}/pause`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/employer/jobs/${jobId}/pause`, {
     method: "POST",
     credentials: "include",
   });
@@ -250,9 +212,7 @@ export async function pauseJob(jobId: string): Promise<{ success: boolean }> {
 export async function activateJob(
   jobId: string,
 ): Promise<{ success: boolean }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs/${jobId}/activate`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/employer/jobs/${jobId}/activate`, {
     method: "POST",
     credentials: "include",
   });
@@ -265,9 +225,7 @@ export async function activateJob(
 }
 
 export async function deleteJob(jobId: string): Promise<{ success: boolean }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs/${jobId}`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/employer/jobs/${jobId}`, {
     method: "DELETE",
     credentials: "include",
   });
@@ -283,13 +241,8 @@ export async function bulkAction(
   jobIds: string[],
   action: "delete" | "pause" | "activate" | "extend",
 ): Promise<{ success: boolean; affectedCount: number }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/jobs/bulk`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/jobs/bulk", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({ jobIds, action }),
     credentials: "include",
   });
@@ -302,9 +255,7 @@ export async function bulkAction(
 }
 
 export async function getInvoices(): Promise<Invoice[]> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/invoices`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/invoices", {
     next: { revalidate: 60 },
     credentials: "include",
   });
@@ -317,9 +268,7 @@ export async function getInvoices(): Promise<Invoice[]> {
 }
 
 export async function getInvoice(invoiceId: string): Promise<Invoice> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/invoices/${invoiceId}`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/employer/invoices/${invoiceId}`, {
     credentials: "include",
   });
 
@@ -331,9 +280,7 @@ export async function getInvoice(invoiceId: string): Promise<Invoice> {
 }
 
 export async function getEmployerProfile(): Promise<EmployerProfile> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/profile`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/profile", {
     next: { revalidate: 60 },
     credentials: "include",
   });
@@ -348,13 +295,8 @@ export async function getEmployerProfile(): Promise<EmployerProfile> {
 export async function updateEmployerProfile(
   profileData: Partial<EmployerProfile>,
 ): Promise<{ success: boolean }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/profile`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/profile", {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(profileData),
     credentials: "include",
   });
@@ -370,13 +312,8 @@ export async function loginEmployer(
   email: string,
   password: string,
 ): Promise<{ success: boolean; user?: EmployerProfile; error?: string }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/auth/login`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/auth/login", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({ email, password }),
   });
 
@@ -394,13 +331,8 @@ export async function loginEmployer(
 export async function registerEmployer(
   accountData: AccountFormData,
 ): Promise<{ success: boolean; user?: EmployerProfile; error?: string }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/auth/register`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/auth/register", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(accountData),
   });
 
@@ -416,9 +348,7 @@ export async function registerEmployer(
 }
 
 export async function logoutEmployer(): Promise<{ success: boolean }> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/auth/logout`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/auth/logout", {
     method: "POST",
     credentials: "include",
   });
@@ -431,9 +361,7 @@ export async function logoutEmployer(): Promise<{ success: boolean }> {
 }
 
 export async function getCurrentEmployer(): Promise<EmployerProfile | null> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employer/auth/me`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch("/api/employer/auth/me", {
     credentials: "include",
   });
 

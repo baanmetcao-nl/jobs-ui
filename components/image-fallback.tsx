@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function CompanyLogo({ src, alt, size = 60 }: Props) {
-  const [imgSrc, setImgSrc] = useState(src || "/logo.png");
+  const [imgSrc, setImgSrc] = useState(src || "/web-app-manifest-512x512.png");
 
   return (
     <div
@@ -22,7 +22,7 @@ export default function CompanyLogo({ src, alt, size = 60 }: Props) {
         alt={alt}
         width={size}
         height={size}
-        onError={() => setImgSrc("/logo.png")}
+        onError={() => setImgSrc("/web-app-manifest-512x512.png")}
         style={{ objectFit: "contain" }}
         className="w-full h-full object-contain"
         unoptimized

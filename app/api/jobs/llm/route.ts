@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ALLOWED_CONTRACTS } from "@/lib/contracts";
+import { backendFetch } from "@/lib/api/backend";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -222,9 +223,7 @@ export async function GET(request: Request) {
       params.set("contracts", contract);
     }
 
-    const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?${params.toString()}`;
-
-    const response = await fetch(backendUrl, {
+    const response = await backendFetch(`/api/jobs?${params.toString()}`, {
       next: { revalidate: 300 },
     });
 
@@ -266,7 +265,6 @@ export async function GET(request: Request) {
       },
     });
   } catch (error) {
-    console.error("LLM API error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

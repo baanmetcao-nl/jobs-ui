@@ -291,6 +291,7 @@ export default function Filters({
           variant="outline"
           onClick={resetFilters}
           className="flex gap-2 cursor-pointer"
+          role="combobox"
         >
           <Filter className="h-4 w-4" />
           Filters wissen
@@ -351,6 +352,7 @@ function MultiSelect({
         <Button
           variant="outline"
           className="w-full justify-between font-normal"
+          role="combobox"
         >
           {triggerLabel}
           <ChevronDown className="h-4 w-4 ml-2 opacity-50" />

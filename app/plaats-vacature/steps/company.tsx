@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -18,32 +18,62 @@ import {
   Building2,
   Upload,
   Globe,
-  Users,
-  Calendar,
 } from "lucide-react";
 import { CompanyFormData } from "@/app/types-employer";
+import { sanitizeInput } from "@/lib/utils";
 
 interface CompanyFormProps {
   data: Partial<CompanyFormData>;
   onChange: (data: Partial<CompanyFormData>) => void;
+  goToStep?: (slug: string) => void;
 }
 
-function sanitizeInput(input: string): string {
-  return input.replace(/</g, "<").replace(/>/g, ">");
-}
+const COMPANY_SIZES = [
+  { value: "1-10", label: "1-10 medewerkers" },
+  { value: "11-50", label: "11-50 medewerkers" },
+  { value: "51-200", label: "51-200 medewerkers" },
+  { value: "201-500", label: "201-500 medewerkers" },
+  { value: "501-1000", label: "501-1000 medewerkers" },
+  { value: "1000+", label: "1000+ medewerkers" },
+];
 
-export function CompanyForm({ data, onChange }: CompanyFormProps) {
+const INDUSTRIES = [
+  "Technologie",
+  "Finance & Banken",
+  "Healthcare",
+  "Onderwijs",
+  "Overheid",
+  "Retail & E-commerce",
+  "Manufacturing",
+  "Logistiek & Transport",
+  "Media & Communicatie",
+  "Consulting",
+  "Non-profit",
+  "Real Estate",
+  "Energie & Utilities",
+  "Farmacie",
+  "Overig",
+];
+
+export function CompanyForm({ data, onChange, goToStep }: CompanyFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [bioLength, setBioLength] = useState(0);
 
-  React.useEffect(() => {
-    setBioLength((data.bio || "").length);
-  }, [data.bio]);
+  const bioLength = (data.bio || "").length;
+
+  const clearError = (field: string) => {
+    if (errors[field]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!data.name?.trim() || data.name!.trim().length < 2) {
+    if (!data.name?.trim() || data.name.trim().length < 2) {
       newErrors.name = "Bedrijfsnaam is verplicht en minimaal 2 tekens";
     }
 
@@ -57,7 +87,7 @@ export function CompanyForm({ data, onChange }: CompanyFormProps) {
       newErrors.industry = "Branche is verplicht";
     }
 
-    if (!data.location?.trim() || data.location!.trim().length < 2) {
+    if (!data.location?.trim() || data.location.trim().length < 2) {
       newErrors.location = "Locatie is verplicht en minimaal 2 tekens";
     }
 
@@ -76,37 +106,9 @@ export function CompanyForm({ data, onChange }: CompanyFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      window.location.href = "/plaats-vacature/preview";
+      goToStep?.("preview");
     }
   };
-
-  const companySizes = [
-    { value: "1-10", label: "1-10 medewerkers" },
-    { value: "11-50", label: "11-50 medewerkers" },
-    { value: "51-200", label: "51-200 medewerkers" },
-    { value: "201-500", label: "201-500 medewerkers" },
-    { value: "501-1000", label: "501-1000 medewerkers" },
-    { value: "1000+", label: "1000+ medewerkers" },
-  ];
-
-  const industries = [
-    "Technologie",
-    "Finance & Banken",
-    "Healthcare",
-    "Onderwijs",
-    "Overheid",
-    "Retail & E-commerce",
-    "Manufacturing",
-    "Logistiek & Transport",
-    "Media & Communicatie",
-    "Consulting",
-    "Non-profit",
-    "Real Estate",
-    "Energie & Utilities",
-    "Farmacie",
-    "Overig",
-  ];
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
@@ -125,10 +127,10 @@ export function CompanyForm({ data, onChange }: CompanyFormProps) {
               id="name"
               placeholder="Bijv. Acme B.V."
               value={data.name || ""}
-              onChange={(e) =>
-                onChange({ name: sanitizeInput(e.target.value) })
-              }
-              onBlur={() => validateForm()}
+              onChange={(e) => {
+                onChange({ name: sanitizeInput(e.target.value) });
+                if (e.target.value.trim().length >= 2) clearError("name");
+              }}
               className={errors.name ? "border-red-500" : ""}
             />
             {errors.name && (
@@ -147,9 +149,8 @@ export function CompanyForm({ data, onChange }: CompanyFormProps) {
               onChange={(e) => {
                 const value = sanitizeInput(e.target.value.slice(0, 500));
                 onChange({ bio: value });
-                setBioLength(value.length);
+                if (value.trim()) clearError("bio");
               }}
-              onBlur={() => validateForm()}
               className={errors.bio ? "border-red-500" : ""}
               rows={4}
             />
@@ -157,13 +158,7 @@ export function CompanyForm({ data, onChange }: CompanyFormProps) {
               <p className={errors.bio ? "text-red-500" : "text-gray-500"}>
                 Een goede beschrijving helpt om talent aan te trekken
               </p>
-              <p
-                className={
-                  bioLength > 500 || errors.bio
-                    ? "text-red-500"
-                    : "text-gray-500"
-                }
-              >
+              <p className={bioLength > 500 ? "text-red-500" : "text-gray-500"}>
                 {bioLength}/500
               </p>
             </div>
@@ -177,9 +172,6 @@ export function CompanyForm({ data, onChange }: CompanyFormProps) {
               <Label htmlFor="website" className="mb-2">
                 Website
               </Label>
-              {errors.website && (
-                <p className="text-sm text-red-500 mt-1">{errors.website}</p>
-              )}
               <div className="relative">
                 <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
@@ -187,28 +179,29 @@ export function CompanyForm({ data, onChange }: CompanyFormProps) {
                   type="url"
                   placeholder="https://bedrijf.nl"
                   value={data.website || ""}
-                  onChange={(e) =>
-                    onChange({ website: sanitizeInput(e.target.value) })
-                  }
-                  onBlur={() => validateForm()}
+                  onChange={(e) => {
+                    onChange({ website: sanitizeInput(e.target.value) });
+                    clearError("website");
+                  }}
                   className={`pl-10 ${errors.website ? "border-red-500" : ""}`}
                 />
               </div>
+              {errors.website && (
+                <p className="text-sm text-red-500 mt-1">{errors.website}</p>
+              )}
             </div>
 
             <div>
               <Label className="mb-2">Bedrijfsgrootte</Label>
               <Select
                 value={data.size || ""}
-                onValueChange={(value) => {
-                  onChange({ size: value });
-                }}
+                onValueChange={(value) => onChange({ size: value })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Kies grootte" />
                 </SelectTrigger>
                 <SelectContent>
-                  {companySizes.map((size) => (
+                  {COMPANY_SIZES.map((size) => (
                     <SelectItem key={size.value} value={size.value}>
                       {size.label}
                     </SelectItem>
@@ -227,7 +220,7 @@ export function CompanyForm({ data, onChange }: CompanyFormProps) {
                 value={data.industry || ""}
                 onValueChange={(value) => {
                   onChange({ industry: value });
-                  if (errors.industry) validateForm();
+                  clearError("industry");
                 }}
               >
                 <SelectTrigger
@@ -236,7 +229,7 @@ export function CompanyForm({ data, onChange }: CompanyFormProps) {
                   <SelectValue placeholder="Kies branche" />
                 </SelectTrigger>
                 <SelectContent>
-                  {industries.map((industry) => (
+                  {INDUSTRIES.map((industry) => (
                     <SelectItem key={industry} value={industry}>
                       {industry}
                     </SelectItem>
@@ -256,10 +249,10 @@ export function CompanyForm({ data, onChange }: CompanyFormProps) {
                 id="location"
                 placeholder="Bijv. Amsterdam"
                 value={data.location || ""}
-                onChange={(e) =>
-                  onChange({ location: sanitizeInput(e.target.value) })
-                }
-                onBlur={() => validateForm()}
+                onChange={(e) => {
+                  onChange({ location: sanitizeInput(e.target.value) });
+                  if (e.target.value.trim().length >= 2) clearError("location");
+                }}
                 className={errors.location ? "border-red-500" : ""}
               />
               {errors.location && (
@@ -335,10 +328,7 @@ export function CompanyForm({ data, onChange }: CompanyFormProps) {
         <Button
           type="button"
           variant="outline"
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            window.location.href = "/plaats-vacature/vacature";
-          }}
+          onClick={() => goToStep?.("vacature")}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Vorige

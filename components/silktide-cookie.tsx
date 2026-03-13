@@ -49,16 +49,9 @@ export default function SilktideCookieBanner() {
   }, []);
 
   return (
-    <>
-      <link
-        rel="stylesheet"
-        id="silktide-consent-manager-css"
-        href="/silktide-consent/silktide-consent-manager.css"
-      />
-      <Script
-        src="/silktide-consent/silktide-consent-manager.js"
-        strategy="afterInteractive" // pas laden nadat pagina interactief is
-      />
-    </>
+    <Script
+      src="/silktide-consent/silktide-consent-manager.js"
+      strategy="afterInteractive"
+    />
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -103,10 +104,42 @@ const mockJobs: DashboardJob[] = [
 type TabType = "overview" | "jobs" | "invoices";
 
 export default function DashboardPage() {
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<TabType>("overview");
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [stats] = useState<DashboardStats>(mockStats);
-  const [jobs] = useState<DashboardJob[]>(mockJobs);
+  const [jobs, setJobs] = useState<DashboardJob[]>(mockJobs);
+  const [newJobBanner, setNewJobBanner] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (searchParams.get("new") !== "true") return;
+    try {
+      const saved = localStorage.getItem("new-job");
+      if (!saved) return;
+      const newJob = JSON.parse(saved);
+      localStorage.removeItem("new-job");
+      const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0];
+      const entry: DashboardJob = {
+        id: "new-" + Date.now(),
+        title: newJob.title,
+        status: "active",
+        city: newJob.city,
+        publishedAt: new Date().toISOString().split("T")[0],
+        expiresAt,
+        views: 0,
+        clicks: 0,
+        applications: 0,
+        package: newJob.package,
+        isPromoted: false,
+        company: newJob.company,
+      };
+      setJobs((prev) => [entry, ...prev]);
+      setNewJobBanner(newJob.title);
+      setActiveTab("jobs");
+    } catch {}
+  }, []);
 
   const formatNumber = (num: number): string => {
     return num.toLocaleString("nl-NL");
@@ -172,6 +205,24 @@ export default function DashboardPage() {
             </Link>
           </div>
         </div>
+
+        {newJobBanner && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
+            <div className="flex-1">
+              <p className="font-medium text-green-900">Vacature geplaatst!</p>
+              <p className="text-sm text-green-700">
+                &ldquo;{newJobBanner}&rdquo; is live en zichtbaar voor werkzoekenden.
+              </p>
+            </div>
+            <button
+              onClick={() => setNewJobBanner(null)}
+              className="text-green-600 hover:text-green-800 text-sm"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Card>

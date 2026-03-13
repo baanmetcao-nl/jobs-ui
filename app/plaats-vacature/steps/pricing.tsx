@@ -2,15 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Check, Tag, Zap, Crown } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Tag, Zap, Crown } from "lucide-react";
 import { PRICING_PLANS, PricingPlan } from "@/app/types-employer";
 
 interface PricingStepProps {
   selectedPlan: PricingPlan | null;
   onSelect: (plan: PricingPlan) => void;
+  goToStep?: (slug: string) => void;
 }
 
-export function PricingStep({ selectedPlan, onSelect }: PricingStepProps) {
+export function PricingStep({ selectedPlan, onSelect, goToStep }: PricingStepProps) {
   const getIcon = (planId: string) => {
     switch (planId) {
       case "bundle3":
@@ -126,11 +127,23 @@ export function PricingStep({ selectedPlan, onSelect }: PricingStepProps) {
           variant="outline"
           onClick={() => {
             window.scrollTo({ top: 0, behavior: "smooth" });
-            window.location.href = "/plaats-vacature/preview";
+            goToStep?.("preview");
           }}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Vorige
+        </Button>
+        <Button
+          type="button"
+          disabled={!selectedPlan}
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            goToStep?.("account");
+          }}
+          className="hover:bg-[#e04d1f] text-white min-w-[100px]"
+        >
+          Volgende stap
+          <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </div>
     </div>

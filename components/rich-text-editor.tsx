@@ -2,7 +2,6 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Heading from "@tiptap/extension-heading";
 import Placeholder from "@tiptap/extension-placeholder";
 import {
   Bold,
@@ -11,7 +10,6 @@ import {
   ListOrdered,
   Undo,
   Redo,
-  Heading1,
   Heading2,
   Heading3,
 } from "lucide-react";
@@ -33,9 +31,6 @@ export function RichTextEditor({
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Heading.configure({
-        levels: [2, 3, 4],
-      }),
       Placeholder.configure({
         placeholder,
       }),
@@ -52,7 +47,6 @@ export function RichTextEditor({
     },
   });
 
-  // Sync editor content when value prop changes (e.g., from localStorage)
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
       editor.commands.setContent(value);
@@ -123,7 +117,6 @@ export function RichTextEditor({
           <ListOrdered className="w-4 h-4" />
         </ToolbarButton>
         <div className="w-px h-6 bg-gray-300 mx-1" />
-        {/* Headings */}
         <ToolbarButton
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 2 }).run()
@@ -145,14 +138,12 @@ export function RichTextEditor({
         <div className="w-px h-6 bg-gray-300 mx-1" />
         <ToolbarButton
           onClick={() => editor.chain().focus().undo().run()}
-          isActive={false}
           title="Ongedaan maken"
         >
           <Undo className="w-4 h-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().redo().run()}
-          isActive={false}
           title="Opnieuw"
         >
           <Redo className="w-4 h-4" />

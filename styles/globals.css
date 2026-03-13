@@ -120,7 +120,6 @@ li p {
   margin-bottom:0;
 }
 
-/* TipTap editor: tighter bullet list spacing */
 .ProseMirror ul,
 .ProseMirror ol {
   @apply space-y-0 my-2 ml-6;

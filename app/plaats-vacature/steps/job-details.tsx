@@ -25,20 +25,23 @@ import {
   X,
 } from "lucide-react";
 import { JobDetailsFormData } from "@/app/types-employer";
-import { Contract, Interval, Niche, Workplace } from "@/app/types";
+import { Contract, Interval, Workplace } from "@/app/types";
 import { nicheSeo } from "@/lib/niches";
+import { sanitizeInput } from "@/lib/utils";
 
 interface JobDetailsFormProps {
   data: Partial<JobDetailsFormData>;
   onChange: (data: Partial<JobDetailsFormData>) => void;
+  goToStep?: (slug: string) => void;
 }
 
-function sanitizeInput(input: string): string {
-  return input.replace(/</g, "<").replace(/>/g, ">");
-}
-
-export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
+export function JobDetailsForm({
+  data,
+  onChange,
+  goToStep,
+}: JobDetailsFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [tagInput, setTagInput] = useState("");
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -136,9 +139,22 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      window.location.href = "/plaats-vacature/bedrijf";
+      goToStep?.("bedrijf");
     }
+  };
+
+  const updateBenefit = (key: keyof NonNullable<JobDetailsFormData["benefits"]>, checked: boolean) => {
+    onChange({
+      benefits: {
+        extraFixedPayment: data.benefits?.extraFixedPayment ?? false,
+        extraVariablePayment: data.benefits?.extraVariablePayment ?? false,
+        pensionPlan: data.benefits?.pensionPlan ?? false,
+        travelAllowance: data.benefits?.travelAllowance ?? false,
+        extraTimeOff: data.benefits?.extraTimeOff ?? false,
+        stockPlan: data.benefits?.stockPlan ?? false,
+        [key]: checked,
+      },
+    });
   };
 
   const MAX_TAGS = 10;
@@ -157,10 +173,6 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
   const removeTag = (tag: string) => {
     const currentTags = data.tags || [];
     onChange({ tags: currentTags.filter((t) => t !== tag) });
-  };
-
-  const addNiche = (niche: string) => {
-    onChange({ niche: niche as Niche });
   };
 
   const tagCount = data.tags?.length || 0;
@@ -340,10 +352,9 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
                   onChange={(e) =>
                     onChange({
                       salary: {
+                        ...data.salary,
                         min: Math.max(0, Number(e.target.value)),
-                        max: data.salary?.max ?? 0,
-                        interval: data.salary?.interval ?? "monthly",
-                      },
+                      } as JobDetailsFormData["salary"],
                     })
                   }
                   className={`pl-10 ${errors.salaryMin ? "border-red-500" : ""}`}
@@ -368,10 +379,9 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
                   onChange={(e) =>
                     onChange({
                       salary: {
-                        min: data.salary?.min ?? 0,
+                        ...data.salary,
                         max: Math.max(0, Number(e.target.value)),
-                        interval: data.salary?.interval ?? "monthly",
-                      },
+                      } as JobDetailsFormData["salary"],
                     })
                   }
                   className={`pl-10 ${errors.salaryMax ? "border-red-500" : ""}`}
@@ -496,165 +506,28 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
             <Label htmlFor="arbeidsvoorwaarden" className="mb-4">
               Arbeidsvoorwaarden
             </Label>
-            <div
-              className={`grid grid-cols-2 md:grid-cols-3 gap-3 mt-2 ${errors.benefits ? "border border-red-500 rounded-lg p-2" : ""}`}
-            >
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="extraFixedPayment"
-                  checked={data.benefits?.extraFixedPayment || false}
-                  onCheckedChange={(checked) =>
-                    onChange({
-                      benefits: {
-                        extraFixedPayment: checked as boolean,
-                        extraVariablePayment:
-                          data.benefits?.extraVariablePayment ?? false,
-                        pensionPlan: data.benefits?.pensionPlan ?? false,
-                        travelAllowance:
-                          data.benefits?.travelAllowance ?? false,
-                        extraTimeOff: data.benefits?.extraTimeOff ?? false,
-                        stockPlan: data.benefits?.stockPlan ?? false,
-                      },
-                    })
-                  }
-                />
-                <label
-                  htmlFor="extraFixedPayment"
-                  className="text-sm cursor-pointer"
-                >
-                  13e maand
-                </label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="pensionPlan"
-                  checked={data.benefits?.pensionPlan || false}
-                  onCheckedChange={(checked) =>
-                    onChange({
-                      benefits: {
-                        extraFixedPayment:
-                          data.benefits?.extraFixedPayment ?? false,
-                        extraVariablePayment:
-                          data.benefits?.extraVariablePayment ?? false,
-                        pensionPlan: checked as boolean,
-                        travelAllowance:
-                          data.benefits?.travelAllowance ?? false,
-                        extraTimeOff: data.benefits?.extraTimeOff ?? false,
-                        stockPlan: data.benefits?.stockPlan ?? false,
-                      },
-                    })
-                  }
-                />
-                <label htmlFor="pensionPlan" className="text-sm cursor-pointer">
-                  Pensioen
-                </label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="travelAllowance"
-                  checked={data.benefits?.travelAllowance || false}
-                  onCheckedChange={(checked) =>
-                    onChange({
-                      benefits: {
-                        extraFixedPayment:
-                          data.benefits?.extraFixedPayment ?? false,
-                        extraVariablePayment:
-                          data.benefits?.extraVariablePayment ?? false,
-                        pensionPlan: data.benefits?.pensionPlan ?? false,
-                        travelAllowance: checked as boolean,
-                        extraTimeOff: data.benefits?.extraTimeOff ?? false,
-                        stockPlan: data.benefits?.stockPlan ?? false,
-                      },
-                    })
-                  }
-                />
-                <label
-                  htmlFor="travelAllowance"
-                  className="text-sm cursor-pointer"
-                >
-                  Reiskostenvergoeding
-                </label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="extraTimeOff"
-                  checked={data.benefits?.extraTimeOff || false}
-                  onCheckedChange={(checked) =>
-                    onChange({
-                      benefits: {
-                        extraFixedPayment:
-                          data.benefits?.extraFixedPayment ?? false,
-                        extraVariablePayment:
-                          data.benefits?.extraVariablePayment ?? false,
-                        pensionPlan: data.benefits?.pensionPlan ?? false,
-                        travelAllowance:
-                          data.benefits?.travelAllowance ?? false,
-                        extraTimeOff: checked as boolean,
-                        stockPlan: data.benefits?.stockPlan ?? false,
-                      },
-                    })
-                  }
-                />
-                <label
-                  htmlFor="extraTimeOff"
-                  className="text-sm cursor-pointer"
-                >
-                  Extra vakantiedagen
-                </label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="extraVariablePayment"
-                  checked={data.benefits?.extraVariablePayment || false}
-                  onCheckedChange={(checked) =>
-                    onChange({
-                      benefits: {
-                        extraFixedPayment:
-                          data.benefits?.extraFixedPayment ?? false,
-                        extraVariablePayment: checked as boolean,
-                        pensionPlan: data.benefits?.pensionPlan ?? false,
-                        travelAllowance:
-                          data.benefits?.travelAllowance ?? false,
-                        extraTimeOff: data.benefits?.extraTimeOff ?? false,
-                        stockPlan: data.benefits?.stockPlan ?? false,
-                      },
-                    })
-                  }
-                />
-                <label
-                  htmlFor="extraVariablePayment"
-                  className="text-sm cursor-pointer"
-                >
-                  Bonus / Variabel
-                </label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="stockPlan"
-                  checked={data.benefits?.stockPlan || false}
-                  onCheckedChange={(checked) =>
-                    onChange({
-                      benefits: {
-                        extraFixedPayment:
-                          data.benefits?.extraFixedPayment ?? false,
-                        extraVariablePayment:
-                          data.benefits?.extraVariablePayment ?? false,
-                        pensionPlan: data.benefits?.pensionPlan ?? false,
-                        travelAllowance:
-                          data.benefits?.travelAllowance ?? false,
-                        extraTimeOff: data.benefits?.extraTimeOff ?? false,
-                        stockPlan: checked as boolean,
-                      },
-                    })
-                  }
-                />
-                <label htmlFor="stockPlan" className="text-sm cursor-pointer">
-                  Aandelen
-                </label>
-              </div>
-              {errors.benefits && (
-                <p className="text-sm text-red-500 mt-1">{errors.benefits}</p>
-              )}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+              {(
+                [
+                  { key: "extraFixedPayment", label: "13e maand" },
+                  { key: "pensionPlan", label: "Pensioen" },
+                  { key: "travelAllowance", label: "Reiskostenvergoeding" },
+                  { key: "extraTimeOff", label: "Extra vakantiedagen" },
+                  { key: "extraVariablePayment", label: "Bonus / Variabel" },
+                  { key: "stockPlan", label: "Aandelen" },
+                ] as const
+              ).map(({ key, label }) => (
+                <div key={key} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={key}
+                    checked={data.benefits?.[key] || false}
+                    onCheckedChange={(checked) => updateBenefit(key, !!checked)}
+                  />
+                  <label htmlFor={key} className="text-sm cursor-pointer">
+                    {label}
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -671,9 +544,7 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
             <Label htmlFor="methode" className="mb-4">
               Sollicitatie methode <span className="text-red-500">*</span>
             </Label>
-            <div
-              className={`grid grid-cols-1 md:grid-cols-2 gap-3 mt-2 ${errors.applicationMethod ? "border border-red-500 rounded-lg p-2" : ""}`}
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
               <div
                 className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
                   data.applicationMethod === "email"
@@ -703,9 +574,10 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
 
           {data.applicationMethod === "email" && (
             <div>
-              <Label className={errors.applicationEmail ? "text-red-500" : ""}>
-                Emailadres voor sollicitaties{" "}
-                <span className="text-red-500">*</span>
+              <Label
+                className={`${errors.applicationEmail ? "text-red-500" : ""} mb-4`}
+              >
+                Emailadres voor sollicitaties <span className="text-red-500">*</span>
               </Label>
               <Input
                 type="email"
@@ -724,9 +596,8 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
 
           {data.applicationMethod === "external" && (
             <div>
-              <Label className={errors.url ? "text-red-500" : ""}>
-                URL naar sollicitatiepagina{" "}
-                <span className="text-red-500">*</span>
+              <Label className={`${errors.url ? "text-red-500" : ""} mb-4`}>
+                URL naar sollicitatiepagina <span className="text-red-500">*</span>
               </Label>
               <Input
                 type="url"
@@ -752,7 +623,6 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
               Tags (druk Enter om toe te voegen)
               {tagCount >= MAX_TAGS && (
                 <span className="text-orange-500 text-xs">
-                  {" "}
                   (max {MAX_TAGS})
                 </span>
               )}
@@ -760,13 +630,15 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
             <Input
               placeholder="Typ en druk Enter..."
               disabled={tagCount >= MAX_TAGS}
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
-                  const value = (e.target as HTMLInputElement).value.trim();
+                  const value = tagInput.trim();
                   if (value) {
                     addTag(value);
-                    (e.target as HTMLInputElement).value = "";
+                    setTagInput("");
                   }
                 }
               }}
@@ -777,15 +649,10 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
                 <span
                   key={tag}
                   className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full text-sm cursor-pointer"
+                  onClick={() => removeTag(tag)}
                 >
                   {tag}
-                  <button
-                    type="button"
-                    onClick={() => removeTag(tag)}
-                    className="hover:text-red-500"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
+                  <X className="w-3 h-3 hover:text-red-500" />
                 </span>
               ))}
             </div>
@@ -798,7 +665,7 @@ export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
             >
               Categorie <span className="text-red-500">*</span>
             </Label>
-            <Select value={data.niche || ""} onValueChange={addNiche}>
+            <Select value={data.niche || ""} onValueChange={(value) => onChange({ niche: value as JobDetailsFormData["niche"] })}>
               <SelectTrigger className={errors.niches ? "border-red-500" : ""}>
                 <SelectValue placeholder="Kies een categorie" />
               </SelectTrigger>

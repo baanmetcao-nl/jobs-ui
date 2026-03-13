@@ -11,22 +11,21 @@ import {
   Award,
   Calendar,
   Euro as EuroIcon,
-  GraduationCap,
   Handshake,
   MapPinned,
   HelpCircle,
 } from "lucide-react";
 
 import { JobDetailsFormData, CompanyFormData } from "@/app/types-employer";
-import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
+import { nicheSeo } from "@/lib/niches";
 
 interface PreviewStepProps {
   jobData: Partial<JobDetailsFormData>;
   companyData: Partial<CompanyFormData>;
+  goToStep?: (slug: string) => void;
 }
 
-export function PreviewStep({ jobData, companyData }: PreviewStepProps) {
+export function PreviewStep({ jobData, companyData, goToStep }: PreviewStepProps) {
   const salaryDisplay = () => {
     if (jobData.salary?.min && jobData.salary?.max) {
       return `€${jobData.salary.min.toLocaleString("nl-NL")} - €${jobData.salary.max.toLocaleString("nl-NL")}`;
@@ -55,9 +54,22 @@ export function PreviewStep({ jobData, companyData }: PreviewStepProps) {
       flex: "Flexibel / Uitzendwerk",
       freelance: "Freelance / ZZP",
     };
-    return (
-      contractMap[jobData.contract || ""] || jobData.contract || "Onbekend"
-    );
+    return contractMap[jobData.contract || ""] || jobData.contract || "Onbekend";
+  };
+
+  const seniorityDisplay = () => {
+    const seniorityMap: Record<string, string> = {
+      junior: "Junior",
+      medior: "Medior",
+      senior: "Senior",
+      principal: "Lead",
+    };
+    return seniorityMap[jobData.seniority || ""] || jobData.seniority || "Onbekend";
+  };
+
+  const nicheDisplay = () => {
+    if (!jobData.niche) return "Onbekend";
+    return nicheSeo[jobData.niche]?.heading || jobData.niche;
   };
 
   const hoursText =
@@ -101,15 +113,12 @@ export function PreviewStep({ jobData, companyData }: PreviewStepProps) {
         <div className="p-4 bg-blue-50 rounded-lg mt-6">
           <div className="flex items-start gap-3">
             <HelpCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="text-sm text-blue-800 mb-0">
-                Zo zal je vacature eruitzien op de website. Je kunt nog terug om
-                aanpassingen te maken.
-              </p>
-            </div>
+            <p className="text-sm text-blue-800 mb-0">
+              Zo zal je vacature eruitzien op de website. Je kunt nog terug om
+              aanpassingen te maken.
+            </p>
           </div>
         </div>
-        <p className="text-gray-600"></p>
       </div>
 
       <div className="mb-8">
@@ -134,7 +143,7 @@ export function PreviewStep({ jobData, companyData }: PreviewStepProps) {
                   {companyData.name || "Bedrijfsnaam"}
                 </span>
                 <span>in</span>
-                <span className="font-medium text-teal-600">Techniek</span>
+                <span className="font-medium text-teal-600">{nicheDisplay()}</span>
               </div>
             </div>
           </div>
@@ -174,12 +183,7 @@ export function PreviewStep({ jobData, companyData }: PreviewStepProps) {
           <InfoItem
             icon={<Award color="#F1693F" size={16} />}
             label="Ervaringsniveau"
-            description="Medior"
-          />
-          <InfoItem
-            icon={<GraduationCap color="#F1693F" size={16} />}
-            label="Opleiding"
-            description="HBO"
+            description={seniorityDisplay()}
           />
           <InfoItem
             icon={<Handshake color="#F1693F" size={16} />}
@@ -201,15 +205,12 @@ export function PreviewStep({ jobData, companyData }: PreviewStepProps) {
 
       <div className="mb-8">
         <div className="prose max-w-none text-gray-700 mb-6">
-          <div className="whitespace-pre-wrap mb-6">
-            {jobData.description ? (
-              <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                {jobData.description}
-              </ReactMarkdown>
-            ) : (
-              "Vacaturetekst hier..."
-            )}
-          </div>
+          {jobData.description ? (
+            // TODO: add DOMPurify sanitization before going to production
+            <div dangerouslySetInnerHTML={{ __html: jobData.description }} />
+          ) : (
+            <p>Vacaturetekst hier...</p>
+          )}
           {jobData.benefits && (
             <>
               <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">
@@ -252,7 +253,7 @@ export function PreviewStep({ jobData, companyData }: PreviewStepProps) {
           </p>
         </div>
         <Button className="bg-[#F1592A] hover:bg-[#F1592A]/90 text-white font-medium px-8 py-2 sm:w-auto w-full">
-          Solliciteer nu (preview button)
+          Solliciteer nu (preview)
         </Button>
       </div>
 
@@ -279,20 +280,14 @@ export function PreviewStep({ jobData, companyData }: PreviewStepProps) {
         <Button
           type="button"
           variant="outline"
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            window.location.href = "/plaats-vacature/bedrijf";
-          }}
+          onClick={() => goToStep?.("bedrijf")}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Vorige
         </Button>
         <Button
           type="button"
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            window.location.href = "/plaats-vacature/prijzen";
-          }}
+          onClick={() => goToStep?.("prijzen")}
           className="hover:bg-[#e04d1f] text-white min-w-[100px]"
         >
           Volgende stap

@@ -8,14 +8,9 @@ import { PRICING_PLANS, PricingPlan } from "@/app/types-employer";
 interface PricingStepProps {
   selectedPlan: PricingPlan | null;
   onSelect: (plan: PricingPlan) => void;
-  onBack: () => void;
 }
 
-export function PricingStep({
-  selectedPlan,
-  onSelect,
-  onBack,
-}: PricingStepProps) {
+export function PricingStep({ selectedPlan, onSelect }: PricingStepProps) {
   const getIcon = (planId: string) => {
     switch (planId) {
       case "bundle3":
@@ -131,7 +126,7 @@ export function PricingStep({
           variant="outline"
           onClick={() => {
             window.scrollTo({ top: 0, behavior: "smooth" });
-            onBack();
+            window.location.href = "/plaats-vacature/preview";
           }}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />

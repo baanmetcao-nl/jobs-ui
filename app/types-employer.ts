@@ -176,12 +176,37 @@ export type ExtendJobResponse = {
 };
 
 export const JOB_POSTING_STEPS = [
-  { id: 1, title: "Vacature", description: "Functiegegevens" },
-  { id: 2, title: "Bedrijf", description: "Bedrijfsinformatie" },
-  { id: 3, title: "Preview", description: "Bekijk vacature" },
-  { id: 4, title: "Prijzen", description: "Kies pakket" },
-  { id: 5, title: "Account", description: "Aanmelden & betalen" },
+  {
+    id: 1,
+    title: "Vacature",
+    description: "Functiegegevens",
+    slug: "vacature",
+  },
+  {
+    id: 2,
+    title: "Bedrijf",
+    description: "Bedrijfsinformatie",
+    slug: "bedrijf",
+  },
+  { id: 3, title: "Preview", description: "Bekijk vacature", slug: "preview" },
+  { id: 4, title: "Prijzen", description: "Kies pakket", slug: "prijzen" },
+  {
+    id: 5,
+    title: "Account",
+    description: "Aanmelden & betalen",
+    slug: "account",
+  },
 ] as const;
+
+export const STEP_SLUGS = {
+  vacature: 1,
+  bedrijf: 2,
+  preview: 3,
+  prijzen: 4,
+  account: 5,
+} as const;
+
+export type StepSlug = keyof typeof STEP_SLUGS;
 
 export const PRICING_PLANS: PricingPlan[] = [
   {

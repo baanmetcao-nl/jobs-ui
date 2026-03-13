@@ -26,20 +26,13 @@ import { CompanyFormData } from "@/app/types-employer";
 interface CompanyFormProps {
   data: Partial<CompanyFormData>;
   onChange: (data: Partial<CompanyFormData>) => void;
-  onNext: () => void;
-  onBack: () => void;
 }
 
 function sanitizeInput(input: string): string {
   return input.replace(/</g, "<").replace(/>/g, ">");
 }
 
-export function CompanyForm({
-  data,
-  onChange,
-  onNext,
-  onBack,
-}: CompanyFormProps) {
+export function CompanyForm({ data, onChange }: CompanyFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [bioLength, setBioLength] = useState(0);
 
@@ -84,7 +77,7 @@ export function CompanyForm({
     e.preventDefault();
     if (validateForm()) {
       window.scrollTo({ top: 0, behavior: "smooth" });
-      onNext();
+      window.location.href = "/plaats-vacature/preview";
     }
   };
 
@@ -344,7 +337,7 @@ export function CompanyForm({
           variant="outline"
           onClick={() => {
             window.scrollTo({ top: 0, behavior: "smooth" });
-            onBack();
+            window.location.href = "/plaats-vacature/vacature";
           }}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />

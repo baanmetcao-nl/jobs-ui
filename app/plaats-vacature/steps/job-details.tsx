@@ -31,18 +31,13 @@ import { nicheSeo } from "@/lib/niches";
 interface JobDetailsFormProps {
   data: Partial<JobDetailsFormData>;
   onChange: (data: Partial<JobDetailsFormData>) => void;
-  onNext: () => void;
 }
 
 function sanitizeInput(input: string): string {
   return input.replace(/</g, "<").replace(/>/g, ">");
 }
 
-export function JobDetailsForm({
-  data,
-  onChange,
-  onNext,
-}: JobDetailsFormProps) {
+export function JobDetailsForm({ data, onChange }: JobDetailsFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validateForm = () => {
@@ -142,7 +137,7 @@ export function JobDetailsForm({
     e.preventDefault();
     if (validateForm()) {
       window.scrollTo({ top: 0, behavior: "smooth" });
-      onNext();
+      window.location.href = "/plaats-vacature/bedrijf";
     }
   };
 

@@ -20,18 +20,10 @@ import { AccountFormData, PricingPlan } from "@/app/types-employer";
 interface AccountStepProps {
   data: Partial<AccountFormData>;
   onChange: (data: Partial<AccountFormData>) => void;
-  onBack: () => void;
-  onComplete: () => void;
   isLoading: boolean;
 }
 
-export function AccountStep({
-  data,
-  onChange,
-  onBack,
-  onComplete,
-  isLoading,
-}: AccountStepProps) {
+export function AccountStep({ data, onChange, isLoading }: AccountStepProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showInvoiceDetails, setShowInvoiceDetails] = useState(false);
 
@@ -67,7 +59,7 @@ export function AccountStep({
     e.preventDefault();
     if (validateForm()) {
       window.scrollTo({ top: 0, behavior: "smooth" });
-      onComplete();
+      window.location.href = "/dashboard?new=true";
     }
   };
 
@@ -407,7 +399,7 @@ export function AccountStep({
         <Button
           type="button"
           variant="outline"
-          onClick={onBack}
+          onClick={() => (window.location.href = "/plaats-vacature/prijzen")}
           disabled={isLoading}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />

@@ -24,16 +24,9 @@ import rehypeRaw from "rehype-raw";
 interface PreviewStepProps {
   jobData: Partial<JobDetailsFormData>;
   companyData: Partial<CompanyFormData>;
-  onBack: () => void;
-  onNext: () => void;
 }
 
-export function PreviewStep({
-  jobData,
-  companyData,
-  onBack,
-  onNext,
-}: PreviewStepProps) {
+export function PreviewStep({ jobData, companyData }: PreviewStepProps) {
   const salaryDisplay = () => {
     if (jobData.salary?.min && jobData.salary?.max) {
       return `€${jobData.salary.min.toLocaleString("nl-NL")} - €${jobData.salary.max.toLocaleString("nl-NL")}`;
@@ -288,7 +281,7 @@ export function PreviewStep({
           variant="outline"
           onClick={() => {
             window.scrollTo({ top: 0, behavior: "smooth" });
-            onBack();
+            window.location.href = "/plaats-vacature/bedrijf";
           }}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -298,7 +291,7 @@ export function PreviewStep({
           type="button"
           onClick={() => {
             window.scrollTo({ top: 0, behavior: "smooth" });
-            onNext();
+            window.location.href = "/plaats-vacature/prijzen";
           }}
           className="hover:bg-[#e04d1f] text-white min-w-[100px]"
         >

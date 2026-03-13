@@ -6,205 +6,149 @@ import { ProgressSteps } from "@/components/progress-steps";
 import {
   JOB_POSTING_STEPS,
   STEP_SLUGS,
-  StepSlug,
-  JobDetailsFormData,
-  CompanyFormData,
-  PricingPlan,
-  AccountFormData,
+  type JobPostingFlow,
+  type StepSlug,
 } from "@/app/types-employer";
-import { JobDetailsForm } from "../steps/job-details";
-import { CompanyForm } from "../steps/company";
-import { PreviewStep } from "../steps/preview";
-import { PricingStep } from "../steps/pricing";
-import { AccountStep } from "../steps/account";
+import { JobDetailsForm } from "@/app/plaats-vacature/steps/job-details";
+import { CompanyForm } from "@/app/plaats-vacature/steps/company";
+import { PreviewStep } from "@/app/plaats-vacature/steps/preview";
+import { PricingStep } from "@/app/plaats-vacature/steps/pricing";
+import { AccountStep } from "@/app/plaats-vacature/steps/account";
 
-const DRAFT_STORAGE_KEY = "jobPostingDraft";
+const STEP_COMPONENTS: Record<StepSlug, React.FC<any>> = {
+  vacature: JobDetailsForm,
+  bedrijf: CompanyForm,
+  preview: PreviewStep,
+  prijzen: PricingStep,
+  account: AccountStep,
+};
 
-interface DraftData {
-  jobData?: Partial<JobDetailsFormData>;
-  companyData?: Partial<CompanyFormData>;
-  pricing?: PricingPlan | null;
-  accountData?: Partial<AccountFormData>;
-  draftId?: string | null;
-}
-
-function getDraftData(): DraftData {
-  if (typeof window === "undefined") return {};
-  try {
-    const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
-    return saved ? JSON.parse(saved) : {};
-  } catch {
-    return {};
-  }
-}
-
-function saveDraftData(data: DraftData): void {
-  if (typeof window !== "undefined") {
-    try {
-      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(data));
-    } catch {}
-  }
-}
-
-function getStepComponent(
-  step: number,
-  draftData: DraftData,
-  updateData: (updates: Partial<DraftData>) => void,
-  router: any,
-  isLoading: boolean,
-): React.ReactNode {
-  switch (step) {
-    case 1:
-      return (
-        <JobDetailsForm
-          data={draftData.jobData || {}}
-          onChange={(data) => updateData({ jobData: data })}
-        />
-      );
-    case 2:
-      return (
-        <CompanyForm
-          data={draftData.companyData || {}}
-          onChange={(data) => updateData({ companyData: data })}
-        />
-      );
-    case 3:
-      return (
-        <PreviewStep
-          jobData={draftData.jobData || {}}
-          companyData={draftData.companyData || {}}
-        />
-      );
-    case 4:
-      return (
-        <PricingStep
-          selectedPlan={draftData.pricing || null}
-          onSelect={(plan) => {
-            updateData({ pricing: plan });
-            router.push("/plaats-vacature/account");
-          }}
-        />
-      );
-    case 5:
-      return (
-        <AccountStep
-          data={draftData.accountData || {}}
-          onChange={(data) => updateData({ accountData: data })}
-          isLoading={isLoading}
-        />
-      );
-    default:
-      return null;
-  }
-}
-
-export default function JobPostingStep() {
+export default function StepPage() {
   const params = useParams();
   const router = useRouter();
-  const [draftData, setDraftData] = useState<DraftData>({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentStepSlug] = useState(params.step as StepSlug | string);
+  const slug = params?.step as StepSlug | undefined;
 
-  const currentStep = STEP_SLUGS[currentStepSlug as StepSlug];
+  const [flowData, setFlowData] = useState<JobPostingFlow>({
+    step: 1,
+    jobDetails: {},
+    company: {},
+    pricing: null,
+    account: {},
+  });
 
-  if (!currentStep) {
-    router.push("/plaats-vacature/vacature");
-    return null;
-  }
-
+  // Load from localStorage on mount
   useEffect(() => {
-    const data = getDraftData();
-    setDraftData(data);
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("job-posting-flow");
+        if (saved) {
+          setFlowData(JSON.parse(saved));
+        }
+      } catch (e) {
+        console.error("Failed to load flow data:", e);
+        localStorage.removeItem("job-posting-flow");
+      }
+    }
   }, []);
 
+  // Save to localStorage whenever flowData changes
   useEffect(() => {
-    saveDraftData(draftData);
-  }, [draftData]);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("job-posting-flow", JSON.stringify(flowData));
+      } catch (e) {
+        console.error("Failed to save flow data:", e);
+      }
+    }
+  }, [flowData]);
 
-  const updateData = (updates: Partial<DraftData>): void => {
-    setDraftData((prev) => ({ ...prev, ...updates }));
-  };
+  const currentStepNum = slug && STEP_SLUGS[slug] ? STEP_SLUGS[slug] : 1;
 
-  const validatePreviousSteps = (): boolean => {
-    const data = getDraftData();
-
-    switch (currentStep) {
-      case 2:
-        return !!data.jobData?.title;
-      case 3:
-        return !!data.jobData?.title && !!data.companyData?.name;
-      case 4:
-        return !!data.jobData?.title && !!data.companyData?.name;
-      case 5:
+  // Step validation - check if previous steps have minimum data
+  const isStepValid = (stepNum: number) => {
+    switch (stepNum) {
+      case 2: // bedrijf requires vacature data
+        return !!flowData.jobDetails?.title;
+      case 3: // preview requires vacature + bedrijf
+        return !!flowData.jobDetails?.title && !!flowData.company?.name;
+      case 4: // prijzen requires preview
+        return !!flowData.jobDetails?.title && !!flowData.company?.name;
+      case 5: // account requires all
         return (
-          !!data.jobData?.title && !!data.companyData?.name && !!data.pricing
+          !!flowData.jobDetails?.title &&
+          !!flowData.company?.name &&
+          !!flowData.pricing
         );
       default:
         return true;
     }
   };
 
+  // Redirect if trying to skip steps
   useEffect(() => {
-    if (!validatePreviousSteps()) {
-      const previousStep = JOB_POSTING_STEPS[currentStep - 2];
-      if (previousStep) {
-        router.replace(`/plaats-vacature/${previousStep.slug}`);
-      }
+    if (slug && currentStepNum > 1 && !isStepValid(currentStepNum)) {
+      const prevStepSlug = JOB_POSTING_STEPS[currentStepNum - 2]
+        ?.slug as StepSlug;
+      router.replace(`/plaats-vacature/${prevStepSlug || "vacature"}`);
+      return;
     }
-  }, [currentStep, draftData]);
+  }, [slug, currentStepNum, flowData, router]);
 
-  const handleComplete = async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      localStorage.removeItem(DRAFT_STORAGE_KEY);
-      router.push("/dashboard?new=true");
-    } catch {
-    } finally {
-      setIsLoading(false);
-    }
+  const stepProps = {
+    vacature: {
+      data: flowData.jobDetails,
+      onChange: (updates: any) =>
+        setFlowData((prev) => ({
+          ...prev,
+          jobDetails: { ...prev.jobDetails, ...updates },
+        })),
+    },
+    bedrijf: {
+      data: flowData.company,
+      onChange: (updates: any) =>
+        setFlowData((prev) => ({
+          ...prev,
+          company: { ...prev.company, ...updates },
+        })),
+    },
+    preview: {
+      jobData: flowData.jobDetails,
+      companyData: flowData.company,
+    },
+    prijzen: {
+      selectedPlan: flowData.pricing,
+      onSelect: (plan: any) =>
+        setFlowData((prev) => ({ ...prev, pricing: plan })),
+    },
+    account: {
+      data: flowData.account,
+      onChange: (updates: any) =>
+        setFlowData((prev) => ({
+          ...prev,
+          account: { ...prev.account, ...updates },
+        })),
+    },
   };
 
-  const StepComponent = getStepComponent(
-    currentStep,
-    draftData,
-    updateData,
-    router,
-    isLoading,
-  );
+  const StepComponent = slug && STEP_COMPONENTS[slug];
+
+  const goToStep = (newSlug: StepSlug) => {
+    const newStepNum = STEP_SLUGS[newSlug];
+    setFlowData((prev) => ({ ...prev, step: newStepNum }));
+    router.push(`/plaats-vacature/${newSlug}`);
+  };
+
+  if (!slug || !STEP_SLUGS[slug] || !StepComponent) {
+    router.replace("/plaats-vacature/vacature");
+    return null;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Plaats je vacature
-          </h1>
-          <p className="text-gray-600">
-            Bereik duizenden werkzoekenden met jouw vacature
-          </p>
-        </div>
+    <div className="max-w-4xl mx-auto p-6 md:p-8 space-y-8">
+      <ProgressSteps steps={JOB_POSTING_STEPS} currentStep={currentStepNum} />
 
-        <div className="mb-8 bg-white rounded-xl p-4 shadow-sm">
-          <ProgressSteps steps={JOB_POSTING_STEPS} currentStep={currentStep} />
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
-          {StepComponent}
-        </div>
-
-        {currentStep === 1 && (
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-            <h3 className="font-medium text-blue-900 mb-2">
-              Tips voor een goede vacature
-            </h3>
-            <ul className="text-sm text-blue-800 space-y-1">
-              <li>💰 Vermeld het salaris of de salarisschaal (cao)</li>
-              <li>📍 Geef de werklocatie en werktijden duidelijk aan</li>
-              <li>📋 Beschrijf kort de belangrijkste taken</li>
-              <li>📑 Noem de cao en belangrijkste arbeidsvoorwaarden</li>
-            </ul>
-          </div>
-        )}
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+        <StepComponent {...stepProps[slug]} goToStep={goToStep} />
       </div>
     </div>
   );

@@ -63,7 +63,7 @@ export default function ContactPage() {
 
   return (
     <div className="mb-12">
-      <section className="py-16 md:py-24 bg-gray-50 mb-12">
+      <section className="py-16 bg-gray-50 mb-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
             Neem <span className="text-[#F1592A]">contact</span> met ons op.

@@ -143,7 +143,10 @@ export function JobDetailsForm({
     }
   };
 
-  const updateBenefit = (key: keyof NonNullable<JobDetailsFormData["benefits"]>, checked: boolean) => {
+  const updateBenefit = (
+    key: keyof NonNullable<JobDetailsFormData["benefits"]>,
+    checked: boolean,
+  ) => {
     onChange({
       benefits: {
         extraFixedPayment: data.benefits?.extraFixedPayment ?? false,
@@ -506,7 +509,7 @@ export function JobDetailsForm({
             <Label htmlFor="arbeidsvoorwaarden" className="mb-4">
               Arbeidsvoorwaarden
             </Label>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+            <div className="grid md:grid-cols-3 gap-3 mt-2">
               {(
                 [
                   { key: "extraFixedPayment", label: "13e maand" },
@@ -577,7 +580,8 @@ export function JobDetailsForm({
               <Label
                 className={`${errors.applicationEmail ? "text-red-500" : ""} mb-4`}
               >
-                Emailadres voor sollicitaties <span className="text-red-500">*</span>
+                Emailadres voor sollicitaties{" "}
+                <span className="text-red-500">*</span>
               </Label>
               <Input
                 type="email"
@@ -597,7 +601,8 @@ export function JobDetailsForm({
           {data.applicationMethod === "external" && (
             <div>
               <Label className={`${errors.url ? "text-red-500" : ""} mb-4`}>
-                URL naar sollicitatiepagina <span className="text-red-500">*</span>
+                URL naar sollicitatiepagina{" "}
+                <span className="text-red-500">*</span>
               </Label>
               <Input
                 type="url"
@@ -665,7 +670,12 @@ export function JobDetailsForm({
             >
               Categorie <span className="text-red-500">*</span>
             </Label>
-            <Select value={data.niche || ""} onValueChange={(value) => onChange({ niche: value as JobDetailsFormData["niche"] })}>
+            <Select
+              value={data.niche || ""}
+              onValueChange={(value) =>
+                onChange({ niche: value as JobDetailsFormData["niche"] })
+              }
+            >
               <SelectTrigger className={errors.niches ? "border-red-500" : ""}>
                 <SelectValue placeholder="Kies een categorie" />
               </SelectTrigger>

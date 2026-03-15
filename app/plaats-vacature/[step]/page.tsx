@@ -109,9 +109,9 @@ export default function StepPage() {
 
   if (!flowData) {
     return (
-      <div className="max-w-4xl mx-auto p-6 md:p-8 space-y-8">
+      <div className="max-w-4xl mx-auto px-4 py-6 md:p-8 space-y-8">
         <ProgressSteps steps={JOB_POSTING_STEPS} currentStep={currentStepNum} />
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 h-96 animate-pulse" />
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-8 h-96 animate-pulse" />
       </div>
     );
   }
@@ -159,9 +159,9 @@ export default function StepPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 md:p-8 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 py-6 md:p-8 space-y-8">
       <ProgressSteps steps={JOB_POSTING_STEPS} currentStep={currentStepNum} />
-      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-8">
         <StepComponent {...stepProps[slug]} />
       </div>
     </div>

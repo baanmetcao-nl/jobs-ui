@@ -18,6 +18,7 @@ import {
 
 import { JobDetailsFormData, CompanyFormData } from "@/app/types-employer";
 import { nicheSeo } from "@/lib/niches";
+import { intervalFormat } from "@/lib/utils";
 
 interface PreviewStepProps {
   jobData: Partial<JobDetailsFormData>;
@@ -25,10 +26,14 @@ interface PreviewStepProps {
   goToStep?: (slug: string) => void;
 }
 
-export function PreviewStep({ jobData, companyData, goToStep }: PreviewStepProps) {
+export function PreviewStep({
+  jobData,
+  companyData,
+  goToStep,
+}: PreviewStepProps) {
   const salaryDisplay = () => {
     if (jobData.salary?.min && jobData.salary?.max) {
-      return `€${jobData.salary.min.toLocaleString("nl-NL")} - €${jobData.salary.max.toLocaleString("nl-NL")}`;
+      return `€${jobData.salary.min.toLocaleString("nl-NL")} - €${jobData.salary.max.toLocaleString("nl-NL")} ${intervalFormat(jobData.salary.interval)}`;
     }
     if (jobData.salary?.min) {
       return `Vanaf €${jobData.salary.min.toLocaleString("nl-NL")}`;
@@ -54,7 +59,9 @@ export function PreviewStep({ jobData, companyData, goToStep }: PreviewStepProps
       flex: "Flexibel / Uitzendwerk",
       freelance: "Freelance / ZZP",
     };
-    return contractMap[jobData.contract || ""] || jobData.contract || "Onbekend";
+    return (
+      contractMap[jobData.contract || ""] || jobData.contract || "Onbekend"
+    );
   };
 
   const seniorityDisplay = () => {
@@ -64,7 +71,9 @@ export function PreviewStep({ jobData, companyData, goToStep }: PreviewStepProps
       senior: "Senior",
       principal: "Lead",
     };
-    return seniorityMap[jobData.seniority || ""] || jobData.seniority || "Onbekend";
+    return (
+      seniorityMap[jobData.seniority || ""] || jobData.seniority || "Onbekend"
+    );
   };
 
   const nicheDisplay = () => {
@@ -143,7 +152,9 @@ export function PreviewStep({ jobData, companyData, goToStep }: PreviewStepProps
                   {companyData.name || "Bedrijfsnaam"}
                 </span>
                 <span>in</span>
-                <span className="font-medium text-teal-600">{nicheDisplay()}</span>
+                <span className="font-medium text-teal-600">
+                  {nicheDisplay()}
+                </span>
               </div>
             </div>
           </div>
@@ -164,7 +175,7 @@ export function PreviewStep({ jobData, companyData, goToStep }: PreviewStepProps
         <h2 className="text-xl font-semibold mb-6 text-gray-900">
           Inzichten over de functie
         </h2>
-        <div className="grid grid-cols-2 gap-x-8 gap-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
           <InfoItem
             icon={<Calendar color="#F1693F" size={16} />}
             label="Gepubliceerd"

@@ -192,8 +192,8 @@ export const JOB_POSTING_STEPS = [
   { id: 4, title: "Prijzen", description: "Kies pakket", slug: "prijzen" },
   {
     id: 5,
-    title: "Account",
-    description: "Aanmelden & betalen",
+    title: "Betalen",
+    description: "Betaling & account",
     slug: "account",
   },
 ] as const;

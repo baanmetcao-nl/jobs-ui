@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { ProgressSteps } from "@/components/progress-steps";
 import {
   JOB_POSTING_STEPS,
   STEP_SLUGS,
+  PRICING_PLANS,
   type JobPostingFlow,
   type StepSlug,
 } from "@/app/types-employer";
@@ -34,6 +35,7 @@ const DEFAULT_FLOW: JobPostingFlow = {
 export default function StepPage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const slug = params?.step as StepSlug | undefined;
 
   const [flowData, setFlowData] = useState<JobPostingFlow | null>(null);
@@ -41,7 +43,17 @@ export default function StepPage() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem("job-posting-flow");
-      setFlowData(saved ? JSON.parse(saved) : DEFAULT_FLOW);
+      const data = saved ? JSON.parse(saved) : DEFAULT_FLOW;
+
+      const planParam = searchParams.get("plan");
+      if (planParam && !data.pricing) {
+        const matchedPlan = PRICING_PLANS.find((p) => p.id === planParam);
+        if (matchedPlan) {
+          data.pricing = matchedPlan;
+        }
+      }
+
+      setFlowData(data);
     } catch (e) {
       console.error("Failed to load flow data:", e);
       localStorage.removeItem("job-posting-flow");

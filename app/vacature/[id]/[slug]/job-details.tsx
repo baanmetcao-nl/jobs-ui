@@ -461,17 +461,13 @@ function RelatedJobCard({ vacature }: { vacature: MinimalJob }) {
   return (
     <div className="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
       <div className="flex items-start gap-4">
-        <div
-          className={`w-12 rounded-full flex items-center justify-center shrink-0`}
-        >
-          <span className="text-white font-semibold text-sm">
-            <Image
-              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${vacature.company.logoUrl}`}
-              alt={`${vacature.company.name} logo`}
-              width={60}
-              height={60}
-            />
-          </span>
+        <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${vacature.company.logoUrl}`}
+            alt={`${vacature.company.name} logo`}
+            fill
+            className="object-contain"
+          />
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-gray-900 mb-1">
@@ -541,12 +537,12 @@ function Sidebar({
 
         <div className="bg-gray-50 rounded-lg p-6">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
+            <div className="relative w-20 h-20 bg-white rounded-full overflow-hidden">
               <Image
                 src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`}
                 alt={job.company.name}
-                width={60}
-                height={60}
+                fill
+                className="object-contain p-2"
               />
             </div>
             <div>

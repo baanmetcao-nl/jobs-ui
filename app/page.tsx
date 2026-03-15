@@ -22,6 +22,12 @@ export async function generateMetadata(props: {
   const canonical = page <= 1 ? "/" : `/?page=${page}`;
 
   return {
+    title:
+      page <= 1
+        ? "Baan met CAO - Vacatures met eerlijke arbeidsvoorwaarden"
+        : `Vacatures met CAO - Pagina ${page}`,
+    description:
+      "Ontdek vacatures met CAO, eerlijke salarissen en goede arbeidsvoorwaarden. Vind een baan met zekerheid bij werkgevers die hun zaken goed geregeld hebben.",
     alternates: {
       canonical,
     },

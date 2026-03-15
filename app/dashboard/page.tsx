@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  LayoutDashboard,
   Briefcase,
   Eye,
   FileText,
@@ -101,11 +100,11 @@ const mockJobs: DashboardJob[] = [
   },
 ];
 
-type TabType = "overview" | "jobs" | "invoices";
+type TabType = "jobs" | "invoices";
 
 export default function DashboardPage() {
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<TabType>("overview");
+  const [activeTab, setActiveTab] = useState<TabType>("jobs");
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [stats] = useState<DashboardStats>(mockStats);
   const [jobs, setJobs] = useState<DashboardJob[]>(mockJobs);
@@ -177,7 +176,6 @@ export default function DashboardPage() {
   };
 
   const tabs = [
-    { id: "overview" as TabType, label: "Overzicht", icon: LayoutDashboard },
     { id: "jobs" as TabType, label: "Vacatures", icon: Briefcase },
     { id: "invoices" as TabType, label: "Facturen", icon: FileText },
   ];
@@ -306,7 +304,7 @@ export default function DashboardPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
                   activeTab === tab.id
                     ? "border-[#F1592A] text-[#F1592A]"
                     : "border-transparent text-gray-500 hover:text-gray-700"
@@ -471,52 +469,6 @@ export default function DashboardPage() {
                   ))}
                 </tbody>
               </table>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "overview" && (
-          <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-lg font-semibold mb-4">Recente activiteit</h2>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mt-0.5">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                  </div>
-                  <div>
-                    <p className="font-medium">Nieuwe sollicitatie</p>
-                    <p className="text-sm text-gray-500">
-                      Op "Senior Software Developer"
-                    </p>
-                    <p className="text-xs text-gray-400">2 uur geleden</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
-                    <Eye className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="font-medium">Meer views dan normaal</p>
-                    <p className="text-sm text-gray-500">
-                      "Project Manager" heeft 50 extra views
-                    </p>
-                    <p className="text-xs text-gray-400">Gisteren</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mt-0.5">
-                    <AlertCircle className="w-4 h-4 text-yellow-600" />
-                  </div>
-                  <div>
-                    <p className="font-medium">Vacature verloopt binnenkort</p>
-                    <p className="text-sm text-gray-500">
-                      "UX Designer" verloopt over 3 dagen
-                    </p>
-                    <p className="text-xs text-gray-400">2 dagen geleden</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         )}

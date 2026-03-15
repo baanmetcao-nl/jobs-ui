@@ -32,6 +32,9 @@ export default function Modal({ open, onOpenChange, children }: ModalProps) {
                   <Dialog.Title asChild>
                     <VisuallyHidden>Modal</VisuallyHidden>
                   </Dialog.Title>
+                  <Dialog.Description asChild>
+                    <VisuallyHidden>Modal dialog</VisuallyHidden>
+                  </Dialog.Description>
                   {children}
                 </motion.div>
               </motion.div>

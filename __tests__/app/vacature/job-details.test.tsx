@@ -26,7 +26,7 @@ jest.mock("next/image", () => ({
   ),
 }));
 
-jest.mock("dompurify", () => ({
+jest.mock("isomorphic-dompurify", () => ({
   sanitize: (html: string) => html,
 }));
 

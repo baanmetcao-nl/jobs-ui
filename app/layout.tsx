@@ -38,21 +38,14 @@ export const metadata: Metadata = {
     title: "Baan met CAO - Vacatures met eerlijke arbeidsvoorwaarden",
     description:
       "Ontdek vacatures met CAO, eerlijke salarissen en goede arbeidsvoorwaarden. Werk met zekerheid.",
-    images: [
-      {
-        url: "/og-image.svg",
-        width: 1200,
-        height: 630,
-        alt: "Baan met CAO",
-      },
-    ],
+    images: ["/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Baan met CAO - Vacatures met eerlijke arbeidsvoorwaarden",
     description:
       "Ontdek vacatures met CAO, eerlijke salarissen en goede arbeidsvoorwaarden.",
-    images: ["/og-image.svg"],
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,

@@ -1,15 +1,27 @@
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Menu, Search, Shield, TrendingUp, Users, X } from "lucide-react";
+import {
+  Menu,
+  Search,
+  X,
+  ChevronDown,
+  LogIn,
+  Briefcase,
+  LayoutDashboard,
+  Building2,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isWerkgeversOpen, setIsWerkgeversOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +45,29 @@ export function NavBar() {
 
   const pathname = usePathname();
   const isHomePage = pathname === "/";
+  const isEmployerFlow =
+    pathname.startsWith("/werkgevers") ||
+    pathname.startsWith("/plaats-vacature") ||
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/bevestiging") ||
+    pathname.startsWith("/bedrijf");
+
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem("employer-token") !== null);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsWerkgeversOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="w-full bg-white">
@@ -71,7 +106,7 @@ export function NavBar() {
               </Link>
             </nav>
           </div>
-          {!isHomePage && (
+          {!isHomePage && !isEmployerFlow && (
             <form
               onSubmit={handleSearch}
               className="hidden md:flex flex-1 max-w-md"
@@ -89,6 +124,59 @@ export function NavBar() {
             </form>
           )}
           <div className="flex items-center gap-2">
+            <div className="relative hidden md:block" ref={dropdownRef}>
+              <button
+                onClick={() => setIsWerkgeversOpen(!isWerkgeversOpen)}
+                className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 cursor-pointer"
+              >
+                <Building2 className="w-4 h-4" />
+                Werkgevers
+                <ChevronDown
+                  className={`w-3 h-3 transition-transform ${isWerkgeversOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              {isWerkgeversOpen && (
+                <div className="absolute right-0 mt-1 w-52 bg-white rounded-lg shadow-lg border py-1 z-50">
+                  <Link
+                    href="/werkgevers"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
+                    onClick={() => setIsWerkgeversOpen(false)}
+                  >
+                    <Briefcase className="w-4 h-4 text-gray-400" />
+                    Waarom Baan met CAO
+                  </Link>
+                  <Link
+                    href="/plaats-vacature"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
+                    onClick={() => setIsWerkgeversOpen(false)}
+                  >
+                    <Briefcase className="w-4 h-4 text-gray-400" />
+                    Plaats vacature
+                  </Link>
+                  {isLoggedIn ? (
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
+                      onClick={() => setIsWerkgeversOpen(false)}
+                    >
+                      <LayoutDashboard className="w-4 h-4 text-gray-400" />
+                      Dashboard
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/werkgevers/inloggen"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
+                      onClick={() => setIsWerkgeversOpen(false)}
+                    >
+                      <LogIn className="w-4 h-4 text-gray-400" />
+                      Inloggen
+                    </Link>
+                  )}
+                </div>
+              )}
+            </div>
+
             <Link href="/plaats-vacature">
               <Button className="hidden md:inline-flex bg-[#F1592A] hover:bg-[#e04d1f] text-white">
                 Plaats vacature
@@ -109,7 +197,7 @@ export function NavBar() {
           </div>
         </div>
         {isMenuOpen && (
-          <div className="lg:hidden border-t py-4 space-y-2">
+          <div className="md:hidden border-t py-4 space-y-2">
             <Link
               prefetch={false}
               href="/"
@@ -117,13 +205,6 @@ export function NavBar() {
               onClick={() => setIsMenuOpen(false)}
             >
               Alle vacatures
-            </Link>
-            <Link
-              href="/plaats-vacature"
-              className="block px-4 py-2 text-sm font-medium text-[#F1592A] hover:bg-gray-50 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Plaats vacature
             </Link>
             <Link
               href="/over-ons"
@@ -139,6 +220,43 @@ export function NavBar() {
             >
               Contact
             </Link>
+
+            <div className="border-t pt-2 mt-2">
+              <p className="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                Werkgevers
+              </p>
+              <Link
+                href="/werkgevers"
+                className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Waarom Baan met CAO
+              </Link>
+              <Link
+                href="/plaats-vacature"
+                className="block px-4 py-2 text-sm font-medium text-[#F1592A] hover:bg-gray-50 rounded-md"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Plaats vacature
+              </Link>
+              {isLoggedIn ? (
+                <Link
+                  href="/dashboard"
+                  className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+              ) : (
+                <Link
+                  href="/werkgevers/inloggen"
+                  className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Inloggen
+                </Link>
+              )}
+            </div>
           </div>
         )}
       </div>

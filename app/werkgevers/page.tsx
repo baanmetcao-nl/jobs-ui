@@ -26,7 +26,7 @@ const faqSchema = {
       name: "Moet mijn bedrijf een CAO hebben?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Ja, Baan met CAO is exclusief voor werkgevers die onder een collectieve arbeidsovereenkomst vallen. Dit is onze kernbelofte aan werkzoekenden en dat maakt uw vacature extra waardevol.",
+        text: "Ja, Baan met CAO is exclusief voor werkgevers die onder een collectieve arbeidsovereenkomst vallen. Dit is onze kernbelofte aan werkzoekenden en dat maakt elke vacature extra waardevol.",
       },
     },
     {
@@ -34,7 +34,7 @@ const faqSchema = {
       name: "Hoe snel is mijn vacature online?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Direct. Zodra u uw vacature heeft ingevuld en het pakket heeft afgerekend, is uw vacature zichtbaar op het platform.",
+        text: "Direct. Zodra de vacature is ingevuld en het pakket is afgerekend, is de vacature zichtbaar op het platform.",
       },
     },
     {
@@ -42,15 +42,15 @@ const faqSchema = {
       name: "Kan ik mijn vacature tussentijds aanpassen?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Ja, u kunt de tekst en details van uw vacature op elk moment wijzigen via uw dashboard. Wijzigingen zijn direct zichtbaar.",
+        text: "Ja, de tekst en details van een vacature zijn op elk moment aan te passen via het dashboard. Wijzigingen zijn direct zichtbaar.",
       },
     },
     {
       "@type": "Question",
-      name: "Wat als mijn vacature na 30 dagen niet is ingevuld?",
+      name: "Wat als mijn vacature na 60 dagen niet is ingevuld?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "U kunt uw vacature verlengen voor slechts €99 per 30 dagen. Dat kan eenvoudig vanuit uw dashboard, zonder opnieuw alles in te vullen.",
+        text: "Verlengen kan voor slechts €49 per 60 dagen. Dat gaat eenvoudig vanuit het dashboard, zonder opnieuw alles in te vullen.",
       },
     },
     {
@@ -58,7 +58,7 @@ const faqSchema = {
       name: "Kan ik een factuur krijgen?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Uiteraard. Na betaling ontvangt u automatisch een factuur per e-mail. Alle facturen zijn ook terug te vinden in uw dashboard.",
+        text: "Uiteraard. Na betaling is de factuur direct te downloaden vanuit het dashboard onder Facturen.",
       },
     },
   ],
@@ -105,8 +105,8 @@ export default function WerkgeversPage() {
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10">
             Werkzoekenden op Baan met CAO kiezen bewust voor werkgevers met
-            goede arbeidsvoorwaarden. Dat levert u gemotiveerde kandidaten op
-            met minder verloop.
+            goede arbeidsvoorwaarden. Dat levert gemotiveerde kandidaten op met
+            minder verloop.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/plaats-vacature">
@@ -114,7 +114,7 @@ export default function WerkgeversPage() {
                 size="lg"
                 className="bg-[#F1592A] hover:bg-[#e04d1f] text-white gap-2 w-full sm:w-auto text-base px-8 py-6"
               >
-                Plaats uw vacature
+                Plaats een vacature
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>
@@ -157,7 +157,7 @@ export default function WerkgeversPage() {
             </div>
             <div className="text-center">
               <p className="text-3xl md:text-4xl font-bold text-gray-900">
-                30 dagen
+                60 dagen
               </p>
               <p className="text-sm text-gray-500 mt-1">Vacature zichtbaar</p>
             </div>
@@ -174,9 +174,9 @@ export default function WerkgeversPage() {
                 <span className="text-[#F1592A]">juiste</span> kandidaten?
               </h2>
               <p className="text-gray-600 mb-4">
-                Op de grote vacaturesites verdwijnt uw vacature in de massa. U
-                krijgt veel reacties, maar weinig geschikte kandidaten. Dat kost
-                tijd en geld.
+                Op de grote vacaturesites verdwijnt een vacature in de massa.
+                Veel reacties, maar weinig geschikte kandidaten. Dat kost tijd
+                en geld.
               </p>
               <p className="text-gray-600 mb-6">
                 Baan met CAO is anders. Onze bezoekers zoeken bewust naar
@@ -199,7 +199,7 @@ export default function WerkgeversPage() {
                 <div className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />
                   <span className="text-gray-700">
-                    Versterk uw imago als betrouwbare werkgever
+                    Versterk het werkgeversimago
                   </span>
                 </div>
               </div>
@@ -214,7 +214,7 @@ export default function WerkgeversPage() {
                     Gericht bereik
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Geen ruis. Uw vacature bereikt alleen werkzoekenden die
+                    Geen ruis. Elke vacature bereikt alleen werkzoekenden die
                     specifiek zoeken naar banen met een CAO.
                   </p>
                 </div>
@@ -256,7 +256,7 @@ export default function WerkgeversPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-              Alles wat u nodig heeft om de beste kandidaten te vinden
+              Alles wat nodig is om de beste kandidaten te vinden
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Elke vacatureplaatsing bevat een compleet pakket aan tools en
@@ -272,7 +272,7 @@ export default function WerkgeversPage() {
                 Direct online
               </h3>
               <p className="text-sm text-gray-600">
-                Uw vacature is binnen minuten zichtbaar voor duizenden
+                Vacatures zijn binnen minuten zichtbaar voor duizenden
                 werkzoekenden. Geen wachttijd, geen goedkeuring nodig.
               </p>
             </div>
@@ -284,8 +284,8 @@ export default function WerkgeversPage() {
                 Real-time statistieken
               </h3>
               <p className="text-sm text-gray-600">
-                Volg views, kliks en sollicitaties in uw persoonlijke dashboard.
-                Zie precies hoe uw vacature presteert.
+                Volg views, kliks en sollicitaties in het dashboard. Zie precies
+                hoe de vacature presteert.
               </p>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
@@ -296,8 +296,8 @@ export default function WerkgeversPage() {
                 Bedrijfsprofiel
               </h3>
               <p className="text-sm text-gray-600">
-                Presenteer uw organisatie op een eigen profielpagina. Laat zien
-                wie u bent en waarom kandidaten bij u willen werken.
+                Presenteer de organisatie op een eigen profielpagina. Laat zien
+                wie je bent en waarom kandidaten er willen werken.
               </p>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
@@ -305,11 +305,11 @@ export default function WerkgeversPage() {
                 <Eye className="h-6 w-6 text-purple-500" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">
-                30 dagen zichtbaar
+                60 dagen zichtbaar
               </h3>
               <p className="text-sm text-gray-600">
-                Elke vacature is 30 dagen actief. Eenvoudig te verlengen als u
-                meer tijd nodig heeft.
+                Elke vacature is 60 dagen actief. Eenvoudig te verlengen indien
+                meer tijd nodig is.
               </p>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
@@ -320,7 +320,7 @@ export default function WerkgeversPage() {
                 Voorrang in resultaten
               </h3>
               <p className="text-sm text-gray-600">
-                Met een bundelpakket verschijnt uw vacature hoger in de
+                Met een bundelpakket verschijnt de vacature hoger in de
                 zoekresultaten. Meer zichtbaarheid, meer sollicitaties.
               </p>
             </div>
@@ -333,7 +333,7 @@ export default function WerkgeversPage() {
               </h3>
               <p className="text-sm text-gray-600">
                 Vacature nog niet ingevuld? Verleng met een paar klikken voor
-                slechts €99. Geen nieuw plaatsingsproces.
+                slechts €49. Geen nieuw plaatsingsproces.
               </p>
             </div>
           </div>
@@ -343,7 +343,7 @@ export default function WerkgeversPage() {
       <section className="py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
-            In 3 stappen uw vacature online
+            In 3 stappen een vacature online
           </h2>
           <p className="text-gray-600 text-center max-w-xl mx-auto mb-14">
             Het plaatsen van een vacature duurt nog geen 5 minuten.
@@ -358,7 +358,7 @@ export default function WerkgeversPage() {
                 Maak een account
               </h3>
               <p className="text-gray-600">
-                Vul uw bedrijfsgegevens in en maak direct een werkgeversprofiel
+                Vul de bedrijfsgegevens in en maak direct een werkgeversprofiel
                 aan. Klaar in 2 minuten.
               </p>
             </div>
@@ -367,7 +367,7 @@ export default function WerkgeversPage() {
                 2
               </div>
               <h3 className="font-semibold text-gray-900 mb-2 text-lg">
-                Plaats uw vacature
+                Plaats de vacature
               </h3>
               <p className="text-gray-600">
                 Vul de functie, locatie en beschrijving in. Kies een pakket en
@@ -382,7 +382,7 @@ export default function WerkgeversPage() {
                 Ontvang sollicitaties
               </h3>
               <p className="text-gray-600">
-                Uw vacature is direct zichtbaar. Volg de resultaten in uw
+                De vacature is direct zichtbaar. Volg de resultaten in het
                 dashboard en ontvang sollicitaties.
               </p>
             </div>
@@ -397,7 +397,7 @@ export default function WerkgeversPage() {
               Transparante tarieven, geen verrassingen
             </h2>
             <p className="text-gray-600 max-w-xl mx-auto">
-              Kies het pakket dat bij u past. Alle prijzen zijn exclusief btw.
+              Kies het pakket dat past. Alle prijzen zijn exclusief btw.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -416,13 +416,18 @@ export default function WerkgeversPage() {
                     {plan.name}
                   </h3>
                   <div className="mb-6">
-                    <span className="text-4xl font-bold text-gray-900">
-                      €{plan.price}
-                    </span>
-                    {plan.savings && (
-                      <span className="ml-2 text-sm text-green-600 font-medium">
-                        Bespaar €{plan.savings}
+                    <div>
+                      <span className="text-4xl font-bold text-gray-900">
+                        €{plan.price}
                       </span>
+                      <span className="text-sm text-gray-500 ml-1">
+                        excl. btw
+                      </span>
+                    </div>
+                    {plan.savings && (
+                      <p className="text-sm text-green-600 font-medium mt-1">
+                        Bespaar €{plan.savings}
+                      </p>
                     )}
                   </div>
                   <ul className="space-y-3 mb-8">
@@ -467,7 +472,7 @@ export default function WerkgeversPage() {
               <p className="text-gray-600">
                 Ja, Baan met CAO is exclusief voor werkgevers die onder een
                 collectieve arbeidsovereenkomst vallen. Dit is onze kernbelofte
-                aan werkzoekenden en dat maakt uw vacature extra waardevol.
+                aan werkzoekenden en dat maakt elke vacature extra waardevol.
               </p>
             </div>
             <div className="border-b pb-6">
@@ -475,8 +480,8 @@ export default function WerkgeversPage() {
                 Hoe snel is mijn vacature online?
               </h3>
               <p className="text-gray-600">
-                Direct. Zodra u uw vacature heeft ingevuld en het pakket heeft
-                afgerekend, is uw vacature zichtbaar op het platform.
+                Direct. Zodra de vacature is ingevuld en het pakket is
+                afgerekend, is de vacature zichtbaar op het platform.
               </p>
             </div>
             <div className="border-b pb-6">
@@ -484,18 +489,17 @@ export default function WerkgeversPage() {
                 Kan ik mijn vacature tussentijds aanpassen?
               </h3>
               <p className="text-gray-600">
-                Ja, u kunt de tekst en details van uw vacature op elk moment
-                wijzigen via uw dashboard. Wijzigingen zijn direct zichtbaar.
+                Ja, de tekst en details van een vacature zijn op elk moment aan
+                te passen via het dashboard. Wijzigingen zijn direct zichtbaar.
               </p>
             </div>
             <div className="border-b pb-6">
               <h3 className="font-semibold text-gray-900 mb-2">
-                Wat als mijn vacature na 30 dagen niet is ingevuld?
+                Wat als mijn vacature na 60 dagen niet is ingevuld?
               </h3>
               <p className="text-gray-600">
-                U kunt uw vacature verlengen voor slechts €99 per 30 dagen. Dat
-                kan eenvoudig vanuit uw dashboard, zonder opnieuw alles in te
-                vullen.
+                Verlengen kan voor slechts €49 per 60 dagen. Dat gaat eenvoudig
+                vanuit het dashboard, zonder opnieuw alles in te vullen.
               </p>
             </div>
             <div>
@@ -503,8 +507,8 @@ export default function WerkgeversPage() {
                 Kan ik een factuur krijgen?
               </h3>
               <p className="text-gray-600">
-                Uiteraard. Na betaling ontvangt u automatisch een factuur per
-                e-mail. Alle facturen zijn ook terug te vinden in uw dashboard.
+                Uiteraard. Na betaling is de factuur direct te downloaden vanuit
+                het dashboard onder Facturen.
               </p>
             </div>
           </div>
@@ -517,8 +521,8 @@ export default function WerkgeversPage() {
             Klaar om de juiste kandidaten te bereiken?
           </h2>
           <p className="text-gray-600 mb-8 max-w-xl mx-auto">
-            Sluit u aan bij werkgevers die investeren in goede
-            arbeidsvoorwaarden. Plaats vandaag nog uw eerste vacature.
+            Sluit je aan bij werkgevers die investeren in goede
+            arbeidsvoorwaarden. Plaats vandaag nog een eerste vacature.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/plaats-vacature">
@@ -526,7 +530,7 @@ export default function WerkgeversPage() {
                 size="lg"
                 className="bg-[#F1592A] hover:bg-[#e04d1f] text-white gap-2 text-base px-8 py-6 font-semibold"
               >
-                Plaats uw vacature
+                Plaats een vacature
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>
@@ -541,7 +545,8 @@ export default function WerkgeversPage() {
             </Link>
           </div>
           <p className="text-gray-400 text-sm mt-6">
-            Vanaf €299 per vacature — geen abonnement, geen verplichtingen
+            Vanaf €199 excl. btw per vacature — geen abonnement, geen
+            verplichtingen
           </p>
         </div>
       </section>

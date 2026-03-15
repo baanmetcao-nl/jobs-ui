@@ -18,11 +18,17 @@ import {
   Users,
   CheckCircle,
   AlertCircle,
+  User,
+  Download,
+  AlertTriangle,
 } from "lucide-react";
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   DashboardJob,
   DashboardStats,
+  Invoice,
   JOB_STATUS_LABELS,
   JobStatus,
   EXTEND_PRICE,
@@ -100,7 +106,67 @@ const mockJobs: DashboardJob[] = [
   },
 ];
 
-type TabType = "jobs" | "invoices";
+type TabType = "jobs" | "invoices" | "account";
+
+type AccountData = {
+  companyName: string;
+  vatNumber: string;
+  address: string;
+  postalCode: string;
+  city: string;
+  country: string;
+  contactName: string;
+  email: string;
+  phone: string;
+};
+
+const emptyAccount: AccountData = {
+  companyName: "",
+  vatNumber: "",
+  address: "",
+  postalCode: "",
+  city: "",
+  country: "Nederland",
+  contactName: "",
+  email: "",
+  phone: "",
+};
+
+const isAccountComplete = (account: AccountData): boolean =>
+  !!(
+    account.companyName.trim() &&
+    account.address.trim() &&
+    account.postalCode.trim() &&
+    account.city.trim() &&
+    account.email.trim()
+  );
+
+const mockInvoices: Invoice[] = [
+  {
+    id: "1",
+    invoiceNumber: "INV-2024-001",
+    date: "2024-01-15",
+    dueDate: "2024-02-15",
+    amount: 299,
+    vat: 62.79,
+    total: 361.79,
+    status: "paid",
+    jobCount: 1,
+    description: "Enkele vacature — Senior Software Developer",
+  },
+  {
+    id: "2",
+    invoiceNumber: "INV-2024-002",
+    date: "2024-01-10",
+    dueDate: "2024-02-10",
+    amount: 799,
+    vat: 167.79,
+    total: 966.79,
+    status: "paid",
+    jobCount: 3,
+    description: "3 vacatures bundel",
+  },
+];
 
 export default function DashboardPage() {
   const searchParams = useSearchParams();
@@ -109,6 +175,15 @@ export default function DashboardPage() {
   const [stats] = useState<DashboardStats>(mockStats);
   const [jobs, setJobs] = useState<DashboardJob[]>(mockJobs);
   const [newJobBanner, setNewJobBanner] = useState<string | null>(null);
+  const [account, setAccount] = useState<AccountData>(emptyAccount);
+  const [invoices] = useState<Invoice[]>(mockInvoices);
+  const [passwords, setPasswords] = useState({
+    current: "",
+    new: "",
+    confirm: "",
+  });
+  const [accountSaved, setAccountSaved] = useState(false);
+  const [hasPassword] = useState(false);
 
   useEffect(() => {
     if (searchParams.get("new") !== "true") return;
@@ -178,6 +253,7 @@ export default function DashboardPage() {
   const tabs = [
     { id: "jobs" as TabType, label: "Vacatures", icon: Briefcase },
     { id: "invoices" as TabType, label: "Facturen", icon: FileText },
+    { id: "account" as TabType, label: "Account", icon: User },
   ];
 
   return (
@@ -191,9 +267,13 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="gap-2">
-              <FileText className="w-4 h-4" />
-              Facturen
+            <Button
+              variant="outline"
+              className="gap-2"
+              onClick={() => setActiveTab("account")}
+            >
+              <User className="w-4 h-4" />
+              Account
             </Button>
             <Link href="/plaats-vacature">
               <Button className="bg-[#F1592A] hover:bg-[#e04d1f] gap-2">
@@ -304,16 +384,16 @@ export default function DashboardPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 flex-1 sm:flex-none px-2 sm:px-4 py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors cursor-pointer whitespace-nowrap ${
                   activeTab === tab.id
                     ? "border-[#F1592A] text-[#F1592A]"
                     : "border-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
-                <tab.icon className="w-4 h-4" />
+                <tab.icon className="w-4 h-4 hidden sm:block" />
                 {tab.label}
                 {tab.id === "jobs" && (
-                  <Badge variant="secondary" className="ml-1">
+                  <Badge variant="secondary" className="ml-0.5 sm:ml-1 text-[10px] sm:text-xs">
                     {jobs.length}
                   </Badge>
                 )}
@@ -356,7 +436,82 @@ export default function DashboardPage() {
               </div>
             )}
 
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div className="space-y-3 md:hidden">
+              {jobs.map((job) => (
+                <Card key={job.id} className="overflow-hidden">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        checked={selectedJobs.includes(job.id)}
+                        onChange={() => toggleSelectJob(job.id)}
+                        className="rounded mt-1"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <p className="font-medium text-gray-900">
+                              {job.title}
+                            </p>
+                            <p className="text-sm text-gray-500">{job.city}</p>
+                          </div>
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium shrink-0 ${getStatusColor(job.status)}`}
+                          >
+                            {JOB_STATUS_LABELS[job.status]}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mt-3 text-sm">
+                          <div>
+                            <p className="text-gray-500">Views</p>
+                            <p className="font-medium">{formatNumber(job.views)}</p>
+                          </div>
+                          <div>
+                            <p className="text-gray-500">Clicks</p>
+                            <p className="font-medium">{formatNumber(job.clicks)}</p>
+                          </div>
+                          <div>
+                            <p className="text-gray-500">Sollicitaties</p>
+                            <p className="font-medium">{job.applications}</p>
+                          </div>
+                        </div>
+                        {job.expiresAt && (
+                          <p className="text-xs text-gray-500 mt-2">
+                            Vervalt op: {job.expiresAt}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-1 mt-3 pt-3 border-t">
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <Copy className="w-4 h-4" />
+                          </Button>
+                          {job.status === "expired" && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 text-[#F1592A]"
+                            >
+                              <RefreshCw className="w-4 h-4" />
+                            </Button>
+                          )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 text-red-600"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden hidden md:block">
               <table className="w-full">
                 <thead className="bg-gray-50 border-b">
                   <tr>
@@ -475,9 +630,427 @@ export default function DashboardPage() {
 
         {activeTab === "invoices" && (
           <div className="bg-white rounded-xl shadow-sm p-6">
-            <p className="text-gray-500 text-center py-8">
-              Facturen worden binnenkort toegevoegd.
-            </p>
+            {!isAccountComplete(account) ? (
+              <div className="text-center py-12 space-y-4">
+                <div className="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mx-auto">
+                  <AlertTriangle className="w-7 h-7 text-orange-500" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">
+                    Bedrijfsgegevens vereist
+                  </h3>
+                  <p className="text-gray-500 text-sm max-w-md mx-auto">
+                    Vul eerst je bedrijfsgegevens in bij Account om facturen te
+                    kunnen downloaden.
+                  </p>
+                </div>
+                <Button
+                  onClick={() => setActiveTab("account")}
+                  className="bg-[#F1592A] hover:bg-[#e04d1f] gap-2"
+                >
+                  <User className="w-4 h-4" />
+                  Ga naar Account
+                </Button>
+              </div>
+            ) : invoices.length === 0 ? (
+              <p className="text-gray-500 text-center py-8">
+                Er zijn nog geen facturen beschikbaar.
+              </p>
+            ) : (
+              <>
+              <div className="space-y-3 md:hidden">
+                {invoices.map((invoice) => (
+                  <div
+                    key={invoice.id}
+                    className="border rounded-lg p-4 space-y-3"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <p className="font-medium text-gray-900 text-sm">
+                          {invoice.invoiceNumber}
+                        </p>
+                        <p className="text-xs text-gray-500">{invoice.date}</p>
+                      </div>
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium shrink-0 ${
+                          invoice.status === "paid"
+                            ? "bg-green-100 text-green-800"
+                            : invoice.status === "pending"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {invoice.status === "paid"
+                          ? "Betaald"
+                          : invoice.status === "pending"
+                            ? "Openstaand"
+                            : "Vervallen"}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600">{invoice.description}</p>
+                    <div className="flex items-center justify-between pt-2 border-t">
+                      <p className="text-sm font-medium text-gray-900">
+                        €{invoice.total.toLocaleString("nl-NL", { minimumFractionDigits: 2 })}
+                      </p>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0 text-[#F1592A]"
+                      >
+                        <Download className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="hidden md:block">
+                <table className="w-full">
+                  <thead className="border-b">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        Factuurnummer
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        Datum
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        Omschrijving
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        Status
+                      </th>
+                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                        Bedrag
+                      </th>
+                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                        PDF
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y">
+                    {invoices.map((invoice) => (
+                      <tr key={invoice.id} className="hover:bg-gray-50">
+                        <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                          {invoice.invoiceNumber}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-600">
+                          {invoice.date}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-600">
+                          {invoice.description}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              invoice.status === "paid"
+                                ? "bg-green-100 text-green-800"
+                                : invoice.status === "pending"
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {invoice.status === "paid"
+                              ? "Betaald"
+                              : invoice.status === "pending"
+                                ? "Openstaand"
+                                : "Vervallen"}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-900 text-right font-medium">
+                          €
+                          {invoice.total.toLocaleString("nl-NL", {
+                            minimumFractionDigits: 2,
+                          })}
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 text-[#F1592A]"
+                          >
+                            <Download className="w-4 h-4" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {activeTab === "account" && (
+          <div className="space-y-6">
+            {accountSaved && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
+                <p className="text-sm text-green-800">
+                  Bedrijfsgegevens opgeslagen.
+                </p>
+                <button
+                  onClick={() => setAccountSaved(false)}
+                  className="ml-auto text-green-600 hover:text-green-800 text-sm"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                Bedrijfsgegevens
+              </h3>
+              <p className="text-sm text-gray-500 mb-6">
+                Deze gegevens worden gebruikt voor je facturen.
+              </p>
+
+              <div className="space-y-4 max-w-2xl">
+                <div>
+                  <Label htmlFor="acc-companyName" className="mb-2">
+                    Bedrijfsnaam <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="acc-companyName"
+                    placeholder="Acme B.V."
+                    value={account.companyName}
+                    onChange={(e) =>
+                      setAccount((prev) => ({
+                        ...prev,
+                        companyName: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="acc-vatNumber" className="mb-2">
+                    BTW-nummer
+                  </Label>
+                  <Input
+                    id="acc-vatNumber"
+                    placeholder="NL000000000B01"
+                    value={account.vatNumber}
+                    onChange={(e) =>
+                      setAccount((prev) => ({
+                        ...prev,
+                        vatNumber: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="acc-address" className="mb-2">
+                    Adres <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="acc-address"
+                    placeholder="Straatnaam 123"
+                    value={account.address}
+                    onChange={(e) =>
+                      setAccount((prev) => ({
+                        ...prev,
+                        address: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="acc-postalCode" className="mb-2">
+                      Postcode <span className="text-red-500">*</span>
+                    </Label>
+                    <Input
+                      id="acc-postalCode"
+                      placeholder="1234 AB"
+                      value={account.postalCode}
+                      onChange={(e) =>
+                        setAccount((prev) => ({
+                          ...prev,
+                          postalCode: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="acc-city" className="mb-2">
+                      Plaats <span className="text-red-500">*</span>
+                    </Label>
+                    <Input
+                      id="acc-city"
+                      placeholder="Amsterdam"
+                      value={account.city}
+                      onChange={(e) =>
+                        setAccount((prev) => ({
+                          ...prev,
+                          city: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="acc-country" className="mb-2">
+                    Land
+                  </Label>
+                  <Input
+                    id="acc-country"
+                    value={account.country}
+                    onChange={(e) =>
+                      setAccount((prev) => ({
+                        ...prev,
+                        country: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+
+                <div className="border-t pt-4 mt-4">
+                  <h4 className="text-sm font-semibold text-gray-900 mb-4">
+                    Contactpersoon
+                  </h4>
+
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="acc-contactName" className="mb-2">
+                        Naam
+                      </Label>
+                      <Input
+                        id="acc-contactName"
+                        placeholder="Jan Jansen"
+                        value={account.contactName}
+                        onChange={(e) =>
+                          setAccount((prev) => ({
+                            ...prev,
+                            contactName: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="acc-email" className="mb-2">
+                          E-mailadres <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          id="acc-email"
+                          type="email"
+                          placeholder="jan@bedrijf.nl"
+                          value={account.email}
+                          onChange={(e) =>
+                            setAccount((prev) => ({
+                              ...prev,
+                              email: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="acc-phone" className="mb-2">
+                          Telefoonnummer
+                        </Label>
+                        <Input
+                          id="acc-phone"
+                          type="tel"
+                          placeholder="06 12345678"
+                          value={account.phone}
+                          onChange={(e) =>
+                            setAccount((prev) => ({
+                              ...prev,
+                              phone: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <Button
+                    className="bg-[#F1592A] hover:bg-[#e04d1f]"
+                    onClick={() => setAccountSaved(true)}
+                  >
+                    Opslaan
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                {hasPassword ? "Wachtwoord wijzigen" : "Wachtwoord instellen"}
+              </h3>
+              <p className="text-sm text-gray-500 mb-6">
+                {hasPassword
+                  ? "Kies een nieuw wachtwoord voor je account."
+                  : "Stel een wachtwoord in om je account te beveiligen."}
+              </p>
+
+              <div className="space-y-4 max-w-md">
+                {hasPassword && (
+                  <div>
+                    <Label htmlFor="pw-current" className="mb-2">
+                      Huidig wachtwoord
+                    </Label>
+                    <Input
+                      id="pw-current"
+                      type="password"
+                      value={passwords.current}
+                      onChange={(e) =>
+                        setPasswords((prev) => ({
+                          ...prev,
+                          current: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                )}
+                <div>
+                  <Label htmlFor="pw-new" className="mb-2">
+                    {hasPassword ? "Nieuw wachtwoord" : "Wachtwoord"}
+                  </Label>
+                  <Input
+                    id="pw-new"
+                    type="password"
+                    value={passwords.new}
+                    onChange={(e) =>
+                      setPasswords((prev) => ({
+                        ...prev,
+                        new: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="pw-confirm" className="mb-2">
+                    Bevestig nieuw wachtwoord
+                  </Label>
+                  <Input
+                    id="pw-confirm"
+                    type="password"
+                    value={passwords.confirm}
+                    onChange={(e) =>
+                      setPasswords((prev) => ({
+                        ...prev,
+                        confirm: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="pt-2">
+                  <Button variant="outline">
+                    {hasPassword ? "Wachtwoord wijzigen" : "Wachtwoord instellen"}
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

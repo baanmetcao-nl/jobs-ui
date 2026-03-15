@@ -81,6 +81,7 @@ export type JobPostingFlow = {
   jobDetails: Partial<JobDetailsFormData>;
   company: Partial<CompanyFormData>;
   pricing: PricingPlan | null;
+  featured: boolean;
   account: Partial<AccountFormData>;
   draftId?: string;
 };
@@ -212,11 +213,11 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "single",
     name: "Enkele vacature",
-    price: 299,
+    price: 199,
     jobCount: 1,
-    durationDays: 30,
+    durationDays: 60,
     features: [
-      "1 vacature voor 30 dagen",
+      "1 vacature voor 60 dagen",
       "Bedrijfsprofiel pagina",
       "Statistieken dashboard",
       "Verlengen mogelijk",
@@ -225,13 +226,13 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "bundle3",
     name: "3 vacatures",
-    price: 799,
+    price: 499,
     jobCount: 3,
-    durationDays: 30,
+    durationDays: 60,
     popular: true,
     savings: 98,
     features: [
-      "3 vacatures voor 30 dagen",
+      "3 vacatures voor 60 dagen",
       "Bedrijfsprofiel pagina",
       "Statistieken dashboard",
       "Verlengen mogelijk",
@@ -241,12 +242,12 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "bundle10",
     name: "10 vacatures",
-    price: 1999,
+    price: 1499,
     jobCount: 10,
-    durationDays: 30,
-    savings: 991,
+    durationDays: 60,
+    savings: 491,
     features: [
-      "10 vacatures voor 30 dagen",
+      "10 vacatures voor 60 dagen",
       "Bedrijfsprofiel pagina",
       "Statistieken dashboard",
       "Verlengen mogelijk",
@@ -262,4 +263,5 @@ export const JOB_STATUS_LABELS: Record<JobStatus, string> = {
   paused: "Gepauzeerd",
 };
 
-export const EXTEND_PRICE = 99;
+export const EXTEND_PRICE = 49;
+export const FEATURED_PRICE = 49;

@@ -29,6 +29,7 @@ const DEFAULT_FLOW: JobPostingFlow = {
   jobDetails: {},
   company: {},
   pricing: null,
+  featured: false,
   account: {},
 };
 
@@ -156,6 +157,9 @@ export default function StepPage() {
       selectedPlan: flowData.pricing,
       onSelect: (plan: any) =>
         setFlowData((prev) => prev && ({ ...prev, pricing: plan })),
+      featured: flowData.featured,
+      onFeaturedChange: (featured: boolean) =>
+        setFlowData((prev) => prev && ({ ...prev, featured })),
       goToStep,
     },
     account: {
@@ -166,6 +170,7 @@ export default function StepPage() {
           account: { ...prev.account, ...updates },
         })),
       selectedPlan: flowData.pricing,
+      featured: flowData.featured,
       goToStep,
     },
   };

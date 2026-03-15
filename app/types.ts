@@ -96,6 +96,7 @@ export type Job = {
     symbol: "€";
   };
   tags: string[];
+  isFeatured?: boolean;
 };
 
 export type MinimalJob = {
@@ -120,6 +121,7 @@ export type MinimalJob = {
     name: string;
     logoUrl: string;
   };
+  isFeatured?: boolean;
 };
 
 export type JobsResponse = {

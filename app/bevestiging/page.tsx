@@ -92,7 +92,8 @@ function BevestigingContent() {
             </p>
             <p className="text-sm text-gray-600">
               We hebben een e-mail gestuurd met een link om je wachtwoord in te
-              stellen en je account te activeren.
+              stellen en je account te activeren. Je factuur kun je downloaden
+              vanuit het dashboard.
             </p>
           </div>
         </div>

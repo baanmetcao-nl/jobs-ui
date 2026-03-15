@@ -102,7 +102,7 @@ describe("EXTEND_PRICE", () => {
     expect(EXTEND_PRICE).toBeGreaterThan(0);
   });
 
-  it("equals 99", () => {
-    expect(EXTEND_PRICE).toBe(99);
+  it("equals 49", () => {
+    expect(EXTEND_PRICE).toBe(49);
   });
 });

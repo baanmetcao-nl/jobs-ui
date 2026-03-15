@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,6 +12,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (localStorage.getItem("employer-token") !== null) {
+      router.replace("/dashboard");
+    }
+  }, [router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,6 +82,15 @@ export default function LoginPage() {
             >
               Inloggen
             </Button>
+
+            <div className="text-right">
+              <Link
+                href="/werkgevers/wachtwoord-vergeten"
+                className="text-sm text-[#F1592A] hover:underline"
+              >
+                Wachtwoord vergeten?
+              </Link>
+            </div>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-600">

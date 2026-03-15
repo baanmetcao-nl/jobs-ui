@@ -20,7 +20,7 @@ import {
   Loader2,
   CreditCard,
 } from "lucide-react";
-import { AccountFormData, PricingPlan } from "@/app/types-employer";
+import { AccountFormData, PricingPlan, FEATURED_PRICE } from "@/app/types-employer";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
@@ -49,13 +49,16 @@ interface AccountStepProps {
   data: Partial<AccountFormData>;
   onChange: (data: Partial<AccountFormData>) => void;
   selectedPlan: PricingPlan | null;
+  featured: boolean;
   goToStep?: (slug: string) => void;
 }
 
-function OrderSummary({ selectedPlan }: { selectedPlan: PricingPlan | null }) {
-  const planPrice = selectedPlan?.price ?? 299;
-  const vatAmount = planPrice * 0.21;
-  const totalAmount = planPrice + vatAmount;
+function OrderSummary({ selectedPlan, featured }: { selectedPlan: PricingPlan | null; featured: boolean }) {
+  const planPrice = selectedPlan?.price ?? 199;
+  const featuredTotal = featured ? FEATURED_PRICE * (selectedPlan?.jobCount ?? 1) : 0;
+  const subtotal = planPrice + featuredTotal;
+  const vatAmount = subtotal * 0.21;
+  const totalAmount = subtotal + vatAmount;
   const fmt = (n: number) =>
     n.toLocaleString("nl-NL", {
       minimumFractionDigits: 2,
@@ -75,12 +78,20 @@ function OrderSummary({ selectedPlan }: { selectedPlan: PricingPlan | null }) {
         </div>
         <div className="flex justify-between">
           <span className="text-gray-600">Looptijd</span>
-          <span>{selectedPlan?.durationDays ?? 30} dagen</span>
+          <span>{selectedPlan?.durationDays ?? 60} dagen</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600">Subtotaal</span>
+          <span className="text-gray-600">Pakketprijs</span>
           <span>€{fmt(planPrice)}</span>
         </div>
+        {featured && (
+          <div className="flex justify-between">
+            <span className="text-gray-600">
+              Uitgelicht ({selectedPlan?.jobCount ?? 1}x €{FEATURED_PRICE})
+            </span>
+            <span>€{fmt(featuredTotal)}</span>
+          </div>
+        )}
         <div className="flex justify-between">
           <span className="text-gray-600">BTW (21%)</span>
           <span>€{fmt(vatAmount)}</span>
@@ -117,6 +128,7 @@ interface CheckoutFormProps {
   data: Partial<AccountFormData>;
   onChange: (data: Partial<AccountFormData>) => void;
   selectedPlan: PricingPlan | null;
+  featured: boolean;
   paymentIntentId: string;
   goToStep?: (slug: string) => void;
 }
@@ -125,6 +137,7 @@ function CheckoutForm({
   data,
   onChange,
   selectedPlan,
+  featured,
   paymentIntentId,
   goToStep,
 }: CheckoutFormProps) {
@@ -134,8 +147,9 @@ function CheckoutForm({
   const [stripeError, setStripeError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const planPrice = selectedPlan?.price ?? 299;
-  const totalAmount = planPrice * 1.21;
+  const planPrice = selectedPlan?.price ?? 199;
+  const featuredTotal = featured ? FEATURED_PRICE * (selectedPlan?.jobCount ?? 1) : 0;
+  const totalAmount = (planPrice + featuredTotal) * 1.21;
   const fmt = (n: number) =>
     n.toLocaleString("nl-NL", {
       minimumFractionDigits: 2,
@@ -409,6 +423,7 @@ export function AccountStep({
   data,
   onChange,
   selectedPlan,
+  featured,
   goToStep,
 }: AccountStepProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -481,13 +496,14 @@ export function AccountStep({
             data={data}
             onChange={onChange}
             selectedPlan={selectedPlan}
+            featured={featured}
             paymentIntentId={paymentIntentId}
             goToStep={goToStep}
           />
         </Elements>
 
         <div className="lg:sticky lg:top-8">
-          <OrderSummary selectedPlan={selectedPlan} />
+          <OrderSummary selectedPlan={selectedPlan} featured={featured} />
         </div>
       </div>
     </div>

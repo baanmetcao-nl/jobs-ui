@@ -2,16 +2,37 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ArrowRight, Check, Tag, Zap, Crown } from "lucide-react";
-import { PRICING_PLANS, PricingPlan } from "@/app/types-employer";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Tag,
+  Zap,
+  Crown,
+  Star,
+} from "lucide-react";
+import {
+  PRICING_PLANS,
+  FEATURED_PRICE,
+  PricingPlan,
+} from "@/app/types-employer";
 
 interface PricingStepProps {
   selectedPlan: PricingPlan | null;
   onSelect: (plan: PricingPlan) => void;
+  featured: boolean;
+  onFeaturedChange: (featured: boolean) => void;
   goToStep?: (slug: string) => void;
 }
 
-export function PricingStep({ selectedPlan, onSelect, goToStep }: PricingStepProps) {
+export function PricingStep({
+  selectedPlan,
+  onSelect,
+  featured,
+  onFeaturedChange,
+  goToStep,
+}: PricingStepProps) {
   const getIcon = (planId: string) => {
     switch (planId) {
       case "bundle3":
@@ -108,13 +129,63 @@ export function PricingStep({ selectedPlan, onSelect, goToStep }: PricingStepPro
         })}
       </div>
 
+      <div
+        className={`border-2 rounded-xl p-6 transition-all cursor-pointer ${
+          featured
+            ? "border-[#F1592A] bg-orange-50 shadow-lg"
+            : "border-gray-200 hover:border-gray-300"
+        }`}
+        onClick={() => onFeaturedChange(!featured)}
+      >
+        <div className="flex items-center justify-between mb-3">
+          <label className="flex items-center gap-3 cursor-pointer">
+            <Checkbox
+              checked={featured}
+              onCheckedChange={(checked) =>
+                onFeaturedChange(checked as boolean)
+              }
+            />
+            <Star className="w-5 h-5 text-yellow-500 shrink-0" />
+            <span className="font-semibold text-gray-900 text-lg">
+              Uitgelicht
+            </span>
+            <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+              Aanbevolen
+            </Badge>
+          </label>
+          <div className="text-right shrink-0">
+            <span className="text-2xl font-bold text-gray-900">
+              €{FEATURED_PRICE}
+            </span>
+            <p className="text-xs text-gray-500">per vacature, excl. BTW</p>
+          </div>
+        </div>
+        <p className="text-sm text-gray-600 mb-3 ml-9">
+          Laat je vacature extra opvallen met een uitgelichte plaatsing.
+        </p>
+        <ul className="text-sm text-gray-600 space-y-1.5 ml-9">
+          <li className="flex items-center gap-2">
+            <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+            Opvallende markering in zoekresultaten
+          </li>
+          <li className="flex items-center gap-2">
+            <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+            Bovenaan in relevante zoekresultaten
+          </li>
+          <li className="flex items-center gap-2">
+            <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+            Getoond in &apos;Uitgelichte vacatures&apos; op de homepage
+          </li>
+        </ul>
+      </div>
+
       <div className="bg-blue-50 rounded-lg p-6">
         <h3 className="font-semibold text-blue-900 mb-3">
           💡 Extra informatie
         </h3>
         <ul className="text-sm text-blue-800 space-y-2">
-          <li>Alle pakketten zijn 30 dagen geldig vanaf publicatiedatum</li>
-          <li>Verlengen kan altijd voor €99 per vacature</li>
+          <li>Alle pakketten zijn 60 dagen geldig vanaf publicatiedatum</li>
+          <li>Verlengen kan altijd voor €49 per vacature</li>
           <li>Betaling via iDEAL, Bancontact of factuur (zakelijk)</li>
           <li>Btw wordt apart in rekening gebracht</li>
           <li>Niet tevreden? Volledige refund binnen 7 dagen</li>

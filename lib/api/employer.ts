@@ -166,7 +166,7 @@ export async function duplicateJob(
 
 export async function extendJob(
   jobId: string,
-  durationDays: number = 30,
+  durationDays: number = 60,
 ): Promise<ExtendJobResponse> {
   const res = await backendFetch(`/api/employer/jobs/${jobId}/extend`, {
     method: "POST",

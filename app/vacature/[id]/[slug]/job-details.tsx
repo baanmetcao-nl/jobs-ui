@@ -32,7 +32,7 @@ import {
 } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 import { Job, MinimalJob } from "@/app/types";
 import CompanyLogo from "@/components/image-fallback";
 

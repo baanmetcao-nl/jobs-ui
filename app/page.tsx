@@ -4,6 +4,8 @@ import { formatNumber } from "@/lib/utils";
 import { JobsResponse } from "@/app/types";
 import { fetchJobs, fetchTotalJobCount } from "@/lib/api/jobs";
 
+export const revalidate = 60;
+
 const LIMIT = 10;
 
 function toArray<T>(value: T | T[] | undefined): T[] | undefined {

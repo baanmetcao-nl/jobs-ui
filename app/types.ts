@@ -4,7 +4,7 @@ export type { Seniority };
 
 type Workplace = "remote" | "hybrid" | "office" | "other" | "free_choice";
 
-export type Contract = "freelance" | "temporary" | "permanent" | "flex";
+export type Contract = "temporary" | "permanent";
 
 export type { Workplace };
 

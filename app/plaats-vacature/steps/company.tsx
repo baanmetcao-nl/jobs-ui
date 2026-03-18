@@ -20,7 +20,7 @@ import {
   Globe,
 } from "lucide-react";
 import { CompanyFormData } from "@/app/types-employer";
-import { sanitizeInput } from "@/lib/utils";
+import { ensureHttps, sanitizeInput } from "@/lib/utils";
 
 interface CompanyFormProps {
   data: Partial<CompanyFormData>;
@@ -35,24 +35,6 @@ const COMPANY_SIZES = [
   { value: "201-500", label: "201-500 medewerkers" },
   { value: "501-1000", label: "501-1000 medewerkers" },
   { value: "1000+", label: "1000+ medewerkers" },
-];
-
-const INDUSTRIES = [
-  "Technologie",
-  "Finance & Banken",
-  "Healthcare",
-  "Onderwijs",
-  "Overheid",
-  "Retail & E-commerce",
-  "Manufacturing",
-  "Logistiek & Transport",
-  "Media & Communicatie",
-  "Consulting",
-  "Non-profit",
-  "Real Estate",
-  "Energie & Utilities",
-  "Farmacie",
-  "Overig",
 ];
 
 export function CompanyForm({ data, onChange, goToStep }: CompanyFormProps) {
@@ -83,17 +65,15 @@ export function CompanyForm({ data, onChange, goToStep }: CompanyFormProps) {
       newErrors.bio = "Beschrijving mag maximaal 500 tekens bevatten";
     }
 
-    if (!data.industry) {
-      newErrors.industry = "Branche is verplicht";
-    }
-
     if (!data.location?.trim() || data.location.trim().length < 2) {
       newErrors.location = "Locatie is verplicht en minimaal 2 tekens";
     }
 
     if (data.website?.trim()) {
+      const website = ensureHttps(data.website);
+      if (website !== data.website) onChange({ website });
       try {
-        new URL(data.website);
+        new URL(website);
       } catch {
         newErrors.website = "Ongeldige website URL";
       }
@@ -176,8 +156,8 @@ export function CompanyForm({ data, onChange, goToStep }: CompanyFormProps) {
                 <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
                   id="website"
-                  type="url"
-                  placeholder="https://bedrijf.nl"
+                  type="text"
+                  placeholder="bedrijf.nl"
                   value={data.website || ""}
                   onChange={(e) => {
                     onChange({ website: sanitizeInput(e.target.value) });
@@ -211,54 +191,23 @@ export function CompanyForm({ data, onChange, goToStep }: CompanyFormProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label className="mb-2">
-                Branche <span className="text-red-500">*</span>
-              </Label>
-              <Select
-                value={data.industry || ""}
-                onValueChange={(value) => {
-                  onChange({ industry: value });
-                  clearError("industry");
-                }}
-              >
-                <SelectTrigger
-                  className={errors.industry ? "border-red-500" : ""}
-                >
-                  <SelectValue placeholder="Kies branche" />
-                </SelectTrigger>
-                <SelectContent>
-                  {INDUSTRIES.map((industry) => (
-                    <SelectItem key={industry} value={industry}>
-                      {industry}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {errors.industry && (
-                <p className="text-sm text-red-500 mt-1">{errors.industry}</p>
-              )}
-            </div>
-
-            <div>
-              <Label htmlFor="location" className="mb-2">
-                Locatie (hoofdkantoor) <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="location"
-                placeholder="Bijv. Amsterdam"
-                value={data.location || ""}
-                onChange={(e) => {
-                  onChange({ location: sanitizeInput(e.target.value) });
-                  if (e.target.value.trim().length >= 2) clearError("location");
-                }}
-                className={errors.location ? "border-red-500" : ""}
-              />
-              {errors.location && (
-                <p className="text-sm text-red-500 mt-1">{errors.location}</p>
-              )}
-            </div>
+          <div>
+            <Label htmlFor="location" className="mb-2">
+              Locatie (hoofdkantoor) <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="location"
+              placeholder="Bijv. Amsterdam"
+              value={data.location || ""}
+              onChange={(e) => {
+                onChange({ location: sanitizeInput(e.target.value) });
+                if (e.target.value.trim().length >= 2) clearError("location");
+              }}
+              className={errors.location ? "border-red-500" : ""}
+            />
+            {errors.location && (
+              <p className="text-sm text-red-500 mt-1">{errors.location}</p>
+            )}
           </div>
         </div>
       </div>

@@ -78,10 +78,8 @@ describe("intervalFormat", () => {
 
 describe("contractFormat", () => {
   it("returns the correct Dutch label for each contract type", () => {
-    expect(contractFormat("freelance")).toBe("Freelance");
     expect(contractFormat("permanent")).toBe("Vast contract");
     expect(contractFormat("temporary")).toBe("Tijdelijk contract");
-    expect(contractFormat("flex")).toBe("Flexibel contract");
   });
 });
 

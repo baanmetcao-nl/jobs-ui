@@ -9,7 +9,6 @@ import {
   Briefcase,
   LayoutDashboard,
   Building2,
-  MapPin,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
@@ -21,7 +20,6 @@ export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isWerkgeversOpen, setIsWerkgeversOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [locationQuery, setLocationQuery] = useState("");
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { isSignedIn } = useUser();
@@ -30,7 +28,6 @@ export function NavBar() {
     e.preventDefault();
 
     const trimmed = searchQuery.trim();
-    const trimmedLocation = locationQuery.trim();
 
     const params = new URLSearchParams(window.location.search);
 
@@ -38,12 +35,6 @@ export function NavBar() {
       params.set("search", trimmed);
     } else {
       params.delete("search");
-    }
-
-    if (trimmedLocation) {
-      params.set("location", trimmedLocation);
-    } else {
-      params.delete("location");
     }
 
     params.set("page", "1");
@@ -107,10 +98,10 @@ export function NavBar() {
                 Over ons
               </Link>
               <Link
-                href="/contact"
+                href="/blog"
                 className="text-sm font-medium text-gray-700 hover:text-gray-900"
               >
-                Contact
+                Blog
               </Link>
             </nav>
           </div>
@@ -127,16 +118,6 @@ export function NavBar() {
                   className="pl-10 w-full"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <div className="relative flex-1">
-                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  type="search"
-                  placeholder="Locatie..."
-                  className="pl-10 w-full"
-                  value={locationQuery}
-                  onChange={(e) => setLocationQuery(e.target.value)}
                 />
               </div>
             </form>
@@ -242,13 +223,19 @@ export function NavBar() {
               Over ons
             </Link>
             <Link
+              href="/blog"
+              className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Blog
+            </Link>
+            <Link
               href="/contact"
               className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
             </Link>
-
             <div className="border-t pt-2 mt-2">
               <p className="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                 Werkgevers

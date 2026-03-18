@@ -45,10 +45,8 @@ export function intervalFormat(interval: Interval) {
 
 export function contractFormat(contract: Job["contract"]) {
   const labels: Record<Job["contract"], string> = {
-    freelance: "Freelance",
     permanent: "Vast contract",
     temporary: "Tijdelijk contract",
-    flex: "Flexibel contract",
   };
   return labels[contract];
 }
@@ -70,6 +68,12 @@ export function educationFormat(education: Job["education"]) {
 
 export function sanitizeInput(input: string): string {
   return input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+export function ensureHttps(url: string): string {
+  const trimmed = url.trim();
+  if (!trimmed) return trimmed;
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
 }
 
 export function slugify(text: string) {

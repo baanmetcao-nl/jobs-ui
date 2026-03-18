@@ -107,7 +107,7 @@ const mockRelatedJob: MinimalJob = {
   country: "the_netherlands",
   city: "Rotterdam",
   workplace: "remote",
-  contract: "freelance",
+  contract: "permanent",
   niches: ["technology-it"],
   salary: { symbol: "€", min: 3000, max: 5000, interval: "monthly", currency: "EUR" },
   tags: ["Vue"],

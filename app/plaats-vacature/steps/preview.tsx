@@ -58,8 +58,6 @@ export function PreviewStep({
     const contractMap: Record<string, string> = {
       permanent: "Vast contract",
       temporary: "Tijdelijk contract",
-      flex: "Flexibel / Uitzendwerk",
-      freelance: "Freelance / ZZP",
     };
     return (
       contractMap[jobData.contract || ""] || jobData.contract || "Onbekend"
@@ -79,8 +77,10 @@ export function PreviewStep({
   };
 
   const nicheDisplay = () => {
-    if (!jobData.niche) return "Onbekend";
-    return nicheSeo[jobData.niche]?.heading || jobData.niche;
+    if (!jobData.niches?.length) return "Onbekend";
+    return jobData.niches
+      .map((n) => nicheSeo[n]?.heading || n)
+      .join(", ");
   };
 
   const hoursText =

@@ -370,12 +370,19 @@ function CheckoutForm({
             Ik ga akkoord met de{" "}
             <a
               href="/algemene-voorwaarden"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-[#F1592A] underline"
             >
               algemene voorwaarden
             </a>{" "}
             en{" "}
-            <a href="/privacy" className="text-[#F1592A] underline">
+            <a
+              href="/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#F1592A] underline"
+            >
               privacybeleid
             </a>
             . <span className="text-red-500">*</span>
@@ -538,6 +545,7 @@ export function AccountStep({
             clientSecret,
             appearance: stripeAppearance,
             fonts: stripeFonts,
+            locale: "nl",
           }}
         >
           <CheckoutForm

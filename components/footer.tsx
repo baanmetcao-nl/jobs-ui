@@ -25,8 +25,40 @@ export function Footer() {
           </ul>
         </div>
 
-        <div className="border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
-          &copy; 2026 Baan met CAO. Hetzelfde werk, betere voorwaarden.
+        <div className="border-t border-gray-700 pt-6 text-sm text-gray-400">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>&copy; 2026 Baan met CAO. Hetzelfde werk, betere voorwaarden.</p>
+            <div className="flex gap-4">
+              <Link
+                prefetch={false}
+                href="/algemene-voorwaarden"
+                className="hover:text-white hover:underline"
+              >
+                Algemene voorwaarden
+              </Link>
+              <Link
+                prefetch={false}
+                href="/privacy"
+                className="hover:text-white hover:underline"
+              >
+                Privacybeleid
+              </Link>
+              <Link
+                prefetch={false}
+                href="/blog"
+                className="hover:text-white hover:underline"
+              >
+                Blog
+              </Link>
+              <Link
+                prefetch={false}
+                href="/contact"
+                className="hover:text-white hover:underline"
+              >
+                Contact
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

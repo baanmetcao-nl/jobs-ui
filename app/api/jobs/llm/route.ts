@@ -100,10 +100,8 @@ function mapWorkplace(
 
 function mapContract(contract: string): string {
   const mapping: Record<string, string> = {
-    freelance: "Freelance/Contract",
     permanent: "Permanent",
     temporary: "Temporary",
-    flex: "Flexible",
   };
   return mapping[contract] || contract;
 }

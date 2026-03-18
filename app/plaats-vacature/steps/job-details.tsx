@@ -25,9 +25,9 @@ import {
 } from "lucide-react";
 import { LocationAutocomplete } from "@/components/location-autocomplete";
 import { JobDetailsFormData } from "@/app/types-employer";
-import { Contract, Interval, Workplace } from "@/app/types";
+import { Contract, Interval, Niche, Workplace } from "@/app/types";
 import { nicheSeo } from "@/lib/niches";
-import { sanitizeInput } from "@/lib/utils";
+import { ensureHttps, sanitizeInput } from "@/lib/utils";
 
 interface JobDetailsFormProps {
   data: Partial<JobDetailsFormData>;
@@ -113,13 +113,14 @@ export function JobDetailsForm({
     if (data.applicationMethod === "external") {
       if (!data.url?.trim()) {
         newErrors.url = "URL naar sollicitatiepagina is verplicht";
-      } else if (!/^https?:\/\/.+/.test(data.url)) {
-        newErrors.url = "Voer een geldige URL in (met http:// of https://)";
+      } else {
+        const url = ensureHttps(data.url);
+        if (url !== data.url) onChange({ url });
       }
     }
 
-    if (!data.niche) {
-      newErrors.niches = "Categorie is verplicht";
+    if (!data.niches?.length) {
+      newErrors.niches = "Selecteer minimaal 1 categorie";
     }
 
     setErrors(newErrors);
@@ -237,6 +238,7 @@ export function JobDetailsForm({
                   if (val.trim()) clearError("city");
                 }}
                 error={!!errors.city}
+                showCount={false}
               />
               {errors.city && (
                 <p className="text-sm text-red-500 mt-1">{errors.city}</p>
@@ -300,8 +302,6 @@ export function JobDetailsForm({
                 <SelectContent>
                   <SelectItem value="permanent">Vast contract</SelectItem>
                   <SelectItem value="temporary">Tijdelijk contract</SelectItem>
-                  <SelectItem value="flex">Flexibel / Uitzendwerk</SelectItem>
-                  <SelectItem value="freelance">Freelance / ZZP</SelectItem>
                 </SelectContent>
               </Select>
               {errors.contract && (
@@ -458,7 +458,7 @@ export function JobDetailsForm({
               <Input
                 type="number"
                 min="0"
-                placeholder="32"
+                placeholder=""
                 value={data.hours?.min || ""}
                 onChange={(e) =>
                   onChange({
@@ -482,7 +482,7 @@ export function JobDetailsForm({
               <Input
                 type="number"
                 min="0"
-                placeholder="40"
+                placeholder=""
                 value={data.hours?.max || ""}
                 onChange={(e) =>
                   onChange({
@@ -547,9 +547,14 @@ export function JobDetailsForm({
                 className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
                   data.applicationMethod === "email"
                     ? "border-[#F1592A] bg-orange-50"
-                    : "border-gray-200 hover:border-gray-300"
+                    : errors.applicationMethod
+                      ? "border-red-500 hover:border-red-400"
+                      : "border-gray-200 hover:border-gray-300"
                 }`}
-                onClick={() => onChange({ applicationMethod: "email" })}
+                onClick={() => {
+                  onChange({ applicationMethod: "email" });
+                  clearError("applicationMethod");
+                }}
               >
                 <p className="font-medium">Email</p>
                 <p className="text-sm text-gray-500">
@@ -560,14 +565,24 @@ export function JobDetailsForm({
                 className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
                   data.applicationMethod === "external"
                     ? "border-[#F1592A] bg-orange-50"
-                    : "border-gray-200 hover:border-gray-300"
+                    : errors.applicationMethod
+                      ? "border-red-500 hover:border-red-400"
+                      : "border-gray-200 hover:border-gray-300"
                 }`}
-                onClick={() => onChange({ applicationMethod: "external" })}
+                onClick={() => {
+                  onChange({ applicationMethod: "external" });
+                  clearError("applicationMethod");
+                }}
               >
                 <p className="font-medium">Externe link</p>
                 <p className="text-sm text-gray-500">Verwijs naar eigen site</p>
               </div>
             </div>
+            {errors.applicationMethod && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.applicationMethod}
+              </p>
+            )}
           </div>
 
           {data.applicationMethod === "email" && (
@@ -600,7 +615,7 @@ export function JobDetailsForm({
                 <span className="text-red-500">*</span>
               </Label>
               <Input
-                type="url"
+                type="text"
                 placeholder="https://bedrijf.nl/vacatures/..."
                 value={data.url || ""}
                 onChange={(e) => onChange({ url: e.target.value })}
@@ -660,30 +675,43 @@ export function JobDetailsForm({
 
           <div>
             <Label
-              htmlFor="niche"
+              htmlFor="niches"
               className={`${errors.niches ? "text-red-500" : ""} mb-3`}
             >
-              Categorie <span className="text-red-500">*</span>
+              Categorieën (max 3) <span className="text-red-500">*</span>
             </Label>
-            <Select
-              value={data.niche || ""}
-              onValueChange={(value) =>
-                onChange({ niche: value as JobDetailsFormData["niche"] })
-              }
-            >
-              <SelectTrigger className={errors.niches ? "border-red-500" : ""}>
-                <SelectValue placeholder="Kies een categorie" />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.values(nicheSeo)
-                  .filter((niche) => niche.slug !== "alle-vacatures")
-                  .map((niche) => (
-                    <SelectItem key={niche.slug} value={niche.slug}>
-                      {niche.heading}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
+            <div className="grid md:grid-cols-3 gap-3 mt-2">
+              {Object.entries(nicheSeo)
+                .filter(([key]) => key !== "unknown")
+                .map(([key, niche]) => {
+                  if (niche.slug === "alle-vacatures") return null;
+                  const selected = data.niches?.includes(key as Niche) ?? false;
+                  const atMax = (data.niches?.length ?? 0) >= 3;
+                  return (
+                    <div key={key} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`niche-${key}`}
+                        checked={selected}
+                        disabled={!selected && atMax}
+                        onCheckedChange={(checked) => {
+                          const current = data.niches ?? [];
+                          const updated = checked
+                            ? [...current, key as Niche]
+                            : current.filter((n) => n !== key);
+                          onChange({ niches: updated });
+                          if (updated.length > 0) clearError("niches");
+                        }}
+                      />
+                      <label
+                        htmlFor={`niche-${key}`}
+                        className={`text-sm cursor-pointer ${!selected && atMax ? "text-gray-400" : ""}`}
+                      >
+                        {niche.heading}
+                      </label>
+                    </div>
+                  );
+                })}
+            </div>
             {errors.niches && (
               <p className="text-sm text-red-500 mt-1">{errors.niches}</p>
             )}

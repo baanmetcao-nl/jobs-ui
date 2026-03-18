@@ -18,9 +18,10 @@ interface LocationAutocompleteProps {
   error?: boolean;
   inputClassName?: string;
   filterParams?: Record<string, string | string[]>;
+  showCount?: boolean;
 }
 
-const EXCLUDED_PATTERNS = [",", "/", "in overleg", "route", "undefined"];
+const EXCLUDED_PATTERNS = [",", "/", " en ", " and ", " & ", "in overleg", "route", "undefined"];
 
 function isValidCity(city: string): boolean {
   if (!city || !city.trim()) return false;
@@ -44,6 +45,7 @@ export function LocationAutocomplete({
   error,
   inputClassName,
   filterParams,
+  showCount = true,
 }: LocationAutocompleteProps) {
   const [locations, setLocations] = useState<LocationOption[]>([]);
   const [inputValue, setInputValue] = useState(locationDisplayName(value));
@@ -204,9 +206,11 @@ export function LocationAutocomplete({
               onMouseEnter={() => setHighlightIndex(i)}
             >
               <span>{loc.city}</span>
-              <span className="text-xs text-gray-400">
-                {loc.count} vacature{loc.count !== 1 ? "s" : ""}
-              </span>
+              {showCount && (
+                <span className="text-xs text-gray-400">
+                  {loc.count} vacature{loc.count !== 1 ? "s" : ""}
+                </span>
+              )}
             </li>
           ))}
         </ul>

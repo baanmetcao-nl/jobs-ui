@@ -115,11 +115,11 @@ describe("JobList", () => {
   it("renders contract badge", () => {
     render(
       <JobList
-        jobsResponse={makeJobsResponse([{ contract: "freelance" }])}
+        jobsResponse={makeJobsResponse([{ contract: "permanent" }])}
         page={0}
       />
     );
-    expect(screen.getByText("Freelance")).toBeInTheDocument();
+    expect(screen.getByText("Vast contract")).toBeInTheDocument();
   });
 
   it("renders job tags", () => {

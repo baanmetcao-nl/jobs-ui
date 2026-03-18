@@ -15,7 +15,6 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Briefcase,
-  MapPin,
   Euro,
   FileText,
   Clock,
@@ -24,6 +23,7 @@ import {
   HelpCircle,
   X,
 } from "lucide-react";
+import { LocationAutocomplete } from "@/components/location-autocomplete";
 import { JobDetailsFormData } from "@/app/types-employer";
 import { Contract, Interval, Workplace } from "@/app/types";
 import { nicheSeo } from "@/lib/niches";
@@ -230,19 +230,14 @@ export function JobDetailsForm({
               <Label htmlFor="locatie" className="mb-4">
                 Locatie <span className="text-red-500">*</span>
               </Label>
-              <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input
-                  id="city"
-                  placeholder="Bijv. Amsterdam"
-                  value={data.city || ""}
-                  onChange={(e) => {
-                    onChange({ city: e.target.value });
-                    if (e.target.value.trim()) clearError("city");
-                  }}
-                  className={`pl-10 ${errors.city ? "border-red-500" : ""}`}
-                />
-              </div>
+              <LocationAutocomplete
+                value={data.city || ""}
+                onChange={(val) => {
+                  onChange({ city: val });
+                  if (val.trim()) clearError("city");
+                }}
+                error={!!errors.city}
+              />
               {errors.city && (
                 <p className="text-sm text-red-500 mt-1">{errors.city}</p>
               )}

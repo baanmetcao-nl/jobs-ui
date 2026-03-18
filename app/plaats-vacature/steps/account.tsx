@@ -20,7 +20,11 @@ import {
   Loader2,
   CreditCard,
 } from "lucide-react";
-import { AccountFormData, PricingPlan, FEATURED_PRICE } from "@/app/types-employer";
+import {
+  AccountFormData,
+  PricingPlan,
+  FEATURED_PRICE,
+} from "@/app/types-employer";
 import { useUser, SignInButton } from "@clerk/nextjs";
 
 const stripePromise = loadStripe(
@@ -54,9 +58,17 @@ interface AccountStepProps {
   goToStep?: (slug: string) => void;
 }
 
-function OrderSummary({ selectedPlan, featured }: { selectedPlan: PricingPlan | null; featured: boolean }) {
+function OrderSummary({
+  selectedPlan,
+  featured,
+}: {
+  selectedPlan: PricingPlan | null;
+  featured: boolean;
+}) {
   const planPrice = selectedPlan?.price ?? 199;
-  const featuredTotal = featured ? FEATURED_PRICE * (selectedPlan?.jobCount ?? 1) : 0;
+  const featuredTotal = featured
+    ? FEATURED_PRICE * (selectedPlan?.jobCount ?? 1)
+    : 0;
   const subtotal = planPrice + featuredTotal;
   const vatAmount = subtotal * 0.21;
   const totalAmount = subtotal + vatAmount;
@@ -109,10 +121,6 @@ function OrderSummary({ selectedPlan, featured }: { selectedPlan: PricingPlan | 
           <span>Veilig betalen via Stripe</span>
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-600">
-          <RotateCcw className="w-4 h-4 text-blue-500 shrink-0" />
-          <span>Niet tevreden? Geld terug binnen 7 dagen</span>
-        </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
           <Lock className="w-4 h-4 text-gray-400 shrink-0" />
           <span>256-bit SSL versleuteling</span>
         </div>
@@ -160,7 +168,9 @@ function CheckoutForm({
   }, [user]);
 
   const planPrice = selectedPlan?.price ?? 199;
-  const featuredTotal = featured ? FEATURED_PRICE * (selectedPlan?.jobCount ?? 1) : 0;
+  const featuredTotal = featured
+    ? FEATURED_PRICE * (selectedPlan?.jobCount ?? 1)
+    : 0;
   const totalAmount = (planPrice + featuredTotal) * 1.21;
   const fmt = (n: number) =>
     n.toLocaleString("nl-NL", {
@@ -478,7 +488,8 @@ export function AccountStep({
         <div>
           <h2 className="text-xl font-semibold mb-2">Eerst inloggen</h2>
           <p className="text-gray-500 text-sm">
-            Log in of maak een account aan om je vacature te plaatsen en af te rekenen.
+            Log in of maak een account aan om je vacature te plaatsen en af te
+            rekenen.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -488,10 +499,7 @@ export function AccountStep({
             </Button>
           </SignInButton>
         </div>
-        <Button
-          variant="outline"
-          onClick={() => goToStep?.("prijzen")}
-        >
+        <Button variant="outline" onClick={() => goToStep?.("prijzen")}>
           <ArrowLeft className="w-4 h-4 mr-2" />
           Vorige
         </Button>
@@ -526,7 +534,11 @@ export function AccountStep({
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8 items-start">
         <Elements
           stripe={stripePromise}
-          options={{ clientSecret, appearance: stripeAppearance, fonts: stripeFonts }}
+          options={{
+            clientSecret,
+            appearance: stripeAppearance,
+            fonts: stripeFonts,
+          }}
         >
           <CheckoutForm
             data={data}

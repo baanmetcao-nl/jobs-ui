@@ -7,7 +7,6 @@ import {
   Filter,
   X,
   ChevronDown,
-  MapPin,
   Loader2 as Spinner,
 } from "lucide-react";
 
@@ -15,6 +14,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  LocationAutocomplete,
+  locationDisplayName,
+} from "@/components/location-autocomplete";
 import {
   Popover,
   PopoverTrigger,
@@ -121,6 +124,29 @@ function setSingleValue(
   return next;
 }
 
+function buildLocationFilterParams(
+  searchParams: URLSearchParams,
+): Record<string, string | string[]> {
+  const params: Record<string, string | string[]> = {};
+
+  const search = searchParams.get("search");
+  if (search) params.search = search;
+
+  const contracts = searchParams.get("contracts");
+  if (contracts && contracts !== "all") params.contracts = contracts;
+
+  const seniorities = searchParams.getAll("seniorities");
+  if (seniorities.length > 0) params.seniorities = seniorities;
+
+  const workplace = searchParams.get("workplace");
+  if (workplace && workplace !== "all") params.workplace = workplace;
+
+  const niches = searchParams.getAll("niches");
+  if (niches.length > 0) params.niches = niches;
+
+  return params;
+}
+
 export default function Filters({
   jobCount,
   showNicheFilter = true,
@@ -139,7 +165,7 @@ export default function Filters({
     searchParams.get("search") || "",
   );
   const [locationTerm, setLocationTerm] = useState(
-    searchParams.get("location") || "",
+    searchParams.get("locations") || "",
   );
 
   const updateMultiFilter = (key: string, value: string) => {
@@ -197,8 +223,8 @@ export default function Filters({
       if (!searchTerm) params.delete("search");
       else params.set("search", searchTerm);
 
-      if (!locationTerm) params.delete("location");
-      else params.set("location", locationTerm);
+      if (!locationTerm) params.delete("locations");
+      else params.set("locations", locationTerm);
 
       params.delete("page");
 
@@ -244,15 +270,13 @@ export default function Filters({
           />
         </div>
         {showLocationInput && (
-          <div className="relative">
-            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
-            <Input
-              value={locationTerm}
-              onChange={(e) => setLocationTerm(e.target.value)}
-              placeholder="Locatie..."
-              className="pl-10 h-12 text-lg"
-            />
-          </div>
+          <LocationAutocomplete
+            value={locationTerm}
+            onChange={(val) => setLocationTerm(val)}
+            onInputChange={(val) => setLocationTerm(val)}
+            inputClassName="h-12 text-lg"
+            filterParams={buildLocationFilterParams(searchParams)}
+          />
         )}
       </div>
 

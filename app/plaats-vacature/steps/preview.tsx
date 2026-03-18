@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 
 import { JobDetailsFormData, CompanyFormData } from "@/app/types-employer";
+import { locationDisplayName } from "@/components/location-autocomplete";
 import { nicheSeo } from "@/lib/niches";
 import { intervalFormat } from "@/lib/utils";
 
@@ -205,7 +206,7 @@ export function PreviewStep({
           <InfoItem
             icon={<MapPin color="#F1693F" size={16} />}
             label="Locatie"
-            description={jobData.city || "Onbekend"}
+            description={locationDisplayName(jobData.city || "") || "Onbekend"}
           />
           <InfoItem
             icon={<Clock color="#F1693F" size={16} />}

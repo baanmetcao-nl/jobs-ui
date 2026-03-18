@@ -3,8 +3,10 @@ import { backendFetch } from "./backend";
 import { ALLOWED_CONTRACTS } from "../contracts";
 
 function formatLocationForAPI(location: string): string {
+  if (location.includes("__")) return location;
+
   const formatted = location
-    .split("-")
+    .split(/[-\s]+/)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
 

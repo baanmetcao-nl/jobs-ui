@@ -4,14 +4,13 @@ import JobDetails from "./job-details";
 import Script from "next/script";
 import { ALLOWED_CONTRACTS } from "@/lib/contracts";
 import { cache } from "react";
+import { backendFetch } from "@/lib/api/backend";
 
 export const revalidate = 3600;
 export const dynamic = "force-static";
 
 const getJob = cache(async function getJob(id: string) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs/${id}`,
-  );
+  const res = await backendFetch(`/api/jobs/${id}`);
 
   if (res.status === 404) notFound();
   if (!res.ok) throw new Error("Failed to fetch job");
@@ -29,9 +28,7 @@ const getRelatedJobs = cache(async function getRelatedJobs(
 
   niches.forEach((niche) => params.append("niches", niche));
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?${params.toString()}`,
-  );
+  const res = await backendFetch(`/api/jobs?${params.toString()}`);
   if (!res.ok) throw new Error("Failed to fetch related jobs");
 
   return res.json();
@@ -46,10 +43,7 @@ const getRelatedCompanyJobs = cache(async function getRelatedCompanyJobs(
 
   ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?${params.toString()}`,
-  );
-
+  const res = await backendFetch(`/api/jobs?${params.toString()}`);
   if (!res.ok) throw new Error("Failed to fetch company jobs");
 
   return res.json();

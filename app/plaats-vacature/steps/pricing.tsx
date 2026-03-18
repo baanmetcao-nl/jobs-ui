@@ -188,7 +188,6 @@ export function PricingStep({
           <li>Verlengen kan altijd voor €49 per vacature</li>
           <li>Betaling via iDEAL, Bancontact of factuur (zakelijk)</li>
           <li>Btw wordt apart in rekening gebracht</li>
-          <li>Niet tevreden? Volledige refund binnen 7 dagen</li>
         </ul>
       </div>
 

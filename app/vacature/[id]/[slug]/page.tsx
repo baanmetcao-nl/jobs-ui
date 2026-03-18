@@ -20,9 +20,10 @@ const getJob = cache(async function getJob(id: string) {
 
 const getRelatedJobs = cache(async function getRelatedJobs(
   niches: string[],
+  excludeId: string,
 ): Promise<JobsResponse> {
   const params = new URLSearchParams();
-  params.append("limit", "3");
+  params.append("limit", "4");
 
   ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
 
@@ -31,14 +32,17 @@ const getRelatedJobs = cache(async function getRelatedJobs(
   const res = await backendFetch(`/api/jobs?${params.toString()}`);
   if (!res.ok) throw new Error("Failed to fetch related jobs");
 
-  return res.json();
+  const data: JobsResponse = await res.json();
+  data.data = data.data.filter((j) => j.id !== excludeId).slice(0, 3);
+  return data;
 });
 
 const getRelatedCompanyJobs = cache(async function getRelatedCompanyJobs(
   companyId: string,
+  excludeId: string,
 ): Promise<JobsResponse> {
   const params = new URLSearchParams();
-  params.append("limit", "3");
+  params.append("limit", "4");
   params.append("companyIds", companyId);
 
   ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
@@ -46,7 +50,9 @@ const getRelatedCompanyJobs = cache(async function getRelatedCompanyJobs(
   const res = await backendFetch(`/api/jobs?${params.toString()}`);
   if (!res.ok) throw new Error("Failed to fetch company jobs");
 
-  return res.json();
+  const data: JobsResponse = await res.json();
+  data.data = data.data.filter((j) => j.id !== excludeId).slice(0, 3);
+  return data;
 });
 
 export async function generateMetadata(props: {
@@ -73,8 +79,8 @@ export default async function Page(props: {
   const job = await getJob(params.id);
 
   const [relatedJobs, relatedCompanyJobs] = await Promise.all([
-    getRelatedJobs(job.niches),
-    getRelatedCompanyJobs(job.company.id),
+    getRelatedJobs(job.niches, job.id),
+    getRelatedCompanyJobs(job.company.id, job.id),
   ]);
 
   const structuredData = {

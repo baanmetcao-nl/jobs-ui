@@ -9,24 +9,28 @@ import {
   Briefcase,
   LayoutDashboard,
   Building2,
+  MapPin,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
+import { useUser, UserButton } from "@clerk/nextjs";
 
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isWerkgeversOpen, setIsWerkgeversOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [locationQuery, setLocationQuery] = useState("");
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { isSignedIn } = useUser();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
 
     const trimmed = searchQuery.trim();
+    const trimmedLocation = locationQuery.trim();
 
     const params = new URLSearchParams(window.location.search);
 
@@ -36,12 +40,19 @@ export function NavBar() {
       params.delete("search");
     }
 
+    if (trimmedLocation) {
+      params.set("location", trimmedLocation);
+    } else {
+      params.delete("location");
+    }
+
     params.set("page", "1");
 
     const url = `/?${params.toString()}`;
 
     router.push(url);
   };
+
 
   const pathname = usePathname();
   const isHomePage = pathname === "/";
@@ -51,10 +62,6 @@ export function NavBar() {
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/bevestiging") ||
     pathname.startsWith("/bedrijf");
-
-  useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("employer-token") !== null);
-  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -69,9 +76,10 @@ export function NavBar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+
   return (
     <div className="w-full bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between gap-4">
           <div className="flex items-center gap-6 lg:gap-8">
             <Link href="/" className="flex items-center gap-2">
@@ -109,9 +117,9 @@ export function NavBar() {
           {!isHomePage && !isEmployerFlow && (
             <form
               onSubmit={handleSearch}
-              className="hidden md:flex flex-1 max-w-md"
+              className="hidden md:flex flex-1 max-w-xl gap-2"
             >
-              <div className="relative w-full">
+              <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   type="search"
@@ -119,6 +127,16 @@ export function NavBar() {
                   className="pl-10 w-full"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <div className="relative flex-1">
+                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  type="search"
+                  placeholder="Locatie..."
+                  className="pl-10 w-full"
+                  value={locationQuery}
+                  onChange={(e) => setLocationQuery(e.target.value)}
                 />
               </div>
             </form>
@@ -154,7 +172,7 @@ export function NavBar() {
                     <Briefcase className="w-4 h-4 text-gray-400" />
                     Plaats vacature
                   </Link>
-                  {isLoggedIn ? (
+                  {isSignedIn ? (
                     <Link
                       href="/dashboard"
                       className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
@@ -177,7 +195,17 @@ export function NavBar() {
               )}
             </div>
 
-            <Link href="/plaats-vacature">
+            {isSignedIn && (
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "w-8 h-8",
+                  },
+                }}
+              />
+            )}
+
+            <Link href="/plaats-vacature" className="ml-2">
               <Button className="hidden md:inline-flex bg-[#F1592A] hover:bg-[#e04d1f] text-white">
                 Plaats vacature
               </Button>
@@ -239,7 +267,7 @@ export function NavBar() {
               >
                 Plaats vacature
               </Link>
-              {isLoggedIn ? (
+              {isSignedIn ? (
                 <Link
                   href="/dashboard"
                   className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"

@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import SilktideCookieBanner from "@/components/silktide-cookie";
 import { Footer } from "@/components/footer";
+import { ClerkProvider } from "@clerk/nextjs";
+import { nlNL } from "@clerk/localizations";
 
 const interFont = Inter({
   subsets: ["latin"],
@@ -134,10 +136,12 @@ export default function RootLayout({
         />
       </head>
       <body className={`flex flex-col min-h-screen ${interFont.className}`}>
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <SilktideCookieBanner />
+        <ClerkProvider localization={nlNL} afterSignOutUrl="/">
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <SilktideCookieBanner />
+        </ClerkProvider>
       </body>
       <GoogleAnalytics gaId="G-7ZJVYSSG4N" />
       <GoogleTagManager gtmId="GTM-59VXWLNR" />

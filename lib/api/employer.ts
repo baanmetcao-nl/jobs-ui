@@ -12,6 +12,7 @@ import type {
   EmployerProfile,
   PricingPlan,
 } from "@/app/types-employer";
+// Auth (login/register/logout) is now handled by Clerk — see @clerk/nextjs
 import { backendFetch } from "./backend";
 
 export async function createJobDraft(
@@ -308,66 +309,3 @@ export async function updateEmployerProfile(
   return res.json();
 }
 
-export async function loginEmployer(
-  email: string,
-  password: string,
-): Promise<{ success: boolean; user?: EmployerProfile; error?: string }> {
-  const res = await backendFetch("/api/employer/auth/login", {
-    method: "POST",
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (!res.ok) {
-    const error = await res.json();
-    return {
-      success: false,
-      error: error.message || "Login failed",
-    };
-  }
-
-  return res.json();
-}
-
-export async function registerEmployer(
-  accountData: AccountFormData,
-): Promise<{ success: boolean; user?: EmployerProfile; error?: string }> {
-  const res = await backendFetch("/api/employer/auth/register", {
-    method: "POST",
-    body: JSON.stringify(accountData),
-  });
-
-  if (!res.ok) {
-    const error = await res.json();
-    return {
-      success: false,
-      error: error.message || "Registration failed",
-    };
-  }
-
-  return res.json();
-}
-
-export async function logoutEmployer(): Promise<{ success: boolean }> {
-  const res = await backendFetch("/api/employer/auth/logout", {
-    method: "POST",
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    throw new Error(`Failed to logout: ${res.status}`);
-  }
-
-  return res.json();
-}
-
-export async function getCurrentEmployer(): Promise<EmployerProfile | null> {
-  const res = await backendFetch("/api/employer/auth/me", {
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    return null;
-  }
-
-  return res.json();
-}

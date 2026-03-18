@@ -33,6 +33,7 @@ import {
   JobStatus,
   EXTEND_PRICE,
 } from "@/app/types-employer";
+import { useUser, useClerk } from "@clerk/nextjs";
 
 const mockStats: DashboardStats = {
   totalJobs: 11,
@@ -170,6 +171,8 @@ const mockInvoices: Invoice[] = [
 
 export default function DashboardPage() {
   const searchParams = useSearchParams();
+  const { user } = useUser();
+  const { openUserProfile } = useClerk();
   const [activeTab, setActiveTab] = useState<TabType>("jobs");
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [stats] = useState<DashboardStats>(mockStats);
@@ -177,13 +180,7 @@ export default function DashboardPage() {
   const [newJobBanner, setNewJobBanner] = useState<string | null>(null);
   const [account, setAccount] = useState<AccountData>(emptyAccount);
   const [invoices] = useState<Invoice[]>(mockInvoices);
-  const [passwords, setPasswords] = useState({
-    current: "",
-    new: "",
-    confirm: "",
-  });
   const [accountSaved, setAccountSaved] = useState(false);
-  const [hasPassword] = useState(false);
 
   useEffect(() => {
     if (searchParams.get("new") !== "true") return;
@@ -263,7 +260,7 @@ export default function DashboardPage() {
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
             <p className="text-gray-600">
-              Welkom terug! Hier is een overzicht van je vacatures.
+              Welkom terug{user?.firstName ? `, ${user.firstName}` : ""}! Hier is een overzicht van je vacatures.
             </p>
           </div>
           <div className="flex gap-3">
@@ -985,71 +982,14 @@ export default function DashboardPage() {
 
             <div className="bg-white rounded-xl shadow-sm p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                {hasPassword ? "Wachtwoord wijzigen" : "Wachtwoord instellen"}
+                Persoonlijk profiel
               </h3>
-              <p className="text-sm text-gray-500 mb-6">
-                {hasPassword
-                  ? "Kies een nieuw wachtwoord voor je account."
-                  : "Stel een wachtwoord in om je account te beveiligen."}
+              <p className="text-sm text-gray-500 mb-4">
+                Beheer je naam, e-mailadres en wachtwoord.
               </p>
-
-              <div className="space-y-4 max-w-md">
-                {hasPassword && (
-                  <div>
-                    <Label htmlFor="pw-current" className="mb-2">
-                      Huidig wachtwoord
-                    </Label>
-                    <Input
-                      id="pw-current"
-                      type="password"
-                      value={passwords.current}
-                      onChange={(e) =>
-                        setPasswords((prev) => ({
-                          ...prev,
-                          current: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                )}
-                <div>
-                  <Label htmlFor="pw-new" className="mb-2">
-                    {hasPassword ? "Nieuw wachtwoord" : "Wachtwoord"}
-                  </Label>
-                  <Input
-                    id="pw-new"
-                    type="password"
-                    value={passwords.new}
-                    onChange={(e) =>
-                      setPasswords((prev) => ({
-                        ...prev,
-                        new: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="pw-confirm" className="mb-2">
-                    Bevestig nieuw wachtwoord
-                  </Label>
-                  <Input
-                    id="pw-confirm"
-                    type="password"
-                    value={passwords.confirm}
-                    onChange={(e) =>
-                      setPasswords((prev) => ({
-                        ...prev,
-                        confirm: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
-                <div className="pt-2">
-                  <Button variant="outline">
-                    {hasPassword ? "Wachtwoord wijzigen" : "Wachtwoord instellen"}
-                  </Button>
-                </div>
-              </div>
+              <Button variant="outline" onClick={() => openUserProfile()}>
+                Profiel beheren
+              </Button>
             </div>
           </div>
         )}

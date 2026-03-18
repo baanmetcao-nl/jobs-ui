@@ -26,6 +26,9 @@ function BevestigingContent() {
       try {
         localStorage.removeItem("job-posting-flow");
       } catch {}
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 5000);
     } else if (redirectStatus === "failed") {
       setStatus("failed");
     } else {
@@ -88,12 +91,11 @@ function BevestigingContent() {
           <Mail className="w-5 h-5 text-[#F1592A] mt-0.5 shrink-0" />
           <div>
             <p className="font-semibold text-sm text-gray-900 mb-1">
-              Controleer je e-mail
+              Bevestiging per e-mail
             </p>
             <p className="text-sm text-gray-600">
-              We hebben een e-mail gestuurd met een link om je wachtwoord in te
-              stellen en je account te activeren. Je factuur kun je downloaden
-              vanuit het dashboard.
+              Je ontvangt een bevestigingsmail met de details van je bestelling.
+              Je factuur kun je downloaden vanuit het dashboard.
             </p>
           </div>
         </div>

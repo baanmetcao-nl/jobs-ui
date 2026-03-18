@@ -21,6 +21,7 @@ import {
   CreditCard,
 } from "lucide-react";
 import { AccountFormData, PricingPlan, FEATURED_PRICE } from "@/app/types-employer";
+import { useUser, SignInButton } from "@clerk/nextjs";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
@@ -146,6 +147,17 @@ function CheckoutForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [stripeError, setStripeError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (!user) return;
+    const updates: Partial<AccountFormData> = {};
+    if (!data.firstName && user.firstName) updates.firstName = user.firstName;
+    if (!data.lastName && user.lastName) updates.lastName = user.lastName;
+    if (!data.email && user.primaryEmailAddress?.emailAddress)
+      updates.email = user.primaryEmailAddress.emailAddress;
+    if (Object.keys(updates).length > 0) onChange(updates);
+  }, [user]);
 
   const planPrice = selectedPlan?.price ?? 199;
   const featuredTotal = featured ? FEATURED_PRICE * (selectedPlan?.jobCount ?? 1) : 0;
@@ -291,10 +303,6 @@ function CheckoutForm({
             {errors.email && (
               <p className="text-sm text-red-500 mt-1">{errors.email}</p>
             )}
-            <p className="text-xs text-gray-500 mt-1">
-              We sturen een activatielink naar dit adres om je account in te
-              stellen.
-            </p>
           </div>
 
           <div>
@@ -429,6 +437,7 @@ export function AccountStep({
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentIntentId, setPaymentIntentId] = useState("");
   const [initError, setInitError] = useState("");
+  const { isSignedIn, isLoaded } = useUser();
 
   useEffect(() => {
     if (!selectedPlan) return;
@@ -458,6 +467,33 @@ export function AccountStep({
         <p className="text-red-600">{initError}</p>
         <Button variant="outline" onClick={() => window.location.reload()}>
           Opnieuw proberen
+        </Button>
+      </div>
+    );
+  }
+
+  if (isLoaded && !isSignedIn) {
+    return (
+      <div className="text-center py-12 space-y-6">
+        <div>
+          <h2 className="text-xl font-semibold mb-2">Eerst inloggen</h2>
+          <p className="text-gray-500 text-sm">
+            Log in of maak een account aan om je vacature te plaatsen en af te rekenen.
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <SignInButton mode="modal">
+            <Button className="bg-[#F1592A] hover:bg-[#e04d1f] text-white">
+              Inloggen / Registreren
+            </Button>
+          </SignInButton>
+        </div>
+        <Button
+          variant="outline"
+          onClick={() => goToStep?.("prijzen")}
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Vorige
         </Button>
       </div>
     );

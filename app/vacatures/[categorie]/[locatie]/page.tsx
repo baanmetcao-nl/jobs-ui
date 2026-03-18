@@ -205,8 +205,8 @@ export default async function LocationPage({
           <>
             <Filters
               jobCount={jobsResponse.data.length}
-              showLocationFilter={false}
               showNicheFilter={false}
+              showLocationInput={false}
             />
 
             <JobList jobsResponse={jobsResponse} page={page - 1} />

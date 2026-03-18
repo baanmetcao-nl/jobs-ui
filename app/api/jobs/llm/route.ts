@@ -258,10 +258,17 @@ export async function GET(request: Request) {
       jobs: llmJobs,
     };
 
+    const origin = request.headers.get("origin") ?? "";
+    const allowedOrigins = [
+      "https://baanmetcao.nl",
+      "https://www.baanmetcao.nl",
+    ];
+    const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+
     return NextResponse.json(responseData, {
       headers: {
         "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": corsOrigin,
       },
     });
   } catch (error) {

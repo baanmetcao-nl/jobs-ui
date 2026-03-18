@@ -65,8 +65,7 @@ export default function StepPage() {
   useEffect(() => {
     if (!flowData) return;
     try {
-      const { password, confirmPassword, ...accountSafe } = (flowData.account ?? {}) as any;
-      localStorage.setItem("job-posting-flow", JSON.stringify({ ...flowData, account: accountSafe }));
+      localStorage.setItem("job-posting-flow", JSON.stringify(flowData));
     } catch (e) {
       console.error("Failed to save flow data:", e);
     }

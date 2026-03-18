@@ -7,6 +7,7 @@ import {
   Filter,
   X,
   ChevronDown,
+  MapPin,
   Loader2 as Spinner,
 } from "lucide-react";
 
@@ -38,8 +39,6 @@ const filterConfig = [
       { label: "Alle contracten", value: "all" },
       { label: "Vast", value: "permanent" },
       { label: "Tijdelijk", value: "temporary" },
-      { label: "Freelance", value: "freelance" },
-      { label: "Flexibel", value: "flex" },
     ],
   },
   {
@@ -51,18 +50,6 @@ const filterConfig = [
       { label: "Medior", value: "medior" },
       { label: "Senior", value: "senior" },
       { label: "Lead", value: "principal" },
-    ],
-  },
-  {
-    key: "locations",
-    label: "Locatie",
-    type: "multi",
-    options: [
-      { label: "Amsterdam", value: "amsterdam" },
-      { label: "Rotterdam", value: "rotterdam" },
-      { label: "Utrecht", value: "utrecht" },
-      { label: "Eindhoven", value: "eindhoven" },
-      { label: "Den Haag", value: "den-haag" },
     ],
   },
   {
@@ -137,11 +124,11 @@ function setSingleValue(
 export default function Filters({
   jobCount,
   showNicheFilter = true,
-  showLocationFilter = true,
+  showLocationInput = true,
 }: {
   jobCount: number;
   showNicheFilter?: boolean;
-  showLocationFilter?: boolean;
+  showLocationInput?: boolean;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -150,6 +137,9 @@ export default function Filters({
 
   const [searchTerm, setSearchTerm] = useState(
     searchParams.get("search") || "",
+  );
+  const [locationTerm, setLocationTerm] = useState(
+    searchParams.get("location") || "",
   );
 
   const updateMultiFilter = (key: string, value: string) => {
@@ -196,6 +186,7 @@ export default function Filters({
 
   const resetFilters = () => {
     setSearchTerm("");
+    setLocationTerm("");
     router.replace(pathname, { scroll: false });
   };
 
@@ -206,16 +197,19 @@ export default function Filters({
       if (!searchTerm) params.delete("search");
       else params.set("search", searchTerm);
 
+      if (!locationTerm) params.delete("location");
+      else params.set("location", locationTerm);
+
       params.delete("page");
 
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     }, 400);
 
     return () => clearTimeout(handler);
-  }, [searchTerm]);
+  }, [searchTerm, locationTerm]);
+
 
   const visibleFilters = filterConfig.filter((f) => {
-    if (!showLocationFilter && f.key === "locations") return false;
     if (!showNicheFilter && f.key === "niches") return false;
     return true;
   });
@@ -239,14 +233,27 @@ export default function Filters({
           <Spinner className="h-8 w-8 animate-spin text-teal-600" />
         </div>
       )}
-      <div className="relative mb-6">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
-        <Input
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Zoek op functie, bedrijf of vaardigheden..."
-          className="pl-10 h-12 text-lg"
-        />
+      <div className={`grid grid-cols-1 ${showLocationInput ? "md:grid-cols-2" : ""} gap-4 mb-6`}>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+          <Input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Zoek op functie, bedrijf of vaardigheden..."
+            className="pl-10 h-12 text-lg"
+          />
+        </div>
+        {showLocationInput && (
+          <div className="relative">
+            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+            <Input
+              value={locationTerm}
+              onChange={(e) => setLocationTerm(e.target.value)}
+              placeholder="Locatie..."
+              className="pl-10 h-12 text-lg"
+            />
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">

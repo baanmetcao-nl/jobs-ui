@@ -1,5 +1,6 @@
 "use client";
 
+import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -217,8 +218,7 @@ export function PreviewStep({
       <div className="mb-8">
         <div className="prose max-w-none text-gray-700 mb-6">
           {jobData.description ? (
-            // TODO: add DOMPurify sanitization before going to production
-            <div dangerouslySetInnerHTML={{ __html: jobData.description }} />
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(jobData.description) }} />
           ) : (
             <p>Vacaturetekst hier...</p>
           )}

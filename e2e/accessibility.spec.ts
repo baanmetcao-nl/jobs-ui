@@ -87,8 +87,8 @@ test.describe("Accessibility basics", () => {
               !btn.closest("nextjs-portal") &&
               !btn.getAttribute("aria-label")?.includes("Next.js") &&
               btn.getAttribute("role") !== "combobox" &&
-              btn.offsetWidth > 0 &&
-              btn.offsetHeight > 0,
+              (btn as HTMLElement).offsetWidth > 0 &&
+              (btn as HTMLElement).offsetHeight > 0,
           )
           .map((btn, i) => ({
             index: i,

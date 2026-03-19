@@ -50,7 +50,7 @@ export function ProgressSteps({
                     )}
                   </div>
 
-                  <div className="mt-3 text-center min-w-[100px]">
+                  <div className="mt-3 text-center min-w-25">
                     <p
                       className={cn(
                         "text-sm font-medium",
@@ -73,7 +73,7 @@ export function ProgressSteps({
                 </div>
 
                 {!isLast && (
-                  <div className="flex-1 h-px mx-2 mt-[-24px]">
+                  <div className="flex-1 h-px mx-2 -mt-6">
                     <div
                       className={cn(
                         "h-full transition-colors duration-200",

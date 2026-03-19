@@ -1,4 +1,4 @@
-import { Interval, Job, JobsResponse } from "@/app/types";
+import { Interval, Job } from "@/app/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

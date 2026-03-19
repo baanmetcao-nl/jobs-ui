@@ -269,7 +269,7 @@ export async function GET(request: Request) {
         "Access-Control-Allow-Origin": corsOrigin,
       },
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

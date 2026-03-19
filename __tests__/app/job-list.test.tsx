@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import JobList from "@/app/job-list";

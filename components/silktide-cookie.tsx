@@ -8,12 +8,11 @@ export default function SilktideCookieBanner() {
   useEffect(() => {
     if (isE2E) return;
     if (typeof window === "undefined") return;
-    const w = window as any;
 
     // wacht tot script geladen is
     const initSilktide = () => {
-      if (!w.silktideCookieBannerManager) return;
-      w.silktideCookieBannerManager.updateCookieBannerConfig({
+      if (!window.silktideCookieBannerManager) return;
+      window.silktideCookieBannerManager.updateCookieBannerConfig({
         background: { showBackground: true },
         cookieIcon: { position: "bottomRight" },
         cookieTypes: [
@@ -42,7 +41,7 @@ export default function SilktideCookieBanner() {
 
     // check elke 100ms tot script geladen is
     const interval = setInterval(() => {
-      if ((window as any).silktideCookieBannerManager) {
+      if (window.silktideCookieBannerManager) {
         clearInterval(interval);
         initSilktide();
       }

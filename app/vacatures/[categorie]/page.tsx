@@ -115,8 +115,6 @@ export default async function NichePage({
     console.error("Failed to fetch jobs:", error);
   }
 
-  const hasJobs = jobsResponse.pagination.totalCount > 0;
-
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ItemList",

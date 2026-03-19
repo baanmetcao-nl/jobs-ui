@@ -428,7 +428,7 @@ export function JobDetailsForm({
 
           <div className="p-4 bg-blue-50 rounded-lg">
             <div className="flex items-start gap-3">
-              <HelpCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <HelpCircle className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
               <div>
                 <p className="font-medium text-blue-900">
                   Transparant salaris verhoogt respons
@@ -722,7 +722,7 @@ export function JobDetailsForm({
       <div className="flex justify-end pt-4 border-t">
         <Button
           type="submit"
-          className="hover:bg-[#e04d1f] text-white min-w-[100px]"
+          className="hover:bg-[#e04d1f] text-white min-w-25"
         >
           Volgende stap
           <ArrowRight className="w-4 h-4 ml-2" />

@@ -39,7 +39,7 @@ export function RichTextEditor({
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: "min-h-[200px] p-4 prose prose-sm max-w-none focus:outline-none",
+        class: "min-h-50 p-4 prose prose-sm max-w-none focus:outline-none",
       },
     },
     onUpdate: ({ editor }) => {

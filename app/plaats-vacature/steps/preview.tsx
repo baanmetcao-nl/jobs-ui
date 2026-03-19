@@ -123,7 +123,7 @@ export function PreviewStep({
         </h2>
         <div className="p-4 bg-blue-50 rounded-lg mt-6">
           <div className="flex items-start gap-3">
-            <HelpCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+            <HelpCircle className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
             <p className="text-sm text-blue-800 mb-0">
               Zo zal je vacature eruitzien op de website. Je kunt nog terug om
               aanpassingen te maken.
@@ -136,6 +136,7 @@ export function PreviewStep({
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-4">
           <div className="flex items-start gap-4">
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={companyData.logoUrl || "/web-app-manifest-512x512.png"}
                 alt={companyData.name || "Bedrijf"}
@@ -300,7 +301,7 @@ export function PreviewStep({
         <Button
           type="button"
           onClick={() => goToStep?.("prijzen")}
-          className="hover:bg-[#e04d1f] text-white min-w-[100px]"
+          className="hover:bg-[#e04d1f] text-white min-w-25"
         >
           Volgende stap
           <ArrowRight className="w-4 h-4 ml-2" />

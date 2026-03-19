@@ -107,7 +107,7 @@ export function PricingStep({
               <ul className="space-y-3 mb-6">
                 {plan.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-2 text-sm">
-                    <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    <Check className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -165,15 +165,15 @@ export function PricingStep({
         </p>
         <ul className="text-sm text-gray-600 space-y-1.5 ml-9">
           <li className="flex items-center gap-2">
-            <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+            <Check className="w-4 h-4 text-green-500 shrink-0" />
             Opvallende markering in zoekresultaten
           </li>
           <li className="flex items-center gap-2">
-            <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+            <Check className="w-4 h-4 text-green-500 shrink-0" />
             Bovenaan in relevante zoekresultaten
           </li>
           <li className="flex items-center gap-2">
-            <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+            <Check className="w-4 h-4 text-green-500 shrink-0" />
             Getoond in &apos;Uitgelichte vacatures&apos; op de homepage
           </li>
         </ul>
@@ -210,7 +210,7 @@ export function PricingStep({
             window.scrollTo({ top: 0, behavior: "smooth" });
             goToStep?.("account");
           }}
-          className="hover:bg-[#e04d1f] text-white min-w-[100px]"
+          className="hover:bg-[#e04d1f] text-white min-w-25"
         >
           Volgende stap
           <ArrowRight className="w-4 h-4 ml-2" />

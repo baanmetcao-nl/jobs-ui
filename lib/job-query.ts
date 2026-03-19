@@ -5,7 +5,7 @@ export function jobQuery({
   limit,
   page,
 }: {
-  searchParams: any;
+  searchParams: Record<string, string | string[] | undefined>;
   niche?: string;
   locations?: string;
   limit: number;

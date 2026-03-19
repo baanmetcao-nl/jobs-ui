@@ -58,14 +58,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  const currentIndex = blogPosts.findIndex((p) => p.slug === slug);
   const relatedPosts = blogPosts
     .filter((p) => p.slug !== slug)
     .slice(0, 3);
 
   return (
     <>
-      <section className="relative py-10 md:py-14 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
+      <section className="relative py-10 md:py-14 bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDE4YzEuNjU3IDAgMy0xLjM0MyAzLTNzLTEuMzQzLTMtMy0zLTMgMS4zNDMtMyAzIDEuMzQzIDMgMyAzek0zNiA0OGMxLjY1NyAwIDMtMS4zNDMgMy0zcy0xLjM0My0zLTMtMy0zIDEuMzQzLTMgMyAxLjM0MyAzIDMgM3pNNiAzNmMwLTEuNjU3LTEuMzQzLTMtMy0zcy0zIDEuMzQzLTMgMyAxLjM0MyAzIDMgMyAzLTEuMzQzIDMtM3oiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-50" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <Link
@@ -129,7 +128,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <ul className="mt-4 space-y-2">
                     {section.list.map((item, k) => (
                       <li key={k} className="flex items-start gap-3">
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#F1592A] mt-2.5 flex-shrink-0" />
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#F1592A] mt-2.5 shrink-0" />
                         <span className="text-gray-600">{item}</span>
                       </li>
                     ))}

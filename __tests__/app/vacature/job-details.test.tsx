@@ -48,6 +48,7 @@ jest.mock("@/app/apply-modal", () => ({
 
 jest.mock("@/components/image-fallback", () => ({
   __esModule: true,
+  // eslint-disable-next-line @next/next/no-img-element
   default: ({ alt }: { alt: string }) => <img alt={alt} />,
 }));
 

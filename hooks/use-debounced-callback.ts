@@ -2,13 +2,13 @@
 
 import { useMemo } from "react";
 
-function debounce<Fn extends (...args: any[]) => void>(
-  fn: Fn,
+function debounce<Args extends unknown[]>(
+  fn: (...args: Args) => void,
   options: { timeout: number },
 ) {
   let handle: ReturnType<typeof setTimeout> | null;
 
-  return (...args: any[]) => {
+  return (...args: Args) => {
     clearTimeout(handle!);
     handle = setTimeout(() => {
       fn(...args);
@@ -16,8 +16,8 @@ function debounce<Fn extends (...args: any[]) => void>(
   };
 }
 
-export default function useDebouncedCallback<T>(
-  fn: (...args: any[]) => T,
+export default function useDebouncedCallback<Args extends unknown[]>(
+  fn: (...args: Args) => void,
   options: { timeout: number },
 ) {
   return useMemo(() => {

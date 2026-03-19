@@ -18,7 +18,7 @@ const PopoverContent = React.forwardRef<
       align={align}
       sideOffset={sideOffset}
       className={cn(
-        "z-50 w-64 max-h-[min(var(--radix-popover-content-available-height,50vh),50vh)] overflow-y-auto overscroll-contain rounded-md border bg-popover p-3 text-popover-foreground shadow-md outline-none animate-in fade-in-0 zoom-in-95",
+        "z-50 w-64 max-h-(--radix-popover-content-available-height,50vh) overflow-y-auto overscroll-contain rounded-md border bg-popover p-3 text-popover-foreground shadow-md outline-none animate-in fade-in-0 zoom-in-95",
         className,
       )}
       {...props}

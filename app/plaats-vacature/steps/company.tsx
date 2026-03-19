@@ -222,6 +222,7 @@ export function CompanyForm({ data, onChange, goToStep }: CompanyFormProps) {
           <div className="flex flex-col items-center">
             <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
               {data.logoUrl ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
                 <img
                   src={data.logoUrl}
                   alt="Logo preview"
@@ -284,7 +285,7 @@ export function CompanyForm({ data, onChange, goToStep }: CompanyFormProps) {
         </Button>
         <Button
           type="submit"
-          className="hover:bg-[#e04d1f] text-white min-w-[100px] outline"
+          className="hover:bg-[#e04d1f] text-white min-w-25 outline"
         >
           Volgende stap
           <ArrowRight className="w-4 h-4 ml-2" />

@@ -85,6 +85,7 @@ export default function RootLayout({
     <html lang="nl">
       <head>
         {!process.env.NEXT_PUBLIC_E2E && (
+          /* eslint-disable-next-line @next/next/no-css-tags */
           <link
             rel="stylesheet"
             id="silktide-consent-manager-css"

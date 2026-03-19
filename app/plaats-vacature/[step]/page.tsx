@@ -9,6 +9,10 @@ import {
   PRICING_PLANS,
   type JobPostingFlow,
   type StepSlug,
+  type JobDetailsFormData,
+  type CompanyFormData,
+  type PricingPlan,
+  type AccountFormData,
 } from "@/app/types-employer";
 import { JobDetailsForm } from "@/app/plaats-vacature/steps/job-details";
 import { CompanyForm } from "@/app/plaats-vacature/steps/company";
@@ -16,6 +20,7 @@ import { PreviewStep } from "@/app/plaats-vacature/steps/preview";
 import { PricingStep } from "@/app/plaats-vacature/steps/pricing";
 import { AccountStep } from "@/app/plaats-vacature/steps/account";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const STEP_COMPONENTS: Record<StepSlug, React.FC<any>> = {
   vacature: JobDetailsForm,
   bedrijf: CompanyForm,
@@ -131,7 +136,7 @@ export default function StepPage() {
   const stepProps = {
     vacature: {
       data: flowData.jobDetails,
-      onChange: (updates: any) =>
+      onChange: (updates: Partial<JobDetailsFormData>) =>
         setFlowData((prev) => prev && ({
           ...prev,
           jobDetails: { ...prev.jobDetails, ...updates },
@@ -140,7 +145,7 @@ export default function StepPage() {
     },
     bedrijf: {
       data: flowData.company,
-      onChange: (updates: any) =>
+      onChange: (updates: Partial<CompanyFormData>) =>
         setFlowData((prev) => prev && ({
           ...prev,
           company: { ...prev.company, ...updates },
@@ -154,7 +159,7 @@ export default function StepPage() {
     },
     prijzen: {
       selectedPlan: flowData.pricing,
-      onSelect: (plan: any) =>
+      onSelect: (plan: PricingPlan) =>
         setFlowData((prev) => prev && ({ ...prev, pricing: plan })),
       featured: flowData.featured,
       onFeaturedChange: (featured: boolean) =>
@@ -163,7 +168,7 @@ export default function StepPage() {
     },
     account: {
       data: flowData.account,
-      onChange: (updates: any) =>
+      onChange: (updates: Partial<AccountFormData>) =>
         setFlowData((prev) => prev && ({
           ...prev,
           account: { ...prev.account, ...updates },

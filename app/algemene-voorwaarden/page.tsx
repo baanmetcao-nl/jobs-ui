@@ -28,7 +28,7 @@ export default function AlgemeneVoorwaardenPage() {
         </div>
       </section>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-gray max-w-none">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-gray">
         <section className="mb-10">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Artikel 1 – Definities

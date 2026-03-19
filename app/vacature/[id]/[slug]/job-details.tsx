@@ -8,7 +8,6 @@ import {
 import Link from "next/link";
 import {
   Award,
-  BookUser,
   Calendar,
   Clock,
   EuroIcon,

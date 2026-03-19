@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Briefcase,
@@ -96,7 +96,7 @@ export default function CompanyProfilePage({
 }: {
   params: { slug: string };
 }) {
-  const safeSlug = sanitizeSlug(params.slug);
+  const _safeSlug = sanitizeSlug(params.slug);
   const [profile] = useState<EmployerProfile>(mockProfile);
   const [jobs] = useState<DashboardJob[]>(mockJobs);
 
@@ -119,7 +119,7 @@ export default function CompanyProfilePage({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="h-48 md:h-64 bg-gradient-to-r from-[#F1592A] to-[#e04d1f] relative">
+      <div className="h-48 md:h-64 bg-linear-to-r from-[#F1592A] to-[#e04d1f] relative">
         {profile.coverImage && (
           <Image
             src={profile.coverImage}

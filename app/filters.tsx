@@ -14,10 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  LocationAutocomplete,
-  locationDisplayName,
-} from "@/components/location-autocomplete";
+import { LocationAutocomplete } from "@/components/location-autocomplete";
 import {
   Popover,
   PopoverTrigger,
@@ -148,11 +145,10 @@ function buildLocationFilterParams(
 }
 
 export default function Filters({
-  jobCount,
   showNicheFilter = true,
   showLocationInput = true,
 }: {
-  jobCount: number;
+  jobCount?: number;
   showNicheFilter?: boolean;
   showLocationInput?: boolean;
 }) {

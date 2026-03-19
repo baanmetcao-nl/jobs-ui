@@ -105,7 +105,7 @@ test.describe("SEO & meta tags", () => {
 
 test.describe("Redirects", () => {
   test("/jobs redirects to /vacatures", async ({ page }) => {
-    const response = await page.goto("/jobs");
+    await page.goto("/jobs");
     // Should be redirected (301/308 -> 200 final)
     expect(page.url()).toContain("/vacatures");
   });

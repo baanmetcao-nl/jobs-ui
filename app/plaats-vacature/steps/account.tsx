@@ -15,7 +15,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   ArrowLeft,
   ShieldCheck,
-  RotateCcw,
   Lock,
   Loader2,
   CreditCard,
@@ -425,7 +424,7 @@ function CheckoutForm({
         <Button
           type="submit"
           disabled={!stripe || !elements || isLoading}
-          className="bg-[#F1592A] hover:bg-[#e04d1f] text-white sm:min-w-[220px]"
+          className="bg-[#F1592A] hover:bg-[#e04d1f] text-white sm:min-w-55"
         >
           {isLoading ? (
             <>

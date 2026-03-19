@@ -1,4 +1,4 @@
-import { Contract, Job, JobsResponse } from "@/app/types";
+import { JobsResponse } from "@/app/types";
 import { notFound } from "next/navigation";
 import JobDetails from "./job-details";
 import Script from "next/script";

@@ -404,6 +404,7 @@ export default function WerkgeversPage() {
             {PRICING_PLANS.map((plan) => (
               <Card
                 key={plan.id}
+                data-testid="pricing-card"
                 className={`relative overflow-hidden ${plan.popular ? "border-[#F1592A] border-2 shadow-lg" : ""}`}
               >
                 {plan.popular && (

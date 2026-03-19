@@ -3,7 +3,10 @@ import { useEffect } from "react";
 import Script from "next/script";
 
 export default function SilktideCookieBanner() {
+  const isE2E = process.env.NEXT_PUBLIC_E2E === "true";
+
   useEffect(() => {
+    if (isE2E) return;
     if (typeof window === "undefined") return;
     const w = window as any;
 
@@ -47,6 +50,8 @@ export default function SilktideCookieBanner() {
 
     return () => clearInterval(interval);
   }, []);
+
+  if (isE2E) return null;
 
   return (
     <Script

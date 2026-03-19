@@ -84,11 +84,13 @@ export default function RootLayout({
   return (
     <html lang="nl">
       <head>
-        <link
-          rel="stylesheet"
-          id="silktide-consent-manager-css"
-          href="/silktide-consent/silktide-consent-manager.css"
-        />
+        {!process.env.NEXT_PUBLIC_E2E && (
+          <link
+            rel="stylesheet"
+            id="silktide-consent-manager-css"
+            href="/silktide-consent/silktide-consent-manager.css"
+          />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -136,12 +138,20 @@ export default function RootLayout({
         />
       </head>
       <body className={`flex flex-col min-h-screen ${interFont.className}`}>
-        <ClerkProvider localization={nlNL} afterSignOutUrl="/">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <SilktideCookieBanner />
-        </ClerkProvider>
+        {process.env.NEXT_PUBLIC_E2E ? (
+          <>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </>
+        ) : (
+          <ClerkProvider localization={nlNL} afterSignOutUrl="/">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <SilktideCookieBanner />
+          </ClerkProvider>
+        )}
       </body>
       <GoogleAnalytics gaId="G-7ZJVYSSG4N" />
       <GoogleTagManager gtmId="GTM-59VXWLNR" />

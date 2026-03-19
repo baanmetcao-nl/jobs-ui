@@ -33,7 +33,7 @@ describe("CompanyLogo", () => {
     render(<CompanyLogo src="https://example.com/logo.png" alt="Acme logo" />);
     expect(screen.getByTestId("company-image")).toHaveAttribute(
       "src",
-      "https://example.com/logo.png"
+      "https://example.com/logo.png",
     );
   });
 
@@ -41,7 +41,7 @@ describe("CompanyLogo", () => {
     render(<CompanyLogo alt="Fallback logo" />);
     expect(screen.getByTestId("company-image")).toHaveAttribute(
       "src",
-      "/web-app-manifest-512x512.png"
+      "/logo-fallback.png",
     );
   });
 
@@ -51,12 +51,12 @@ describe("CompanyLogo", () => {
 
     expect(img).toHaveAttribute("src", "https://example.com/broken.png");
     fireEvent.error(img);
-    expect(img).toHaveAttribute("src", "/web-app-manifest-512x512.png");
+    expect(img).toHaveAttribute("src", "/logo-fallback.png");
   });
 
   it("applies the given size to the container", () => {
     const { container } = render(
-      <CompanyLogo src="/logo.png" alt="Logo" size={80} />
+      <CompanyLogo src="/logo.png" alt="Logo" size={80} />,
     );
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper).toHaveStyle({ width: "80px", height: "80px" });

@@ -16,13 +16,78 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
 
+const IS_E2E = process.env.NEXT_PUBLIC_E2E === "true";
+
+function DesktopAuthLink({ onClose }: { onClose: () => void }) {
+  const { isSignedIn } = useUser();
+  if (isSignedIn) {
+    return (
+      <Link
+        href="/dashboard"
+        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
+        onClick={onClose}
+      >
+        <LayoutDashboard className="w-4 h-4 text-gray-400" />
+        Dashboard
+      </Link>
+    );
+  }
+  return (
+    <Link
+      href="/werkgevers/inloggen"
+      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
+      onClick={onClose}
+    >
+      <LogIn className="w-4 h-4 text-gray-400" />
+      Inloggen
+    </Link>
+  );
+}
+
+function MobileAuthLink({ onClose }: { onClose: () => void }) {
+  const { isSignedIn } = useUser();
+  if (isSignedIn) {
+    return (
+      <Link
+        href="/dashboard"
+        className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+        onClick={onClose}
+      >
+        Dashboard
+      </Link>
+    );
+  }
+  return (
+    <Link
+      href="/werkgevers/inloggen"
+      className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+      onClick={onClose}
+    >
+      Inloggen
+    </Link>
+  );
+}
+
+function AuthUserAvatar() {
+  const { isSignedIn } = useUser();
+  if (!isSignedIn) return null;
+  return (
+    <UserButton
+      appearance={{
+        elements: {
+          avatarBox: "w-8 h-8",
+        },
+      }}
+    />
+  );
+}
+
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isWerkgeversOpen, setIsWerkgeversOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { isSignedIn } = useUser();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -153,16 +218,7 @@ export function NavBar() {
                     <Briefcase className="w-4 h-4 text-gray-400" />
                     Plaats vacature
                   </Link>
-                  {isSignedIn ? (
-                    <Link
-                      href="/dashboard"
-                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
-                      onClick={() => setIsWerkgeversOpen(false)}
-                    >
-                      <LayoutDashboard className="w-4 h-4 text-gray-400" />
-                      Dashboard
-                    </Link>
-                  ) : (
+                  {IS_E2E ? (
                     <Link
                       href="/werkgevers/inloggen"
                       className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
@@ -171,20 +227,14 @@ export function NavBar() {
                       <LogIn className="w-4 h-4 text-gray-400" />
                       Inloggen
                     </Link>
+                  ) : (
+                    <DesktopAuthLink onClose={() => setIsWerkgeversOpen(false)} />
                   )}
                 </div>
               )}
             </div>
 
-            {isSignedIn && (
-              <UserButton
-                appearance={{
-                  elements: {
-                    avatarBox: "w-8 h-8",
-                  },
-                }}
-              />
-            )}
+            {!IS_E2E && <AuthUserAvatar />}
 
             <Link href="/plaats-vacature" className="ml-2">
               <Button className="hidden md:inline-flex bg-[#F1592A] hover:bg-[#e04d1f] text-white">
@@ -194,6 +244,7 @@ export function NavBar() {
             <Button
               variant="ghost"
               size="icon"
+              aria-label={isMenuOpen ? "Menu sluiten" : "Menu openen"}
               className="shrink-0 md:hidden text-black"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -254,15 +305,7 @@ export function NavBar() {
               >
                 Plaats vacature
               </Link>
-              {isSignedIn ? (
-                <Link
-                  href="/dashboard"
-                  className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Dashboard
-                </Link>
-              ) : (
+              {IS_E2E ? (
                 <Link
                   href="/werkgevers/inloggen"
                   className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
@@ -270,6 +313,8 @@ export function NavBar() {
                 >
                   Inloggen
                 </Link>
+              ) : (
+                <MobileAuthLink onClose={() => setIsMenuOpen(false)} />
               )}
             </div>
           </div>

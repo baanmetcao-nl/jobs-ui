@@ -80,7 +80,8 @@ export default function ContactPage() {
           <input
             type="text"
             name="company"
-            style={{ position: "absolute", left: "-9999px" }}
+            aria-hidden="true"
+            style={{ position: "absolute", left: "-9999px", height: 0, overflow: "hidden" }}
             tabIndex={-1}
             autoComplete="off"
           />

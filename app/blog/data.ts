@@ -38,63 +38,52 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         paragraphs: [
-          "Als je op zoek bent naar een baan, kom je regelmatig de term CAO tegen. Maar wat houdt een collectieve arbeidsovereenkomst precies in? En waarom is het zo belangrijk om te weten of je toekomstige werkgever onder een CAO valt? In dit artikel leggen we alles uit wat je moet weten.",
+          "Stel je voor: je krijgt twee aanbiedingen. Allebei dezelfde functie, allebei hetzelfde salaris. Het enige verschil? De ene werkgever valt onder een CAO, de andere niet. Klinkt misschien als een detail, maar het kan je duizenden euro's per jaar schelen. En toch weten verrassend veel mensen niet precies wat een CAO inhoudt.",
         ],
       },
       {
-        heading: "CAO staat voor Collectieve Arbeidsovereenkomst",
+        heading: "Eerst even de basis",
         paragraphs: [
-          "Een CAO is een schriftelijke overeenkomst tussen werkgevers (of werkgeversorganisaties) en vakbonden over arbeidsvoorwaarden. Deze afspraken gelden voor alle werknemers die onder die CAO vallen — ongeacht of je lid bent van een vakbond.",
-          "In Nederland zijn er meer dan 700 verschillende CAO's. Sommige gelden voor een hele sector (zoals de CAO Retail of CAO Zorg), andere zijn bedrijfsspecifiek (zoals de CAO van grote bedrijven als KLM of Philips).",
+          "CAO staat voor Collectieve Arbeidsovereenkomst. Het is een deal tussen vakbonden en werkgevers (of werkgeversorganisaties) over de spelregels op het werk. Denk aan salaris, vakantiedagen, pensioen, overwerktoeslagen — eigenlijk alles wat je arbeidsvoorwaarden noemt.",
+          "Het mooie: die afspraken gelden voor iedereen die onder die CAO valt. Je hoeft er niet eens lid van een vakbond voor te zijn. In Nederland bestaan er meer dan 700 verschillende CAO's, van sector-breed (CAO Retail, CAO Zorg) tot bedrijfsspecifiek (denk aan KLM of Philips).",
         ],
       },
       {
-        heading: "Wat regelt een CAO precies?",
+        heading: "Wat regelt zo'n CAO dan concreet?",
         paragraphs: [
-          "Een CAO regelt veel meer dan alleen je salaris. Dit zijn de belangrijkste zaken die in een CAO worden vastgelegd:",
+          "Meer dan je denkt. De meeste mensen associëren het met salaris, maar een CAO gaat veel verder dan dat:",
         ],
         list: [
-          "Salarisschalen en periodieken — je weet precies wat je verdient en wanneer je een loonsverhoging krijgt",
-          "Vakantiedagen — vaak meer dan het wettelijk minimum van 20 dagen bij een fulltime dienstverband",
-          "Vakantiegeld — meestal 8% van je bruto jaarsalaris, soms zelfs meer",
-          "Pensioenregeling — je bouwt pensioen op via je werkgever",
-          "Overwerkvergoedingen en toeslagen — voor avond-, nacht- en weekendwerk",
-          "Regels bij ziekte — aanvulling op je loon bij ziekteverzuim",
-          "Ontslagbescherming — duidelijke regels en procedures",
-          "Opleidingsbudget — mogelijkheden om jezelf te ontwikkelen",
+          "Salarisschalen — je weet precies wat je kunt verdienen en wanneer je erop vooruitgaat",
+          "Vakantiedagen — vrijwel altijd meer dan de wettelijke 20 dagen",
+          "Vakantiegeld — minimaal 8%, maar sommige CAO's gaan hoger",
+          "Pensioen — je werkgever draagt mee aan je opbouw, vaak twee derde van de premie",
+          "Toeslagen voor avond-, nacht- en weekendwerk",
+          "Aanvulling op je loon als je ziek wordt",
+          "Ontslagprocedures en -bescherming",
+          "Budget voor opleidingen en cursussen",
         ],
       },
       {
-        heading: "Waarom is een CAO belangrijk bij het zoeken naar werk?",
+        heading: "Waarom zou je hierop letten bij het solliciteren?",
         paragraphs: [
-          "Een baan bij een werkgever met CAO biedt je als werknemer meerdere voordelen. Ten eerste heb je zekerheid: alle afspraken staan zwart op wit en kunnen niet zomaar eenzijdig worden gewijzigd door je werkgever.",
-          "Ten tweede zijn de arbeidsvoorwaarden in een CAO bijna altijd beter dan het wettelijk minimum. Denk aan meer vakantiedagen, hogere salarissen en betere pensioenopbouw. Dat kan op jaarbasis duizenden euro's schelen.",
-          "Tot slot zorgt een CAO voor gelijkheid op de werkvloer. Iedereen met dezelfde functie en ervaring krijgt hetzelfde salaris. Geen willekeur, geen ongelijke behandeling.",
+          "Drie redenen. Ten eerste: zekerheid. Alles staat zwart op wit. Je werkgever kan niet op een ochtend besluiten om je vakantiedagen te halveren of je overwerkvergoeding te schrappen. Bij een werkgever zonder CAO gelden alleen de wettelijke minimumregels — en die zijn, eerlijk gezegd, vrij karig.",
+          "Ten tweede: geld. CAO-voorwaarden zijn bijna altijd beter dan het wettelijk minimum. Meer vakantiedagen, hogere salarissen, betere pensioenopbouw. Dat tikt aan. Over een hele carrière praat je al snel over tienduizenden euro's verschil.",
+          "Ten derde: gelijkheid. Iedereen met dezelfde functie en ervaring krijgt hetzelfde. Geen willekeur, geen 'gunfactor'. Dat klinkt misschien vanzelfsprekend, maar zonder CAO is je salaris volledig afhankelijk van hoe goed je hebt onderhandeld — en niet iedereen is daar even bedreven in.",
         ],
       },
       {
-        heading: "Hoe weet je of een werkgever onder een CAO valt?",
+        heading: "Hoe kom je erachter of een werkgever een CAO heeft?",
         paragraphs: [
-          "Dit is vaak niet direct duidelijk in vacatureteksten. Sommige werkgevers vermelden het expliciet, maar veel ook niet. Je kunt het op meerdere manieren achterhalen:",
-        ],
-        list: [
-          "Vraag het tijdens het sollicitatiegesprek — een legitieme en belangrijke vraag",
-          "Check de website van het ministerie van SZW voor algemeen verbindend verklaarde CAO's",
-          "Zoek op de website van de vakbond in jouw sector",
-          "Gebruik Baan met CAO — wij vermelden alleen vacatures van werkgevers die onder een CAO vallen",
+          "Helaas vermelden lang niet alle vacatures dit. Soms staat het er wel ('wij vallen onder de CAO Metaal & Techniek'), maar vaak ook niet. Je kunt het op een paar manieren achterhalen: gewoon vragen tijdens het sollicitatiegesprek (volkomen normaal), de website van het ministerie van SZW raadplegen voor algemeen verbindend verklaarde CAO's, of zoeken via de vakbond in jouw sector.",
+          "Of je zoekt op een platform dat dit al voor je uitfiltert. Wij tonen op Baan met CAO alleen vacatures van werkgevers die onder een collectieve arbeidsovereenkomst vallen, zodat je daar niet zelf achteraan hoeft.",
         ],
       },
       {
-        heading: "Baan zonder CAO: waar moet je op letten?",
+        heading: "Geen CAO — is dat erg?",
         paragraphs: [
-          "Niet elke werkgever valt onder een CAO. Dat hoeft niet per se slecht te zijn, maar het betekent wel dat je zelf beter moet opletten. Zonder CAO gelden alleen de wettelijke minimumregels uit het Burgerlijk Wetboek en de Wet minimumloon.",
-          "In de praktijk betekent dit vaak: minder vakantiedagen, geen duidelijke salarisstructuur en minder zekerheid over zaken als pensioen en overwerkvergoeding. Daarom raden wij altijd aan om bij voorkeur te solliciteren bij werkgevers met een CAO.",
-        ],
-      },
-      {
-        heading: "Conclusie",
-        paragraphs: [
-          "Een CAO biedt je als werknemer bescherming, duidelijkheid en betere arbeidsvoorwaarden. Bij het zoeken naar een nieuwe baan is het slim om hier actief op te letten. Op Baan met CAO vind je uitsluitend vacatures van werkgevers die onder een collectieve arbeidsovereenkomst vallen — zodat je precies weet waar je aan toe bent.",
+          "Niet per definitie. Er zijn genoeg werkgevers zonder CAO die prima voorwaarden bieden. Maar je moet dan wel zelf goed opletten. Zonder CAO gelden alleen de minimumregels uit het Burgerlijk Wetboek en de Wet minimumloon. In de praktijk betekent dat vaker: minder vakantiedagen, geen duidelijke salarisstructuur, en vraagtekens bij pensioen en overwerkvergoeding.",
+          "Mijn advies: als je twijfelt tussen twee werkgevers, weeg dan de CAO mee als een serieuze factor. Het is niet het enige dat telt, maar het zegt wel iets over hoe een werkgever met z'n mensen omgaat.",
         ],
       },
     ],
@@ -120,80 +109,75 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         paragraphs: [
-          "De arbeidsmarkt verandert continu, maar de basis van goed solliciteren blijft hetzelfde: laat zien wie je bent, wat je kunt en waarom jij de beste kandidaat bent. In dit artikel delen we 10 sollicitatietips die in 2026 echt het verschil maken.",
+          "Er zijn van die sollicitatietips die iedereen kent. 'Wees jezelf.' 'Doe je onderzoek.' 'Kom op tijd.' Klopt allemaal, maar het zijn open deuren. Hier tien tips die wat concreter zijn — dingen die ik in de praktijk echt verschil zie maken.",
         ],
       },
       {
-        heading: "1. Pas je CV aan op elke vacature",
+        heading: "1. Stuur nooit twee keer hetzelfde CV",
         paragraphs: [
-          "Stuur nooit hetzelfde generieke CV naar elke werkgever. Lees de vacaturetekst goed door en pas je CV aan op de gevraagde competenties en ervaring. Zet de meest relevante ervaring bovenaan en gebruik dezelfde termen als in de vacature. Recruiters besteden gemiddeld 6 seconden aan een eerste screening — zorg dat jouw CV meteen scoort.",
+          "Dit klinkt als veel werk, maar het hoeft niet. Je hoeft niet elke keer je hele CV om te gooien. Lees de vacature, en schuif de ervaring die het best aansluit naar boven. Gebruik dezelfde woorden als in de vacaturetekst. Recruiters scannen je CV gemiddeld 6 tot 7 seconden — in die tijd moet het klikken.",
+          "Wat ook helpt: schrap irrelevante bijbaantjes of stages die niets toevoegen. Een strak CV van één pagina maakt meer indruk dan drie kantjes met alles wat je ooit hebt gedaan.",
         ],
       },
       {
-        heading: "2. Schrijf een gerichte motivatiebrief",
+        heading: "2. Je motivatiebrief is geen samenvatting van je CV",
         paragraphs: [
-          "Ja, de motivatiebrief doet er nog steeds toe. Maar dan moet het wel een goede zijn. Vermijd standaardzinnen als 'Met veel enthousiasme reageer ik op uw vacature'. Vertel in plaats daarvan concreet waarom je bij dit bedrijf wilt werken en wat jij toevoegt. Noem specifieke projecten, resultaten of ervaringen die aansluiten bij de functie.",
+          "De grootste fout die mensen maken: hun motivatiebrief gebruiken om hun CV na te vertellen. Dat is dubbel werk voor de recruiter. Gebruik de brief om te vertellen waaróm je bij dit bedrijf wilt werken en wat jou drijft. Noem een specifiek project, een recente ontwikkeling, of iets dat je aansprak op hun website. Laat zien dat je niet dezelfde brief naar dertig bedrijven stuurt.",
         ],
       },
       {
-        heading: "3. Onderzoek het bedrijf grondig",
+        heading: "3. Google het bedrijf alsof je er gaat investeren",
         paragraphs: [
-          "Voordat je solliciteert, verdiep je in het bedrijf. Bekijk hun website, lees recent nieuws, check hun social media en kijk of er reviews van medewerkers zijn. Dit helpt je niet alleen bij je sollicitatiebrief, maar ook tijdens het gesprek. Werkgevers merken het direct als je je huiswerk hebt gedaan.",
+          "Kijk verder dan de 'Over ons'-pagina. Check hun LinkedIn, lees recente nieuwsartikelen, zoek reviews op Glassdoor of Indeed. Heeft het bedrijf recent een prijs gewonnen? Zijn ze aan het groeien? Zit er een reorganisatie aan te komen? Hoe meer je weet, hoe beter je vragen kunt stellen tijdens het gesprek. En werkgevers merken dat. Direct.",
         ],
       },
       {
-        heading: "4. Maak je LinkedIn-profiel sollicitatieproof",
+        heading: "4. LinkedIn is je stille verkoper",
         paragraphs: [
-          "Recruiters zoeken actief op LinkedIn. Zorg dat je profiel compleet en actueel is. Gebruik een professionele foto, schrijf een pakkende kopregel en vul je werkervaring aan met concrete resultaten. Zet de optie 'Open to work' aan als je actief zoekt — maar alleen zichtbaar voor recruiters als je nog in dienst bent.",
+          "Recruiters zoeken actief op LinkedIn. Dat betekent dat je profiel voor je werkt, ook als je er niet achter zit. Zorg voor een professionele foto (geen vakantiefoto, geen selfie), een kopregel die meer zegt dan je functietitel, en concrete resultaten bij je werkervaring. 'Verantwoordelijk voor sales' zegt niets. '37% omzetgroei gerealiseerd in Q3' zegt alles.",
+          "Tip: zet 'Open to work' aan, maar maak het alleen zichtbaar voor recruiters als je nog ergens in dienst bent. Zo voorkom je ongemakkelijke situaties.",
         ],
       },
       {
-        heading: "5. Bereid je voor op veelgestelde vragen",
+        heading: "5. Oefen de voorspelbare vragen tot je ze zat bent",
         paragraphs: [
-          "De meeste sollicitatiegesprekken bevatten voorspelbare vragen. Bereid je antwoorden voor op vragen als:",
+          "Ja, ze zijn voorspelbaar. Nee, dat betekent niet dat je ze kunt improviseren. 'Vertel eens iets over jezelf' klinkt simpel, maar de meeste mensen rammelen er een chaotisch verhaal uit. Oefen je antwoord hardop — voor de spiegel, tegen je partner, tegen je kat. Het maakt niet uit. Zolang je het maar een keer hebt uitgesproken voordat je tegenover die hiring manager zit.",
         ],
         list: [
-          "'Vertel eens iets over jezelf' — houd het professioneel en relevant, max 2 minuten",
-          "'Waarom wil je hier werken?' — toon dat je het bedrijf kent en enthousiast bent",
-          "'Wat zijn je sterke en zwakke punten?' — wees eerlijk maar strategisch",
-          "'Waar zie je jezelf over 5 jaar?' — laat ambitie en realisme zien",
-          "'Waarom moeten we jou aannemen?' — vat je toegevoegde waarde samen",
+          "'Vertel eens iets over jezelf' — max 2 minuten, professioneel, eindig met waarom je hier zit",
+          "'Waarom wil je hier werken?' — laat zien dat je het bedrijf kent",
+          "'Wat zijn je zwakke punten?' — wees eerlijk, maar laat zien dat je eraan werkt",
+          "'Waar zie je jezelf over 5 jaar?' — ambitieus maar realistisch",
         ],
       },
       {
-        heading: "6. Vraag naar de arbeidsvoorwaarden",
+        heading: "6. Vraag naar de arbeidsvoorwaarden — daar is niets mis mee",
         paragraphs: [
-          "Het is volkomen normaal om tijdens het sollicitatieproces te vragen naar salaris, vakantiedagen en andere arbeidsvoorwaarden. Sterker nog: het is verstandig. Vraag of het bedrijf onder een CAO valt — dat zegt veel over de kwaliteit van de arbeidsvoorwaarden. Op Baan met CAO vind je alleen vacatures bij werkgevers met een CAO, zodat je dit al van tevoren weet.",
+          "Ik snap dat het spannend voelt, maar vragen naar salaris, vakantiedagen en pensioen is volkomen normaal. Sterker nog: een werkgever die daar moeilijk over doet, vertelt je eigenlijk al iets. Een goede vraag: 'Valt het bedrijf onder een CAO?' Dat zegt veel over de kwaliteit van de voorwaarden en de transparantie van de werkgever.",
         ],
       },
       {
-        heading: "7. Volg op na het gesprek",
+        heading: "7. Stuur een bedankmailtje na het gesprek",
         paragraphs: [
-          "Stuur binnen 24 uur een kort bedankmailtje na je sollicitatiegesprek. Bedank voor het gesprek, benoem iets specifieks dat je is bijgebleven en bevestig je interesse. Dit is een klein gebaar dat een groot verschil maakt — veel kandidaten doen het niet.",
+          "Klein gebaar, groot effect. De meeste kandidaten doen het niet, dus je valt er meteen mee op. Stuur binnen 24 uur een kort mailtje: bedank voor het gesprek, noem iets specifieks dat je is bijgebleven, bevestig je interesse. Drie zinnen, meer hoeft niet.",
         ],
       },
       {
-        heading: "8. Wees eerlijk over je ervaring",
+        heading: "8. Lieg niet op je CV",
         paragraphs: [
-          "Overdrijf niet op je CV of tijdens het gesprek. Werkgevers prikken hier doorheen en het kan je de baan kosten — of erger, leiden tot een mismatch. Als je bepaalde ervaring nog niet hebt, laat dan zien dat je leergierig bent en snel kunt oppakken. Eerlijkheid wordt altijd gewaardeerd.",
+          "Klinkt voor de hand liggend, maar het gebeurt vaker dan je denkt. En het komt altijd uit — of tijdens het gesprek, of tijdens je eerste werkweken. Als je bepaalde ervaring niet hebt, zeg dat. Laat zien dat je leergierig bent. Eerlijkheid wint het altijd van een opgeblazen CV dat je niet kunt waarmaken.",
         ],
       },
       {
-        heading: "9. Let op je online aanwezigheid",
+        heading: "9. Ruim je digitale voetafdruk op",
         paragraphs: [
-          "Steeds meer werkgevers googelen sollicitanten. Controleer wat er over je te vinden is en ruim eventuele onprofessionele content op. Dit geldt voor social media, maar ook voor oude forumberichten of reacties. Je online imago is onderdeel van je eerste indruk.",
+          "Google jezelf eens. Serieus. Werkgevers doen het ook. Staan er openbare Instagram-posts of oude forumberichten die je liever niet op tafel hebt tijdens een sollicitatie? Ruim het op of zet het op privé. Je online imago is onderdeel van je eerste indruk, of je dat nu leuk vindt of niet.",
         ],
       },
       {
-        heading: "10. Geef niet op na een afwijzing",
+        heading: "10. Een afwijzing is geen eindstation",
         paragraphs: [
-          "Afwijzingen horen bij solliciteren. Gemiddeld moet je 10 tot 15 keer solliciteren voordat je een baan vindt. Vraag altijd om feedback na een afwijzing — dit helpt je om je volgende sollicitatie te verbeteren. En onthoud: elke afwijzing brengt je dichter bij de juiste match.",
-        ],
-      },
-      {
-        heading: "Aan de slag",
-        paragraphs: [
-          "Met deze tips vergroot je je kansen aanzienlijk. Begin vandaag nog met het verbeteren van je CV, onderzoek bedrijven die je aanspreken en solliciteer gericht. Op Baan met CAO vind je duizenden vacatures bij werkgevers met goede arbeidsvoorwaarden. Succes met je zoektocht!",
+          "Gemiddeld solliciteer je 10 tot 15 keer voordat je iets vindt. Dat is normaal. Vraag altijd om feedback na een afwijzing — niet elk bedrijf doet het, maar als je het wel krijgt, is het goud waard. En onthoud: een afwijzing zegt lang niet altijd iets over jou. Soms is het gewoon timing, of was er een interne kandidaat.",
         ],
       },
     ],
@@ -220,61 +204,48 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         paragraphs: [
-          "Veel werknemers vinden het lastig om over hun salaris te onderhandelen. Toch is het een van de belangrijkste momenten in je carriere. Een goed gevoerd salarisgesprek kan duizenden euro's per jaar schelen — en het effect stapelt op gedurende je hele loopbaan. In dit artikel leer je hoe je je voorbereidt en succesvol onderhandelt.",
+          "Laten we eerlijk zijn: de meeste mensen vinden salarisonderhandeling doodeng. En dus doen ze het niet. Volgens onderzoek van Nationale Vacaturebank onderhandelt slechts 39% van de werknemers bij een nieuwe baan over het salaris. De rest accepteert het eerste bod.",
+          "Dat is zonde. Want het verschil tussen wel en niet onderhandelen kan al snel 5.000 tot 10.000 euro per jaar zijn. En dat effect stapelt op: over een carrière van 30 jaar praat je dan over tonnen — inclusief het doorwerken in pensioenopbouw en vakantiegeld.",
         ],
       },
       {
-        heading: "Waarom salarisonderhandeling belangrijk is",
+        heading: "Weet wat je waard bent voordat je je mond opendoet",
         paragraphs: [
-          "Onderzoek toont aan dat werknemers die onderhandelen over hun salaris gemiddeld 5.000 tot 10.000 euro per jaar meer verdienen dan collega's die dat niet doen. Over een carriere van 30 jaar kan dat oplopen tot honderdduizenden euro's — inclusief het effect op pensioenopbouw, vakantiegeld en eventuele bonussen.",
-          "Toch onderhandelt slechts 39% van de werknemers bij een nieuwe baan. De belangrijkste reden? Angst. Angst om de baan te verliezen, angst om hebberig over te komen, of simpelweg niet weten hoe je het moet aanpakken.",
+          "De grootste fout: het gesprek ingaan zonder cijfers. Als je niet weet wat gangbaar is voor jouw functie, ervaring en regio, dan sta je met lege handen. Check het Nationaal Salaris Onderzoek, kijk op vacaturesites die salarissen vermelden, en vraag in je netwerk. Hoe concreter je cijfers, hoe sterker je positie.",
+          "Werk je bij een werkgever met een CAO? Dan heb je een extra troef. De salarisschalen liggen vast en zijn openbaar. Je kunt precies zien in welke schaal je thuishoort, wat het maximum is, en of je onderbetaald wordt. Dat maakt het gesprek een stuk makkelijker.",
         ],
       },
       {
-        heading: "Stap 1: Ken je marktwaarde",
+        heading: "Bouw je zaak op feiten, niet op gevoel",
         paragraphs: [
-          "Voordat je het gesprek aangaat, moet je weten wat gangbaar is voor jouw functie, ervaring en regio. Gebruik bronnen als het Nationaal Salaris Onderzoek, salariswijzers van recruitmentbureaus en vacaturesites die salarissen vermelden.",
-          "Als de werkgever onder een CAO valt, heb je een extra voordeel: de salarisschalen zijn vastgelegd. Je kunt precies zien in welke schaal je hoort en wat de groeimogelijkheden zijn. Op Baan met CAO vind je vacatures waar dit transparant is vermeld.",
-        ],
-      },
-      {
-        heading: "Stap 2: Bereid je argumenten voor",
-        paragraphs: [
-          "Een succesvolle onderhandeling draait om feiten, niet om emoties. Verzamel concrete voorbeelden van je prestaties:",
+          "'Ik vind dat ik meer verdien' is geen argument. 'Ik heb de klanttevredenheid met 15% verhoogd en twee nieuwe processen geïmplementeerd die het team 4 uur per week besparen' — dát is een argument. Verzamel concrete voorbeelden van wat je hebt bijgedragen:",
         ],
         list: [
-          "Meetbare resultaten — omzet verhoogd, kosten bespaard, processen verbeterd",
-          "Extra verantwoordelijkheden die je hebt opgepakt",
-          "Certificaten, opleidingen of cursussen die je hebt afgerond",
-          "Positieve feedback van klanten, collega's of leidinggevenden",
-          "Marktgegevens die je huidige onderbetaling aantonen",
+          "Meetbare resultaten: omzet, besparingen, klanttevredenheid",
+          "Extra taken die je hebt opgepakt buiten je functieomschrijving",
+          "Opleidingen, certificaten of cursussen die je hebt afgerond",
+          "Positieve feedback die je hebt gekregen van klanten of leidinggevenden",
         ],
       },
       {
-        heading: "Stap 3: Kies het juiste moment",
+        heading: "Timing is alles",
         paragraphs: [
-          "Timing is cruciaal. De beste momenten voor een salarisgesprek zijn: na een succesvolle afronding van een project, tijdens je jaarlijkse beoordelingsgesprek, of bij het aannemen van extra taken. Bij een sollicitatie komt het salarisonderwerp meestal ter sprake in de tweede gespreksronde of wanneer de werkgever een aanbod doet.",
-          "Vermijd het onderwerp op te brengen wanneer het bedrijf het financieel moeilijk heeft, direct na een reorganisatie of op een ongeschikt moment zoals een informeel praatje bij de koffieautomaat.",
+          "Het beste moment voor een salarisgesprek is na een succes. Je hebt net een groot project afgerond, een moeilijke klant binnengehaald, of je jaarlijkse beoordeling was uitstekend. Dat is wanneer je waarde het meest zichtbaar is.",
+          "Het slechtste moment: wanneer het bedrijf net heeft gereorganiseerd, wanneer je baas gestrest is, of 'even tussendoor' bij de koffieautomaat. Plan het als een echt gesprek. Serieus nemen van het moment laat zien dat je het serieus meent.",
         ],
       },
       {
-        heading: "Stap 4: Voer het gesprek met vertrouwen",
+        heading: "Noem het eerste getal",
         paragraphs: [
-          "Begin het gesprek positief. Benadruk hoeveel je het werk waardeert en wat je hebt bijgedragen. Noem vervolgens je onderzoek naar de marktwaarde en je concrete prestaties. Geef een specifiek bedrag of range die je voor ogen hebt — wie het eerste getal noemt, verankert de onderhandeling.",
-          "Luister goed naar de reactie van je werkgever. Als het gewenste salaris niet mogelijk is, onderhandel dan over andere arbeidsvoorwaarden: extra vakantiedagen, thuiswerkdagen, opleidingsbudget of een eenmalige bonus.",
+          "Dit is contraintuïtief, maar het werkt. Wie het eerste getal noemt, zet het anker. Als jij zegt '55.000 tot 60.000', dan beweegt het gesprek rond die range. Als je wacht tot de werkgever een getal noemt, loop je het risico dat hun anker veel lager ligt.",
+          "Noem een specifiek bedrag of een smalle range. En onderbouw het met je onderzoek. 'Op basis van mijn ervaring en de marktgegevens denk ik aan een salaris rond de 57.000 euro' klinkt een stuk sterker dan 'ik wil graag iets meer verdienen'.",
         ],
       },
       {
-        heading: "Salarisonderhandeling bij een CAO",
+        heading: "Nee is niet het einde van het gesprek",
         paragraphs: [
-          "Werk je bij een werkgever met een CAO? Dan liggen de salarisschalen vast, maar er is vaak meer ruimte dan je denkt. Je kunt onderhandelen over je inschaling (welke trede in de schaal), je kunt vragen om sneller door te groeien naar een hogere trede, en sommige CAO's bieden ruimte voor een persoonlijke toeslag bovenop het schaalmaximum.",
-          "Bovendien bieden veel CAO's secundaire arbeidsvoorwaarden waar je over kunt praten: een hogere reiskostenvergoeding, meer thuiswerkdagen of een groter opleidingsbudget.",
-        ],
-      },
-      {
-        heading: "Tot slot",
-        paragraphs: [
-          "Salarisonderhandeling is een vaardigheid die je kunt leren. Bereid je goed voor, ken je waarde en durf het gesprek aan te gaan. Het ergste dat kan gebeuren is een 'nee' — en zelfs dan weet je waar je staat. Bekijk op Baan met CAO vacatures met transparante salarisschalen, zodat je altijd weet wat je kunt verwachten.",
+          "Soms is het gevraagde salaris er simpelweg niet. Dat hoeft niet te betekenen dat je met lege handen weggaat. Onderhandel over andere voorwaarden: een extra vakantiedag, een thuiswerkdag, opleidingsbudget, of een eenmalige bonus. Bij werkgevers met een CAO zit hier soms verrassend veel ruimte — denk aan een hogere inschaling, snellere doorgroei, of een persoonlijke toeslag.",
+          "Het belangrijkste: durf het gesprek aan te gaan. Het ergste dat kan gebeuren is een 'nee'. En zelfs dan weet je waar je staat.",
         ],
       },
     ],
@@ -300,63 +271,48 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         paragraphs: [
-          "Als werknemer heb je rechten. Dat klinkt logisch, maar in de praktijk weten veel mensen niet precies waar ze recht op hebben. Een CAO speelt hierin een cruciale rol: het regelt zaken die ver boven het wettelijk minimum uitstijgen. In dit artikel zetten we de belangrijkste rechten op een rij die een CAO voor jou regelt.",
+          "Veel werknemers denken: 'Ik heb een contract, dus mijn rechten zijn geregeld.' En ja, dat klopt — deels. De wet beschermt je op een basisniveau. Maar dat basisniveau is lager dan de meeste mensen beseffen. Een CAO tilt je rechten naar een heel ander niveau. Laat me dat concreet maken.",
         ],
       },
       {
-        heading: "Vakantiedagen: meer dan het wettelijk minimum",
+        heading: "Vakantiedagen: 20 is het minimum, niet de standaard",
         paragraphs: [
-          "Wettelijk heb je als fulltime werknemer recht op minimaal 20 vakantiedagen per jaar. Maar de meeste CAO's bieden aanzienlijk meer. In de CAO Zorg heb je bijvoorbeeld recht op 27 tot 34 dagen, afhankelijk van je leeftijd en dienstjaren. In de CAO Metaal & Techniek zijn dat 25 dagen plus eventuele seniorendagen.",
-          "Daarnaast kennen veel CAO's bijzonder verlof voor situaties als verhuizing, huwelijk, overlijden van een naaste of het bijwonen van een doktersbezoek. Zonder CAO ben je afhankelijk van de goodwill van je werkgever.",
+          "De wet geeft je als fulltime werknemer recht op 20 vakantiedagen. Punt. Dat is vier weken. Klinkt redelijk, tot je beseft dat de meeste CAO's 25 tot 34 dagen bieden. In de CAO Zorg krijg je bijvoorbeeld tot 34 dagen, afhankelijk van je leeftijd en dienstjaren. De CAO Metaal & Techniek zit op 25 dagen plus eventuele seniorendagen.",
+          "En dan zijn er nog de bijzondere verlofdagen. Trouwen? Verhuizen? Overlijden van een naaste? De meeste CAO's regelen hier extra vrije dagen voor. Zonder CAO ben je afhankelijk van de goodwill van je werkgever. Soms is die er, soms niet.",
         ],
       },
       {
-        heading: "Salaris en salarisgroei",
+        heading: "Salaris: weten waar je aan toe bent",
         paragraphs: [
-          "Een CAO legt salarisschalen vast. Dat betekent dat je precies weet wat het minimum- en maximumsalaris is voor jouw functie. Bovendien zijn er vaste momenten waarop je in aanmerking komt voor een periodieke salarisverhoging — meestal jaarlijks.",
-          "Zonder CAO is je salaris volledig afhankelijk van individuele onderhandeling. Dat kan voordelig zijn als je goed onderhandelt, maar het kan ook leiden tot onderbetaling of ongelijkheid tussen collega's die hetzelfde werk doen.",
+          "Een CAO legt salarisschalen vast. Je weet precies wat het minimum en maximum is voor jouw functie, en wanneer je in aanmerking komt voor een verhoging — meestal jaarlijks, via een zogenaamde periodiek.",
+          "Zonder CAO is het een ander verhaal. Dan hangt je salaris volledig af van wat je zelf hebt onderhandeld. Dat kan prima uitpakken als je een sterke onderhandelaar bent. Maar het leidt ook tot situaties waarin collega's die exact hetzelfde werk doen, flink verschillende salarissen krijgen. Niet omdat ze beter zijn, maar omdat de een beter heeft onderhandeld dan de ander.",
         ],
       },
       {
-        heading: "Pensioenopbouw",
+        heading: "Pensioen: de spaarpot die je niet ziet",
         paragraphs: [
-          "De meeste CAO's verplichten werkgevers om een pensioenregeling aan te bieden. Dit is een enorm voordeel, want pensioenopbouw via je werkgever is een van de beste manieren om voor je toekomst te sparen. De werkgever betaalt vaak twee derde van de premie.",
-          "Zonder CAO is een werkgever niet verplicht om pensioen aan te bieden — tenzij er een verplicht bedrijfstakpensioenfonds geldt. Veel werknemers zonder CAO lopen hierdoor een gat in hun pensioenopbouw op.",
+          "De meeste CAO's verplichten werkgevers om een pensioenregeling aan te bieden, waarbij de werkgever vaak twee derde van de premie betaalt. Dat is gratis geld voor je toekomst. Zonder CAO is een werkgever hier niet toe verplicht — tenzij er een verplicht bedrijfstakpensioenfonds geldt.",
+          "Het vervelende: je merkt het gemis pas als je met pensioen gaat. Werknemers die jaren zonder pensioenopbouw werken, komen er op hun 67e achter dat het gat in hun opbouw niet meer te dichten is.",
         ],
       },
       {
-        heading: "Doorbetaling bij ziekte",
+        heading: "Ziek worden: het verschil is pijnlijk",
         paragraphs: [
-          "Wettelijk moet je werkgever je loon doorbetalen bij ziekte: minimaal 70% in het eerste jaar en 70% in het tweede jaar. Maar veel CAO's bieden betere voorwaarden. Zo betalen werkgevers in de CAO Bouw het eerste jaar 100% door en in het tweede jaar 70%. In de CAO Overheid is de doorbetaling zelfs twee jaar lang 100%.",
-          "Dit maakt een enorm verschil als je onverhoopt langdurig ziek wordt. Zonder CAO val je sneller terug naar het wettelijk minimum, wat flink in je portemonnee kan schelen.",
+          "Wettelijk moet je werkgever bij ziekte minimaal 70% van je loon doorbetalen. Dat klinkt oké, tot je beseft dat 70% van een modaal salaris betekent dat je netto honderden euro's per maand minder overhoudt. Terwijl je zorgkosten juist oplopen.",
+          "Veel CAO's bieden aanzienlijk betere voorwaarden. In de CAO Bouw wordt het eerste jaar 100% doorbetaald. Bij de overheid zelfs twee jaar lang 100%. Dat maakt een enorm verschil als je onverhoopt langdurig uitvalt.",
         ],
       },
       {
-        heading: "Overwerk en toeslagen",
+        heading: "Overwerk: gratis of vergoed?",
         paragraphs: [
-          "Werk je regelmatig over, in de avond of in het weekend? Dan is een CAO extra waardevol. De meeste CAO's regelen overwerkvergoedingen, avondtoeslagen en weekendtoeslagen. In de CAO Horeca krijg je bijvoorbeeld 150% van je uurloon op zondag en 200% op feestdagen.",
-          "Zonder CAO is je werkgever alleen verplicht om je het afgesproken uurloon te betalen — ook voor onregelmatige uren. Extra vergoedingen zijn dan puur afhankelijk van wat je individueel hebt afgesproken.",
+          "Werk je regelmatig 's avonds of in het weekend? Met een CAO krijg je daar bijna altijd extra vergoeding voor. De CAO Horeca geeft 150% op zondag en 200% op feestdagen. Zonder CAO is je werkgever alleen verplicht je het afgesproken uurloon te betalen — ook om 23:00 op een zaterdag. Toeslagen zijn dan puur afhankelijk van wat je individueel hebt afgesproken.",
         ],
       },
       {
-        heading: "Ontslagbescherming en opzegtermijnen",
+        heading: "Ontslag: een vangnet als het tegenzit",
         paragraphs: [
-          "Een CAO bevat vaak aanvullende regels rondom ontslag die verder gaan dan de wettelijke bescherming. Denk aan een langere opzegtermijn, verplichte hoorprocedures of een sociaal plan bij reorganisaties. Sommige CAO's kennen een ontslagcommissie die meekijkt of een ontslag terecht is.",
-          "Dit geeft je als werknemer meer zekerheid en bescherming in onzekere tijden. Je staat er niet alleen voor als je werkgever wil reorganiseren of bezuinigen.",
-        ],
-      },
-      {
-        heading: "Opleidingsbudget en ontwikkeling",
-        paragraphs: [
-          "Veel CAO's bevatten afspraken over opleidingen en persoonlijke ontwikkeling. Je hebt dan recht op een jaarlijks opleidingsbudget, studieverlof of vergoeding van cursussen die bijdragen aan je professionele groei. In de CAO Metaal & Techniek is dat bijvoorbeeld een individueel ontwikkelingsbudget van meerdere duizenden euro's.",
-          "Dit stimuleert niet alleen je carriere, maar vergroot ook je waarde op de arbeidsmarkt. Investeren in jezelf is altijd een goed idee — en met een CAO wordt dat financieel mogelijk gemaakt.",
-        ],
-      },
-      {
-        heading: "Conclusie: een CAO maakt het verschil",
-        paragraphs: [
-          "De rechten die een CAO je biedt gaan ver boven het wettelijk minimum. Van meer vakantiedagen en betere doorbetaling bij ziekte tot pensioenopbouw en ontslagbescherming — een CAO beschermt je op alle vlakken.",
-          "Daarom is het slim om bij het zoeken naar een baan te letten op werkgevers die onder een CAO vallen. Op Baan met CAO vind je uitsluitend dit soort vacatures: eerlijke banen met transparante voorwaarden. Hetzelfde werk, betere voorwaarden.",
+          "CAO's bevatten vaak aanvullende regels rondom ontslag die verder gaan dan de wet: langere opzegtermijnen, hoorprocedures, soms zelfs een sociaal plan bij reorganisaties met een onafhankelijke commissie die meekijkt. Dat geeft je een buffer op het moment dat je die het hardst nodig hebt.",
+          "Kortom: een CAO is geen luxe, het is een serieuze factor in je arbeidsvoorwaarden. Niet het enige dat telt bij het kiezen van een werkgever, maar wel iets om bewust mee te wegen.",
         ],
       },
     ],
@@ -381,30 +337,24 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         paragraphs: [
-          "Het wettelijk minimumloon wordt twee keer per jaar aangepast. Per 1 januari 2026 is het minimumuurloon vastgesteld op \u20AC 14,71 bruto voor werknemers van 21 jaar en ouder. Maar wat betekent dat precies per maand? En hoeveel verdien je als je jonger bent? In dit artikel zetten we alle bedragen overzichtelijk op een rij.",
+          "Sinds 2024 werkt Nederland met een wettelijk minimumuurloon in plaats van een maandloon. Eerlijker, want of je nu 36, 38 of 40 uur werkt — het minimale uurloon is hetzelfde. Per 1 januari 2026 is dat vastgesteld op \u20AC 14,71 bruto per uur voor iedereen van 21 jaar en ouder.",
         ],
       },
       {
-        heading: "Minimumloon per uur in 2026",
+        heading: "Wat betekent dat per maand?",
         paragraphs: [
-          "Sinds 2024 werkt Nederland met een wettelijk minimumuurloon in plaats van een maandloon. Dit maakt het eerlijker: of je nu 36, 38 of 40 uur per week werkt, je minimale uurloon blijft hetzelfde. Per 1 januari 2026 is dat \u20AC 14,71 bruto per uur voor werknemers van 21 jaar en ouder.",
-        ],
-      },
-      {
-        heading: "Minimumloon per maand",
-        paragraphs: [
-          "Het maandloon hangt af van het aantal uren dat je per week werkt. Dit zijn de bedragen per 1 januari 2026:",
+          "Hangt af van je contracturen. Dit zijn de bruto maandbedragen per 1 januari 2026:",
         ],
         list: [
-          "36 uur per week: circa \u20AC 2.302 bruto per maand",
-          "38 uur per week: circa \u20AC 2.430 bruto per maand",
-          "40 uur per week: circa \u20AC 2.558 bruto per maand",
+          "36 uur per week: circa \u20AC 2.302 per maand",
+          "38 uur per week: circa \u20AC 2.430 per maand",
+          "40 uur per week: circa \u20AC 2.558 per maand",
         ],
       },
       {
-        heading: "Minimumjeugdloon 2026",
+        heading: "Minimumjeugdloon",
         paragraphs: [
-          "Voor werknemers onder de 21 jaar geldt een minimumjeugdloon. Dit is een percentage van het volwassen minimumloon:",
+          "Ben je jonger dan 21? Dan geldt een percentage van het volwassen minimumloon. De bedragen per 1 januari 2026:",
         ],
         list: [
           "20 jaar: \u20AC 11,77 per uur (80%)",
@@ -416,24 +366,22 @@ export const blogPosts: BlogPost[] = [
         ],
       },
       {
-        heading: "Minimumloon en vakantiegeld",
+        heading: "Vergeet je vakantiegeld niet",
         paragraphs: [
-          "Bovenop het minimumloon heb je recht op vakantiegeld: minimaal 8% van je bruto jaarsalaris. Dit wordt meestal in mei of juni uitbetaald. Het vakantiegeld zit niet in de bovenstaande bedragen verwerkt — het komt er dus bovenop.",
-          "Bij het minimumloon van \u20AC 2.558 bruto per maand (40 uur) komt daar dus nog circa \u20AC 205 per maand aan vakantiegeld bij.",
+          "Bovenop het minimumloon heb je recht op vakantiegeld: minimaal 8% van je bruto jaarsalaris. Wordt meestal in mei of juni uitbetaald en zit niet in de bovenstaande bedragen verwerkt. Bij een maandloon van \u20AC 2.558 (40 uur) is dat dus nog eens circa \u20AC 205 per maand extra.",
         ],
       },
       {
-        heading: "Met een CAO verdien je vaak meer",
+        heading: "Minimumloon vs. CAO-loon",
         paragraphs: [
-          "Het minimumloon is het absolute minimum. In de praktijk liggen salarissen bij werkgevers met een CAO aanzienlijk hoger. CAO-salarissen zijn gebaseerd op functieniveaus en salarisschalen die bijna altijd boven het wettelijk minimum liggen.",
-          "Bovendien bieden CAO's vaak extra's die het minimumloon niet dekt: een dertiende maand, eindejaarsuitkering, hogere vakantiegeldpercentages of toeslagen voor onregelmatige diensten. Op Baan met CAO vind je vacatures waar deze voorwaarden transparant worden vermeld.",
+          "Het minimumloon is het absolute bodemtarief. In de praktijk verdien je bij een werkgever met een CAO vrijwel altijd meer, omdat CAO-salarisschalen zijn gebaseerd op functieniveaus die boven het wettelijke minimum liggen. Daar komen vaak nog extra's bij: een dertiende maand, eindejaarsuitkering, hogere vakantiegeldpercentages, of toeslagen voor onregelmatige diensten.",
+          "Het verschil is het grootst bij startersfuncties. Waar het minimumloon stopt bij \u20AC 14,71, begint een CAO-startersloon in veel sectoren rond de \u20AC 15,50 tot \u20AC 17,00 per uur — met een duidelijk pad naar boven.",
         ],
       },
       {
-        heading: "Wanneer wordt het minimumloon aangepast?",
+        heading: "Wanneer verandert het?",
         paragraphs: [
-          "Het wettelijk minimumloon wordt twee keer per jaar aangepast: op 1 januari en op 1 juli. De aanpassing is gekoppeld aan de gemiddelde loonontwikkeling in Nederland. Houd de website van de Rijksoverheid in de gaten voor de meest actuele bedragen.",
-          "Zoek je een baan die meer biedt dan het minimum? Op Baan met CAO vind je duizenden vacatures bij werkgevers die onder een collectieve arbeidsovereenkomst vallen — met duidelijke salarisschalen en eerlijke voorwaarden.",
+          "Het wettelijk minimumloon wordt twee keer per jaar aangepast: op 1 januari en 1 juli. De aanpassing volgt de gemiddelde loonontwikkeling in Nederland. De meest actuele bedragen vind je altijd op rijksoverheid.nl.",
         ],
       },
     ],
@@ -458,59 +406,47 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         paragraphs: [
-          "Thuiswerken is voor veel werknemers de normaalste zaak van de wereld geworden. Maar welke rechten heb je eigenlijk? Mag je werkgever een thuiswerkverzoek weigeren? En hoe zit het met de vergoeding? In dit artikel leggen we de regels rondom thuiswerken in 2026 helder uit.",
+          "Thuiswerken voelt inmiddels als een verworven recht. Maar is het dat ook juridisch? Het korte antwoord: nee, niet helemaal. Het iets langere antwoord: je staat sterker dan je misschien denkt.",
         ],
       },
       {
-        heading: "Heb je recht op thuiswerken?",
+        heading: "Kun je thuiswerken afdwingen?",
         paragraphs: [
-          "Thuiswerken is in Nederland geen absoluut recht. Wel kun je op basis van de Wet flexibel werken (Wfw) een verzoek indienen om je werkplek aan te passen. Je werkgever moet dit verzoek serieus overwegen en mag het alleen afwijzen als daar zwaarwegende bedrijfsbelangen tegenover staan.",
-          "Om een verzoek in te dienen gelden drie voorwaarden: je bent minimaal 26 weken (een halfjaar) in dienst, het bedrijf heeft 10 of meer werknemers, en je dient het verzoek minimaal 2 maanden voor de gewenste ingangsdatum schriftelijk in.",
+          "Niet echt. Er bestaat in Nederland geen absoluut recht op thuiswerken. Wat er wel is: de Wet flexibel werken (Wfw). Die geeft je het recht om een verzoek in te dienen om je werkplek aan te passen. Je werkgever moet dat verzoek serieus behandelen en mag het alleen afwijzen als daar zwaarwegende bedrijfsbelangen tegenover staan.",
+          "De voorwaarden: je bent minimaal een halfjaar in dienst, het bedrijf heeft 10 of meer werknemers, en je dient het verzoek minstens 2 maanden van tevoren schriftelijk in. In de praktijk wordt de lat voor 'zwaarwegende bedrijfsbelangen' vrij hoog gelegd door rechters, dus een werkgever kan niet zomaar 'nee' zeggen zonder goede reden.",
         ],
       },
       {
-        heading: "Thuiswerkvergoeding 2026",
+        heading: "De thuiswerkvergoeding: \u20AC 2,45 per dag",
         paragraphs: [
-          "In 2026 mag je werkgever een onbelaste thuiswerkvergoeding geven van maximaal \u20AC 2,45 per dag. Dit bedrag is bedoeld voor extra kosten die je thuis maakt, zoals elektriciteit, verwarming en internetgebruik. Let op: deze vergoeding is niet verplicht, tenzij het in je CAO of arbeidsovereenkomst is vastgelegd.",
-          "Veel CAO's bevatten inmiddels afspraken over thuiswerkvergoedingen. Sommige gaan verder dan het fiscale maximum en bieden ook een eenmalige vergoeding voor de inrichting van je thuiswerkplek.",
+          "In 2026 mag je werkgever een onbelaste thuiswerkvergoeding geven van maximaal \u20AC 2,45 per dag. Bedoeld voor stroom, verwarming en internet. Belangrijk detail: dit is een máximum dat je werkgever mag geven, geen verplichting. Je werkgever hoeft het niet te betalen, tenzij het in je CAO of arbeidsovereenkomst staat.",
+          "En \u20AC 2,45 — is dat genoeg? Eerlijk gezegd betwijfel ik het. Het Nibud berekende dat thuiswerken gemiddeld \u20AC 3 tot \u20AC 4 per dag kost aan extra energie en internet. Maar goed, het is beter dan niets, en het is onbelast.",
         ],
       },
       {
-        heading: "Arbo-verplichtingen bij thuiswerken",
+        heading: "Je werkgever moet zorgen voor een goede werkplek",
         paragraphs: [
-          "Je werkgever is ook verantwoordelijk voor een veilige en gezonde thuiswerkplek. Dit valt onder de zorgplicht uit de Arbowet. In de praktijk betekent dit dat je werkgever moet zorgen voor:",
+          "Wat veel mensen niet weten: de Arbowet geldt ook thuis. Je werkgever is verantwoordelijk voor een veilige en gezonde thuiswerkplek. Dat betekent in de praktijk: meedenken over een ergonomisch bureau en stoel, zorgen dat je de juiste middelen hebt (laptop, beeldscherm), en voorlichting geven over gezond thuiswerken.",
+          "Sommige werkgevers geven een eenmalige vergoeding voor de inrichting van je thuiswerkplek — dat zie je vooral terug bij werkgevers met een CAO, waar dit soort afspraken schriftelijk zijn vastgelegd.",
+        ],
+      },
+      {
+        heading: "Hybride werken in je CAO",
+        paragraphs: [
+          "Steeds meer CAO's bevatten specifieke afspraken over hybride werken: het aantal thuiswerkdagen, de vergoeding, bereikbaarheid, en soms zelfs het recht op aanpassing van je werktijden. Als je werkgever onder een CAO valt, is het slim om die erbij te pakken. Vaak staan er rechten in die je werkgever niet uit zichzelf noemt.",
+          "Solliciteer je bij een nieuwe werkgever? Vraag dan vooraf naar het thuiswerkbeleid. Hoe flexibel is het? Wordt er een vergoeding gegeven? Is het vastgelegd of 'in overleg'? Het antwoord zegt veel over de cultuur.",
+        ],
+      },
+      {
+        heading: "Vier dingen die helpen",
+        paragraphs: [
+          "Los van de regels — een paar dingen die thuiswerken gewoon beter maken:",
         ],
         list: [
-          "Een ergonomische werkplek — denk aan een goed bureau en stoel",
-          "Voorlichting over gezond thuiswerken",
-          "Een risico-inventarisatie die ook thuiswerk dekt",
-          "Middelen om je werk goed uit te kunnen voeren (laptop, beeldscherm)",
-        ],
-      },
-      {
-        heading: "Hybride werken en je CAO",
-        paragraphs: [
-          "Steeds meer CAO's bevatten specifieke afspraken over hybride werken. Dit kan gaan over het aantal thuiswerkdagen, de vergoeding, het recht op een thuiswerkplek en de bereikbaarheid tijdens thuiswerkdagen. Als je werkgever onder een CAO valt, check dan of er afspraken over thuiswerken in staan.",
-          "Bij het zoeken naar een nieuwe baan is het slim om vooraf te vragen naar het thuiswerkbeleid. Op Baan met CAO vind je vacatures bij werkgevers met een CAO, waar dit soort afspraken vaak goed geregeld zijn.",
-        ],
-      },
-      {
-        heading: "Tips voor succesvol thuiswerken",
-        paragraphs: [
-          "Of je nu twee of vijf dagen thuiswerkt, met een paar simpele gewoontes haal je er meer uit:",
-        ],
-        list: [
-          "Creeer een vaste werkplek — niet je bank, maar een bureau waar je geconcentreerd kunt werken",
-          "Houd vaste werktijden aan en neem echte pauzes",
-          "Communiceer duidelijk met je team over je beschikbaarheid",
-          "Zorg voor voldoende beweging en frisse lucht tussendoor",
-          "Maak afspraken met je werkgever over verwachtingen en bereikbaarheid",
-        ],
-      },
-      {
-        heading: "Conclusie",
-        paragraphs: [
-          "Thuiswerken is geen recht, maar je werkgever mag een verzoek niet zomaar afwijzen. Met de thuiswerkvergoeding van \u20AC 2,45 per dag en de arbo-verplichtingen van je werkgever ben je in 2026 beter beschermd dan ooit. Zoek je een baan met goede thuiswerkmogelijkheden? Bekijk de vacatures op Baan met CAO.",
+          "Werk niet op de bank. Een apart bureau, al is het een inklapbaar tafeltje, maakt een groot verschil voor je rug en je focus",
+          "Houd vaste werktijden aan en sluit je laptop echt af als je klaar bent",
+          "Communiceer overdreven duidelijk met je team — je mist de non-verbale signalen van kantoor",
+          "Ga naar buiten tussen de middag. Klinkt simpel, maar het is de makkelijkste manier om je dag op te breken",
         ],
       },
     ],
@@ -536,52 +472,52 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         paragraphs: [
-          "Je bent net begonnen aan een nieuwe baan en zit in je proeftijd. Spannend, maar ook onzeker: kun je zomaar ontslagen worden? En mag jij zelf ook direct weg? De proeftijd kent specifieke regels die je als werknemer moet kennen. In dit artikel leggen we alles uit.",
+          "Net begonnen aan een nieuwe baan. Alles is nieuw, spannend, een beetje onwennig. En dan zit je in je proeftijd. Kun je zomaar op straat staan? Wat mag er wel en wat mag er niet? Er bestaan veel misverstanden over de proeftijd. Tijd om die uit de weg te ruimen.",
         ],
       },
       {
-        heading: "Wat is een proeftijd?",
+        heading: "Wat is een proeftijd eigenlijk?",
         paragraphs: [
-          "Een proeftijd is een periode aan het begin van je arbeidsovereenkomst waarin zowel jij als je werkgever het dienstverband per direct kunnen beeindigen — zonder opzegtermijn en zonder reden te hoeven geven. Het is bedoeld om te kijken of de samenwerking bevalt.",
-          "Een proeftijd is niet verplicht. Het moet expliciet schriftelijk worden overeengekomen in je arbeidscontract. Is er niets over een proeftijd opgenomen? Dan heb je er ook geen.",
+          "Een proeftijd is een afgesproken periode aan het begin van je contract waarin beide partijen — jij en je werkgever — het dienstverband per direct kunnen beëindigen. Geen opzegtermijn, geen procedure. Het idee is simpel: even kijken of het klikt.",
+          "Belangrijk: een proeftijd is niet automatisch. Het moet expliciet en schriftelijk zijn opgenomen in je arbeidscontract. Staat er niets over in je contract? Dan heb je geen proeftijd.",
         ],
       },
       {
-        heading: "Hoe lang mag een proeftijd duren?",
+        heading: "Hoe lang mag het duren?",
         paragraphs: [
-          "De maximale duur van een proeftijd hangt af van het type contract:",
+          "Dit hangt af van je contract. De regels zijn strikt:",
         ],
         list: [
-          "Tijdelijk contract van 6 maanden of korter: geen proeftijd toegestaan",
-          "Tijdelijk contract langer dan 6 maanden maar korter dan 2 jaar: maximaal 1 maand",
-          "Tijdelijk contract van 2 jaar of langer: maximaal 2 maanden",
-          "Vast contract (onbepaalde tijd): maximaal 2 maanden",
+          "Contract van 6 maanden of korter — geen proeftijd toegestaan. Punt. Je werkgever mag het niet afspreken, en als het toch in je contract staat, is het nietig",
+          "Contract langer dan 6 maanden maar korter dan 2 jaar — maximaal 1 maand",
+          "Contract van 2 jaar of langer, of een vast contract — maximaal 2 maanden",
         ],
       },
       {
-        heading: "Ontslag tijdens de proeftijd",
+        heading: "Kan mijn werkgever me zomaar ontslaan?",
         paragraphs: [
-          "Tijdens de proeftijd kan zowel de werkgever als de werknemer het contract direct opzeggen. Er geldt geen opzegtermijn. Je werkgever hoeft in principe geen reden te geven, maar er zijn grenzen. Ontslag mag niet gebaseerd zijn op discriminatie (leeftijd, geslacht, afkomst, religie) of andere verboden gronden.",
-          "Als je werkgever je ontslaat en je vraagt om een reden, dan is hij verplicht die schriftelijk te geven. Vermoed je dat het ontslag discriminerend is? Dan kun je dit aanvechten bij de rechter.",
+          "Ja en nee. Ja, in de zin dat er geen opzegtermijn geldt en je werkgever geen toestemming nodig heeft van het UWV of de rechter. Nee, in de zin dat het niet volstrekt willekeurig mag zijn.",
+          "Ontslag in de proeftijd mag niet discriminerend zijn — niet op basis van geslacht, leeftijd, afkomst, religie, zwangerschap of een andere verboden grond. Als je werkgever je ontslaat en je vraagt waarom, is hij verplicht om je schriftelijk een reden te geven. Vermoed je discriminatie? Dan kun je naar de rechter stappen.",
         ],
       },
       {
-        heading: "Jouw rechten bij ontslag in de proeftijd",
+        heading: "Je staat niet helemaal met lege handen",
         paragraphs: [
-          "Ook bij ontslag in de proeftijd heb je rechten:",
-        ],
-        list: [
-          "Transitievergoeding — sinds 2020 heb je vanaf dag 1 recht op een transitievergoeding bij ontslag door de werkgever",
-          "WW-uitkering — als je ontslagen wordt (niet zelf opzegt) en je voldoet aan de voorwaarden, kun je WW aanvragen",
-          "Geen concurrentiebeding — een concurrentiebeding in een tijdelijk contract is in principe niet geldig, tenzij de werkgever kan aantonen dat het noodzakelijk is",
-          "Recht op uitleg — je werkgever moet op jouw verzoek schriftelijk motiveren waarom je ontslagen bent",
+          "Wat veel mensen niet weten: ook bij ontslag in de proeftijd heb je rechten. Sinds 2020 heb je vanaf dag één recht op een transitievergoeding als je werkgever het contract beëindigt. Het bedrag is niet hoog bij een kort dienstverband, maar het principe staat.",
+          "Verder kun je WW aanvragen als je ontslagen wordt (niet als je zelf opzegt) en je aan de voorwaarden voldoet. En een concurrentiebeding in een tijdelijk contract is in principe niet geldig, tenzij je werkgever kan aantonen dat het écht noodzakelijk is.",
         ],
       },
       {
-        heading: "Proeftijd en CAO",
+        heading: "Jij mag ook weg",
         paragraphs: [
-          "In sommige CAO's zijn afspraken gemaakt over de proeftijd die afwijken van de wet. Een CAO kan de proeftijd bijvoorbeeld verkorten of extra bescherming bieden. Het is altijd slim om je CAO te raadplegen als je wilt weten welke regels er voor jou gelden.",
-          "Op Baan met CAO vind je vacatures bij werkgevers die onder een CAO vallen. Zo weet je vooraf dat je extra bescherming geniet — ook tijdens de proeftijd.",
+          "De proeftijd werkt twee kanten op. Merk je na twee weken dat de functie totaal anders is dan beloofd, dat de sfeer niet klopt, of dat de werkgever verwachtingen heeft die nooit zijn besproken? Dan kun je ook zelf per direct vertrekken. Zonder opzegtermijn, zonder consequenties.",
+          "Dat klinkt misschien drastisch, maar het is precies waarvoor de proeftijd bedoeld is. Beter na twee weken eerlijk zijn dan een jaar lang ergens ongelukkig zitten.",
+        ],
+      },
+      {
+        heading: "Check je CAO",
+        paragraphs: [
+          "Sommige CAO's wijken af van de wettelijke proeftijdregels — meestal in het voordeel van de werknemer. Denk aan een kortere proeftijd of extra beschermingsregels. Als je werkgever onder een CAO valt, is het altijd slim om even te checken wat daar over de proeftijd staat.",
         ],
       },
     ],
@@ -607,63 +543,57 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         paragraphs: [
-          "Je hebt besloten om ontslag te nemen. Misschien heb je een betere baan gevonden, of ben je toe aan iets nieuws. Hoe dan ook: er komt meer bij kijken dan alleen je baas inlichten. Van opzegtermijn tot openstaande vakantiedagen — in dit artikel lees je precies wat je moet weten en regelen.",
+          "Je hebt besloten: je gaat weg. Misschien heb je iets beters gevonden, misschien ben je gewoon klaar. Hoe dan ook — er komt meer bij kijken dan je baas even inlichten. Dit is wat je moet weten en regelen.",
         ],
       },
       {
-        heading: "Wat is je opzegtermijn?",
+        heading: "Je opzegtermijn: waarschijnlijk één maand",
         paragraphs: [
-          "Als werknemer is je wettelijke opzegtermijn standaard 1 maand. Dit betekent dat je minimaal een volle kalendermaand voor je gewenste vertrekdatum moet opzeggen. Zeg je op 15 maart op? Dan is je laatste werkdag pas 30 april.",
-          "Let op: in je arbeidsovereenkomst of CAO kan een andere opzegtermijn staan. Sommige contracten hanteren 2 maanden, en in bepaalde CAO's zijn afwijkende termijnen afgesproken. Check dit altijd voordat je opzegt.",
+          "De wettelijke opzegtermijn voor werknemers is één kalendermaand. Let op: kalendermaand. Zeg je op 15 maart op, dan is je laatste werkdag niet 15 april, maar 30 april. Je opzegging gaat in op de eerste dag van de volgende maand.",
+          "Maar check altijd je contract en je CAO. Sommige contracten hanteren 2 maanden, en bepaalde CAO's kennen afwijkende termijnen — vooral voor hogere functies. Als je je niet aan de opzegtermijn houdt, kan je werkgever in theorie een schadevergoeding claimen. In de praktijk gebeurt dat zelden, maar het is een risico dat je niet hoeft te nemen.",
         ],
       },
       {
         heading: "Hoe zeg je op?",
         paragraphs: [
-          "Formeel gezien mag je mondeling opzeggen, maar doe het altijd ook schriftelijk. Stuur een brief of e-mail aan je werkgever met daarin:",
+          "Technisch gezien mag het mondeling, maar doe jezelf een plezier en leg het schriftelijk vast. Een korte e-mail of brief met drie dingen: dat je opzegt, de datum van opzegging, en je beoogde laatste werkdag. Bewaar een kopie. Dat voorkomt discussie achteraf.",
+          "Persoonlijk zou ik zeggen: vertel het eerst mondeling aan je leidinggevende en stuur daarna dezelfde dag de schriftelijke bevestiging. Dat is netter en voorkomt dat je baas het via de mail moet ontdekken.",
+        ],
+      },
+      {
+        heading: "Wat gebeurt er met je vakantiedagen?",
+        paragraphs: [
+          "Openstaande vakantiedagen worden uitbetaald bij je vertrek. Zowel wettelijke als bovenwettelijke dagen. Je werkgever kan je vragen om ze op te nemen tijdens je opzegtermijn, maar dat kan alleen in overleg — het mag niet eenzijdig worden opgelegd.",
+          "Check je loonstrook of het HR-systeem voor het exacte aantal. En let op de vervaltermijnen: wettelijke vakantiedagen vervallen 6 maanden na het jaar waarin ze zijn opgebouwd, bovenwettelijke dagen pas na 5 jaar. Dagen die al vervallen zijn, worden niet meer uitbetaald.",
+        ],
+      },
+      {
+        heading: "WW: vergeet het maar (meestal)",
+        paragraphs: [
+          "Dit is belangrijk. Neem je zelf ontslag, dan heb je in principe géén recht op WW. Het UWV beschouwt dit als 'verwijtbaar werkloos'. Er zijn uitzonderingen — medische redenen, een onveilige werksituatie — maar die moet je goed kunnen onderbouwen.",
+          "De les: neem pas ontslag als je een getekend contract van je nieuwe werkgever hebt. Niet een mondelinge toezegging, niet een 'we sturen het contract volgende week' — een getekend contract. Ik heb genoeg verhalen gehoord van mensen die te vroeg opzegden en vervolgens alsnog zonder baan zaten.",
+        ],
+      },
+      {
+        heading: "De checklist",
+        paragraphs: [
+          "Loop dit rijtje af voordat je opzegt:",
         ],
         list: [
-          "De mededeling dat je je arbeidsovereenkomst opzegt",
-          "De datum van opzegging",
-          "Je beoogde laatste werkdag (rekening houdend met de opzegtermijn)",
-          "Eventueel een korte bedanking voor de samenwerking",
+          "Opzegtermijn gecheckt in je contract of CAO?",
+          "Nieuw contract getekend (als je ergens anders begint)?",
+          "Openstaande vakantiedagen en vakantiegeld berekend?",
+          "Schriftelijk opgezegd en kopie bewaard?",
+          "Afspraken gemaakt over je eindafrekening?",
+          "Getuigschrift of referentie gevraagd?",
+          "Bedrijfseigendommen (laptop, telefoon, pasjes) klaar om in te leveren?",
+          "Werk overgedragen aan je opvolger of collega's?",
         ],
       },
       {
-        heading: "Vakantiedagen bij ontslag",
+        heading: "Nog iets",
         paragraphs: [
-          "Bij het einde van je dienstverband heb je recht op uitbetaling van je openstaande vakantiedagen. Dit geldt voor zowel wettelijke als bovenwettelijke dagen. Je werkgever kan je ook vragen om de dagen op te nemen tijdens je opzegtermijn — maar dat kan alleen in overleg, niet eenzijdig.",
-          "Check je loonstrook of HR-systeem voor het exacte aantal openstaande dagen. Wettelijke vakantiedagen vervallen 6 maanden na het jaar waarin ze zijn opgebouwd, bovenwettelijke dagen pas na 5 jaar.",
-        ],
-      },
-      {
-        heading: "Wat gebeurt er met je WW-rechten?",
-        paragraphs: [
-          "Als je zelf ontslag neemt, heb je in principe geen recht op een WW-uitkering. Het UWV beschouwt dit als verwijtbaar werkloos. Er zijn uitzonderingen, bijvoorbeeld als je om medische redenen of vanwege een onveilige werksituatie ontslag neemt, maar dit moet je goed kunnen onderbouwen.",
-          "Neem je ontslag omdat je een andere baan hebt? Zorg dan dat je een getekend arbeidscontract van je nieuwe werkgever hebt voordat je opzegt. Zo voorkom je dat je zonder inkomen komt te zitten.",
-        ],
-      },
-      {
-        heading: "Checklist: ontslag nemen",
-        paragraphs: [
-          "Voordat je ontslag neemt, loop deze checklist door:",
-        ],
-        list: [
-          "Check je opzegtermijn in je contract of CAO",
-          "Zorg dat je een nieuw contract hebt (indien van toepassing)",
-          "Bereken je openstaande vakantiedagen en vakantiegeld",
-          "Zeg schriftelijk op en bewaar een kopie",
-          "Maak afspraken over je eindafrekening (vakantiedagen, vakantiegeld, eventuele bonus)",
-          "Vraag om een getuigschrift of referentie",
-          "Lever bedrijfseigendommen in (laptop, telefoon, pasjes)",
-          "Informeer je collega's en draag je werk netjes over",
-        ],
-      },
-      {
-        heading: "Ontslag nemen en je CAO",
-        paragraphs: [
-          "Werk je bij een werkgever met een CAO? Dan kunnen er aanvullende afspraken gelden rondom opzegtermijnen en uitdiensttreding. Sommige CAO's kennen een langere opzegtermijn voor specifieke functies of bieden extra vergoedingen bij vertrek.",
-          "Op zoek naar een nieuwe uitdaging? Op Baan met CAO vind je duizenden vacatures bij werkgevers met transparante arbeidsvoorwaarden. Een goede volgende stap begint met een eerlijke werkgever.",
+          "Vertrek netjes. Hoe je weggaat zegt iets over je. Nederland is klein, sectoren zijn kleiner, en je komt mensen altijd weer tegen. Een nette overdracht, een oprecht bedankje aan collega's, en een professionele houding tot je laatste dag — dat betaalt zich terug.",
         ],
       },
     ],
@@ -689,59 +619,44 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         paragraphs: [
-          "Als je solliciteert of net een baan hebt gevonden, krijg je te maken met het type contract dat je aangeboden wordt. Is het een tijdelijk of een vast contract? En wat betekent dat precies voor je rechten en zekerheid? In dit artikel leggen we de verschillen helder uit.",
+          "Je krijgt een contractvoorstel. 'Contract voor bepaalde tijd, 12 maanden.' Of je bent al een tijdje in dienst en vraagt je af: wanneer krijg ik eigenlijk een vast contract? Het verschil tussen vast en tijdelijk is groter dan alleen de einddatum op papier. Dit is wat het in de praktijk betekent.",
         ],
       },
       {
-        heading: "Wat is een tijdelijk contract?",
+        heading: "Tijdelijk contract: wat houdt het in?",
         paragraphs: [
-          "Een tijdelijk contract (ook wel contract voor bepaalde tijd) heeft een vaste begin- en einddatum. Na de einddatum eindigt het contract automatisch, tenzij het verlengd wordt. Je werkgever moet je wel uiterlijk een maand voor het einde laten weten of het contract verlengd wordt — dit heet de aanzegplicht.",
-          "Een tijdelijk contract kan varieren van een paar maanden tot maximaal 3 jaar. De voorwaarden staan vast voor de duur van het contract en het kan tussentijds alleen opgezegd worden als dat expliciet in het contract is opgenomen.",
+          "Een tijdelijk contract heeft een begin- en einddatum. Na die einddatum stopt het automatisch. Je werkgever moet je wel uiterlijk een maand van tevoren laten weten of het verlengd wordt — dat heet de aanzegplicht. Vergeet je werkgever dat, dan heb je recht op een vergoeding van maximaal één maandsalaris.",
+          "Tussentijds opzeggen kan alleen als dat expliciet in het contract staat. Staat het er niet in, dan zitten zowel jij als je werkgever aan de afgesproken periode vast. Een tijdelijk contract kan variëren van een paar maanden tot maximaal 3 jaar.",
         ],
       },
       {
-        heading: "Wat is een vast contract?",
+        heading: "Vast contract: de heilige graal?",
         paragraphs: [
-          "Een vast contract (contract voor onbepaalde tijd) heeft geen einddatum. Dit biedt de meeste zekerheid: je werkgever kan je niet zomaar ontslaan. Ontslag is alleen mogelijk via het UWV of de kantonrechter, en dan moet er een geldige reden zijn — zoals bedrijfseconomische redenen of disfunctioneren.",
-          "Met een vast contract heb je ook een betere positie bij het aanvragen van een hypotheek of het huren van een woning. Banken en verhuurders zien een vast contract als bewijs van inkomenszekerheid.",
+          "Een vast contract (voor onbepaalde tijd) heeft geen einddatum. Je werkgever kan je niet zomaar ontslaan — daar is een geldige reden voor nodig en goedkeuring van het UWV of de kantonrechter. Denk aan bedrijfseconomische redenen of langdurig disfunctioneren, en zelfs dan gelden er strenge procedures.",
+          "Wat vaak vergeten wordt: een vast contract heeft ook praktische voordelen buiten je baan. Banken en verhuurders vragen ernaar. Een hypotheek krijgen met een tijdelijk contract is niet onmogelijk, maar het is een stuk lastiger. En bij het huren van een woning in een krappe markt kan een vast contract het verschil maken.",
         ],
       },
       {
-        heading: "De ketenregeling: wanneer krijg je een vast contract?",
+        heading: "De ketenregeling: wanneer heb je recht op vast?",
         paragraphs: [
-          "De wet beschermt werknemers tegen eindeloze tijdelijke contracten via de ketenregeling. Je krijgt automatisch een vast contract als:",
+          "De wet beschermt je tegen eindeloze tijdelijke contracten. De ketenregeling bepaalt dat je automatisch een vast contract krijgt in twee situaties:",
         ],
         list: [
-          "Je meer dan 3 tijdelijke contracten achter elkaar hebt gehad bij dezelfde werkgever",
-          "Je langer dan 3 jaar aan tijdelijke contracten hebt gewerkt bij dezelfde werkgever",
-          "De keten wordt pas doorbroken als er een onderbreking is van meer dan 6 maanden",
+          "Je hebt meer dan 3 tijdelijke contracten achter elkaar gehad bij dezelfde werkgever",
+          "Je hebt in totaal langer dan 3 jaar op tijdelijke contracten gewerkt bij dezelfde werkgever",
         ],
       },
       {
-        heading: "Voor- en nadelen op een rij",
         paragraphs: [
-          "Beide contractvormen hebben hun eigen voor- en nadelen. Een tijdelijk contract biedt flexibiliteit maar minder zekerheid. Een vast contract biedt maximale zekerheid maar minder bewegingsvrijheid. Dit zijn de belangrijkste verschillen:",
-        ],
-        list: [
-          "Ontslagbescherming — bij een vast contract veel sterker dan bij tijdelijk",
-          "Hypotheek — met een vast contract aanzienlijk makkelijker",
-          "Proeftijd — bij een kort tijdelijk contract is geen proeftijd toegestaan",
-          "Opzegtermijn — bij een vast contract geldt een opzegtermijn die oploopt met dienstjaren",
-          "Flexibiliteit — een tijdelijk contract geeft je een natuurlijk moment om van baan te wisselen",
+          "De keten wordt alleen doorbroken als er een onderbreking zit van meer dan 6 maanden. Sommige werkgevers spelen hier bewust op in: na je derde contract 'even' geen verlenging aanbieden, om daarna weer opnieuw te beginnen. Niet netjes, maar het gebeurt. Goed om te weten.",
+          "Let op: CAO's mogen van deze regels afwijken. Sommige CAO's beperken het aantal tijdelijke contracten juist verder, of verkorten de keten. In de zorg en het onderwijs zijn er via de CAO speciale regels over wanneer een tijdelijk contract automatisch wordt omgezet.",
         ],
       },
       {
-        heading: "Contract en CAO",
+        heading: "Welke past bij jou?",
         paragraphs: [
-          "Een CAO kan aanvullende regels bevatten over contracten. Sommige CAO's beperken het aantal tijdelijke contracten of verkorten de keten. Andere CAO's geven werknemers sneller recht op een vast contract. Dit is een van de redenen waarom een CAO waardevol is: het biedt extra bescherming bovenop de wet.",
-          "In bepaalde sectoren, zoals de zorg en het onderwijs, zijn er via de CAO speciale regels over wanneer een tijdelijk contract automatisch omgezet wordt naar een vast contract.",
-        ],
-      },
-      {
-        heading: "Conclusie",
-        paragraphs: [
-          "Of je nu een vast of tijdelijk contract krijgt aangeboden: het is belangrijk om te weten wat je rechten zijn. Een vast contract biedt de meeste zekerheid, maar ook met een tijdelijk contract kun je via de ketenregeling doorgroeien naar een vaste aanstelling.",
-          "Op Baan met CAO vind je vacatures bij werkgevers die onder een CAO vallen. Zo weet je dat je extra bescherming geniet — ongeacht het type contract. Hetzelfde werk, betere voorwaarden.",
+          "Dat hangt af van je situatie. Een vast contract biedt maximale zekerheid — fijn als je een hypotheek wilt of als je stabiliteit zoekt. Een tijdelijk contract biedt een natuurlijk uitstapmoment — handig als je nog niet zeker weet of dit de juiste werkgever is, of als je bewust flexibel wilt blijven.",
+          "Wat ik zelf het belangrijkst vind: de voorwaarden. Een tijdelijk contract met goede arbeidsvoorwaarden en een werkgever die investeert in je ontwikkeling is meer waard dan een vast contract bij een werkgever die je het minimum biedt. Het type contract is één ding — wat erin staat is minstens zo belangrijk.",
         ],
       },
     ],

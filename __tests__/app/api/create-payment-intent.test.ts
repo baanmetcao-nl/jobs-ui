@@ -12,6 +12,12 @@ jest.mock("next/server", () => ({
   },
 }));
 
+// ─── Mock @clerk/nextjs/server ──────────────────────────────────────────────
+const mockAuth = jest.fn().mockResolvedValue({ userId: "user_test123" });
+jest.mock("@clerk/nextjs/server", () => ({
+  auth: (...args: unknown[]) => mockAuth(...args),
+}));
+
 // Use an arrow wrapper so mockCreate is evaluated at call-time, not factory-creation-time (avoids TDZ)
 const mockCreate = jest.fn();
 
@@ -78,7 +84,7 @@ describe("POST /api/create-payment-intent", () => {
     mockCreate.mockResolvedValue({ client_secret: "x", id: "y" });
     await callPost({ planId: "bundle3" });
     expect(mockCreate).toHaveBeenCalledWith(
-      expect.objectContaining({ metadata: { planId: "bundle3" } })
+      expect.objectContaining({ metadata: { planId: "bundle3", clerkUserId: "user_test123" } })
     );
   });
 

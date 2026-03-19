@@ -64,9 +64,9 @@ describe("POST /api/create-payment-intent", () => {
       const res = await callPost({ planId });
       expect(res.status).toBe(200);
       expect(mockCreate).toHaveBeenCalledWith(
-        expect.objectContaining({ amount: totalWithVat, currency: "eur" })
+        expect.objectContaining({ amount: totalWithVat, currency: "eur" }),
       );
-    }
+    },
   );
 
   it("returns clientSecret and paymentIntentId on success", async () => {
@@ -84,7 +84,9 @@ describe("POST /api/create-payment-intent", () => {
     mockCreate.mockResolvedValue({ client_secret: "x", id: "y" });
     await callPost({ planId: "bundle3" });
     expect(mockCreate).toHaveBeenCalledWith(
-      expect.objectContaining({ metadata: { planId: "bundle3", clerkUserId: "user_test123" } })
+      expect.objectContaining({
+        metadata: { planId: "bundle3", clerkUserId: "user_test123" },
+      }),
     );
   });
 
@@ -98,7 +100,7 @@ describe("POST /api/create-payment-intent", () => {
           "card",
           "bancontact",
         ]),
-      })
+      }),
     );
   });
 

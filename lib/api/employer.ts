@@ -308,4 +308,3 @@ export async function updateEmployerProfile(
 
   return res.json();
 }
-

@@ -11,10 +11,7 @@ test.describe("SEO & meta tags", () => {
   test("homepage has meta description", async ({ page }) => {
     await page.goto("/");
     const description = page.locator('meta[name="description"]');
-    await expect(description).toHaveAttribute(
-      "content",
-      /vacatures.*CAO/i,
-    );
+    await expect(description).toHaveAttribute("content", /vacatures.*CAO/i);
   });
 
   test("blog page has correct title", async ({ page }) => {
@@ -75,9 +72,10 @@ test.describe("SEO & meta tags", () => {
 
   test("Twitter card tags present on homepage", async ({ page }) => {
     await page.goto("/");
-    await expect(
-      page.locator('meta[name="twitter:card"]'),
-    ).toHaveAttribute("content", "summary_large_image");
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+      "content",
+      "summary_large_image",
+    );
   });
 
   test("Organization structured data in layout", async ({ page }) => {

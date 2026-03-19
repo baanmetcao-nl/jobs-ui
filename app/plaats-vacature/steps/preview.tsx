@@ -78,9 +78,7 @@ export function PreviewStep({
 
   const nicheDisplay = () => {
     if (!jobData.niches?.length) return "Onbekend";
-    return jobData.niches
-      .map((n) => nicheSeo[n]?.heading || n)
-      .join(", ");
+    return jobData.niches.map((n) => nicheSeo[n]?.heading || n).join(", ");
   };
 
   const hoursText =
@@ -220,7 +218,11 @@ export function PreviewStep({
       <div className="mb-8">
         <div className="prose max-w-none text-gray-700 mb-6">
           {jobData.description ? (
-            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(jobData.description) }} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(jobData.description),
+              }}
+            />
           ) : (
             <p>Vacaturetekst hier...</p>
           )}

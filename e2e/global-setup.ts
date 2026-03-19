@@ -22,7 +22,10 @@ async function globalSetup(_config: FullConfig) {
 
   // Wait for the server to be ready
   await new Promise<void>((resolve, reject) => {
-    const timeout = setTimeout(() => reject(new Error("Mock server timeout")), 10_000);
+    const timeout = setTimeout(
+      () => reject(new Error("Mock server timeout")),
+      10_000,
+    );
 
     mockProcess!.stdout?.on("data", (data: Buffer) => {
       if (data.toString().includes("Mock API server running")) {

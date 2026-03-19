@@ -46,7 +46,7 @@ describe("nicheSeo", () => {
         expect(typeof config[field]).toBe("string");
         expect((config[field] as string).length).toBeGreaterThan(0);
       }
-    }
+    },
   );
 
   it("all slugs are unique", () => {

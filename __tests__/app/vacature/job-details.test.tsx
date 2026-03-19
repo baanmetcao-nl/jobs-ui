@@ -15,7 +15,9 @@ jest.mock("next/navigation", () => ({
   usePathname: () => mockPathname,
   useSearchParams: () => mockSearchParams,
   // notFound throws in Next.js — mimic that so the component guard stops execution
-  notFound: jest.fn(() => { throw new Error("NEXT_NOT_FOUND"); }),
+  notFound: jest.fn(() => {
+    throw new Error("NEXT_NOT_FOUND");
+  }),
 }));
 
 jest.mock("next/image", () => ({
@@ -110,7 +112,13 @@ const mockRelatedJob: MinimalJob = {
   workplace: "remote",
   contract: "permanent",
   niches: ["technology-it"],
-  salary: { symbol: "€", min: 3000, max: 5000, interval: "monthly", currency: "EUR" },
+  salary: {
+    symbol: "€",
+    min: 3000,
+    max: 5000,
+    interval: "monthly",
+    currency: "EUR",
+  },
   tags: ["Vue"],
   company: { name: "Beta Inc", logoUrl: "/logos/beta.png" },
 };
@@ -126,23 +134,23 @@ describe("JobDetails", () => {
 
   it("renders the job title", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     expect(
-      screen.getAllByText("Senior Frontend Developer").length
+      screen.getAllByText("Senior Frontend Developer").length,
     ).toBeGreaterThan(0);
   });
 
   it("renders the company name", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     expect(screen.getAllByText("Acme Corp").length).toBeGreaterThan(0);
   });
 
   it("renders all job tags as badges", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     expect(screen.getByText("React")).toBeInTheDocument();
     expect(screen.getByText("TypeScript")).toBeInTheDocument();
@@ -151,7 +159,7 @@ describe("JobDetails", () => {
 
   it("renders job insight fields", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     expect(screen.getByText("Werkplek")).toBeInTheDocument();
     expect(screen.getByText("Hybride")).toBeInTheDocument();
@@ -165,7 +173,7 @@ describe("JobDetails", () => {
 
   it("renders hour range when min and max differ", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     expect(screen.getByText("32 - 40 uur")).toBeInTheDocument();
   });
@@ -177,14 +185,14 @@ describe("JobDetails", () => {
         job={fixedHoursJob}
         relatedJobs={[]}
         relatedCompanyJobs={[]}
-      />
+      />,
     );
     expect(screen.getByText("40 uur")).toBeInTheDocument();
   });
 
   it("renders salary information", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     expect(screen.getByText("Salaris")).toBeInTheDocument();
     expect(screen.getByText("€ 4000 - 6000 per maand")).toBeInTheDocument();
@@ -192,7 +200,7 @@ describe("JobDetails", () => {
 
   it("renders benefits section correctly", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     // extraFixedPayment = true
     const extraFixed = screen.getByText("Pensioen:").closest("li");
@@ -206,10 +214,10 @@ describe("JobDetails", () => {
 
   it("renders responsibilities and requirements", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     expect(
-      screen.getByText("Belangrijkste verantwoordelijkheden")
+      screen.getByText("Belangrijkste verantwoordelijkheden"),
     ).toBeInTheDocument();
     expect(screen.getByText("Vereisten")).toBeInTheDocument();
     expect(screen.getByText("Build UI components")).toBeInTheDocument();
@@ -222,7 +230,7 @@ describe("JobDetails", () => {
         job={mockJob}
         relatedJobs={[mockRelatedJob]}
         relatedCompanyJobs={[]}
-      />
+      />,
     );
     expect(screen.getByText("Frontend Developer")).toBeInTheDocument();
     expect(screen.getByText("Beta Inc")).toBeInTheDocument();
@@ -230,18 +238,18 @@ describe("JobDetails", () => {
 
   it("apply buttons navigate to modal URL", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     const applyButtons = screen.getAllByText(/Solliciteer/);
     fireEvent.click(applyButtons[0]);
     expect(mockPush).toHaveBeenCalledWith(
-      expect.stringContaining("exitModal=true")
+      expect.stringContaining("exitModal=true"),
     );
   });
 
   it("does not render ApplyModal when exitModal param is absent", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     expect(screen.queryByTestId("apply-modal")).not.toBeInTheDocument();
   });
@@ -249,7 +257,7 @@ describe("JobDetails", () => {
   it("renders ApplyModal when exitModal param is present", () => {
     mockSearchParams.set("exitModal", "true");
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     expect(screen.getByTestId("apply-modal")).toBeInTheDocument();
   });
@@ -257,11 +265,11 @@ describe("JobDetails", () => {
   it("closes the modal when onClose is called", () => {
     mockSearchParams.set("exitModal", "true");
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     fireEvent.click(screen.getByText("Close"));
     expect(mockPush).toHaveBeenCalledWith(
-      expect.not.stringContaining("exitModal")
+      expect.not.stringContaining("exitModal"),
     );
   });
 
@@ -269,7 +277,7 @@ describe("JobDetails", () => {
     mockSearchParams.set("exitModal", "true");
     const openSpy = jest.spyOn(window, "open").mockImplementation(() => null);
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     fireEvent.click(screen.getByText("Accept"));
     expect(openSpy).toHaveBeenCalledWith("https://example.com/apply", "_blank");
@@ -278,12 +286,12 @@ describe("JobDetails", () => {
 
   it("main apply block button navigates to modal URL", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     const applyButtons = screen.getAllByText("Solliciteer nu");
     fireEvent.click(applyButtons[0]);
     expect(mockPush).toHaveBeenCalledWith(
-      expect.stringContaining("exitModal=true")
+      expect.stringContaining("exitModal=true"),
     );
   });
 
@@ -291,8 +299,8 @@ describe("JobDetails", () => {
     expect(() =>
       render(
         // @ts-expect-error intentionally passing null to test guard
-        <JobDetails job={null} relatedJobs={[]} relatedCompanyJobs={[]} />
-      )
+        <JobDetails job={null} relatedJobs={[]} relatedCompanyJobs={[]} />,
+      ),
     ).toThrow("NEXT_NOT_FOUND");
   });
 });
@@ -300,14 +308,14 @@ describe("JobDetails", () => {
 describe("Sidebar", () => {
   it("renders the company name in the sidebar", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     expect(screen.getAllByText("Acme Corp").length).toBeGreaterThan(0);
   });
 
   it("shows company bio on the Overview tab by default", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     expect(screen.getByText("We build great things.")).toBeInTheDocument();
   });
@@ -318,7 +326,7 @@ describe("Sidebar", () => {
         job={mockJob}
         relatedJobs={[]}
         relatedCompanyJobs={[mockRelatedJob]}
-      />
+      />,
     );
     fireEvent.click(screen.getByText("Vacatures"));
     expect(screen.getAllByText("Frontend Developer").length).toBeGreaterThan(0);
@@ -330,7 +338,7 @@ describe("Sidebar", () => {
         job={mockJob}
         relatedJobs={[]}
         relatedCompanyJobs={[mockRelatedJob]}
-      />
+      />,
     );
     expect(screen.getByText("1")).toBeInTheDocument();
   });
@@ -341,7 +349,7 @@ describe("Sidebar", () => {
         job={mockJob}
         relatedJobs={[]}
         relatedCompanyJobs={[mockRelatedJob]}
-      />
+      />,
     );
     fireEvent.click(screen.getByText("Vacatures"));
     fireEvent.click(screen.getByText("Overzicht"));
@@ -350,13 +358,13 @@ describe("Sidebar", () => {
 
   it("sidebar apply button navigates to modal URL", () => {
     render(
-      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />
+      <JobDetails job={mockJob} relatedJobs={[]} relatedCompanyJobs={[]} />,
     );
     // "Solliciteer nu" buttons: first is in main apply block, second is in sidebar
     const buttons = screen.getAllByText("Solliciteer nu");
     fireEvent.click(buttons[buttons.length - 1]);
     expect(mockPush).toHaveBeenCalledWith(
-      expect.stringContaining("exitModal=true")
+      expect.stringContaining("exitModal=true"),
     );
   });
 });

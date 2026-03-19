@@ -21,16 +21,22 @@ test.describe("About page (/over-ons)", () => {
   });
 
   test("shows 'Onze principes' with three pillars", async ({ page }) => {
-    await expect(page.getByRole("heading", { name: "Onze principes" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "No-nonsense" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Transparant" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Altijd actueel" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Onze principes" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "No-nonsense" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Transparant" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Altijd actueel" }),
+    ).toBeVisible();
   });
 
   test("shows CAO explanation section", async ({ page }) => {
-    await expect(
-      page.getByText("Wat is een CAO eigenlijk?"),
-    ).toBeVisible();
+    await expect(page.getByText("Wat is een CAO eigenlijk?")).toBeVisible();
   });
 
   test("CTA links to homepage", async ({ page }) => {

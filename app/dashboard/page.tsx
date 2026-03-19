@@ -260,7 +260,8 @@ export default function DashboardPage() {
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
             <p className="text-gray-600">
-              Welkom terug{user?.firstName ? `, ${user.firstName}` : ""}! Hier is een overzicht van je vacatures.
+              Welkom terug{user?.firstName ? `, ${user.firstName}` : ""}! Hier
+              is een overzicht van je vacatures.
             </p>
           </div>
           <div className="flex gap-3">
@@ -287,7 +288,8 @@ export default function DashboardPage() {
             <div className="flex-1">
               <p className="font-medium text-green-900">Vacature geplaatst!</p>
               <p className="text-sm text-green-700">
-                &ldquo;{newJobBanner}&rdquo; is live en zichtbaar voor werkzoekenden.
+                &ldquo;{newJobBanner}&rdquo; is live en zichtbaar voor
+                werkzoekenden.
               </p>
             </div>
             <button
@@ -390,7 +392,10 @@ export default function DashboardPage() {
                 <tab.icon className="w-4 h-4 hidden sm:block" />
                 {tab.label}
                 {tab.id === "jobs" && (
-                  <Badge variant="secondary" className="ml-0.5 sm:ml-1 text-[10px] sm:text-xs">
+                  <Badge
+                    variant="secondary"
+                    className="ml-0.5 sm:ml-1 text-[10px] sm:text-xs"
+                  >
                     {jobs.length}
                   </Badge>
                 )}
@@ -461,11 +466,15 @@ export default function DashboardPage() {
                         <div className="grid grid-cols-3 gap-2 mt-3 text-sm">
                           <div>
                             <p className="text-gray-500">Views</p>
-                            <p className="font-medium">{formatNumber(job.views)}</p>
+                            <p className="font-medium">
+                              {formatNumber(job.views)}
+                            </p>
                           </div>
                           <div>
                             <p className="text-gray-500">Clicks</p>
-                            <p className="font-medium">{formatNumber(job.clicks)}</p>
+                            <p className="font-medium">
+                              {formatNumber(job.clicks)}
+                            </p>
                           </div>
                           <div>
                             <p className="text-gray-500">Sollicitaties</p>
@@ -478,10 +487,18 @@ export default function DashboardPage() {
                           </p>
                         )}
                         <div className="flex items-center gap-1 mt-3 pt-3 border-t">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                          >
                             <Edit className="w-4 h-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                          >
                             <Copy className="w-4 h-4" />
                           </Button>
                           {job.status === "expired" && (
@@ -655,125 +672,132 @@ export default function DashboardPage() {
               </p>
             ) : (
               <>
-              <div className="space-y-3 md:hidden">
-                {invoices.map((invoice) => (
-                  <div
-                    key={invoice.id}
-                    className="border rounded-lg p-4 space-y-3"
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <p className="font-medium text-gray-900 text-sm">
-                          {invoice.invoiceNumber}
-                        </p>
-                        <p className="text-xs text-gray-500">{invoice.date}</p>
-                      </div>
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium shrink-0 ${
-                          invoice.status === "paid"
-                            ? "bg-green-100 text-green-800"
-                            : invoice.status === "pending"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {invoice.status === "paid"
-                          ? "Betaald"
-                          : invoice.status === "pending"
-                            ? "Openstaand"
-                            : "Vervallen"}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600">{invoice.description}</p>
-                    <div className="flex items-center justify-between pt-2 border-t">
-                      <p className="text-sm font-medium text-gray-900">
-                        €{invoice.total.toLocaleString("nl-NL", { minimumFractionDigits: 2 })}
-                      </p>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0 text-[#F1592A]"
-                      >
-                        <Download className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="hidden md:block">
-                <table className="w-full">
-                  <thead className="border-b">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Factuurnummer
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Datum
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Omschrijving
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Status
-                      </th>
-                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                        Bedrag
-                      </th>
-                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                        PDF
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {invoices.map((invoice) => (
-                      <tr key={invoice.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm font-medium text-gray-900">
-                          {invoice.invoiceNumber}
-                        </td>
-                        <td className="px-4 py-3 text-sm text-gray-600">
-                          {invoice.date}
-                        </td>
-                        <td className="px-4 py-3 text-sm text-gray-600">
-                          {invoice.description}
-                        </td>
-                        <td className="px-4 py-3">
-                          <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              invoice.status === "paid"
-                                ? "bg-green-100 text-green-800"
-                                : invoice.status === "pending"
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-red-100 text-red-800"
-                            }`}
-                          >
-                            {invoice.status === "paid"
-                              ? "Betaald"
+                <div className="space-y-3 md:hidden">
+                  {invoices.map((invoice) => (
+                    <div
+                      key={invoice.id}
+                      className="border rounded-lg p-4 space-y-3"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <p className="font-medium text-gray-900 text-sm">
+                            {invoice.invoiceNumber}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {invoice.date}
+                          </p>
+                        </div>
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium shrink-0 ${
+                            invoice.status === "paid"
+                              ? "bg-green-100 text-green-800"
                               : invoice.status === "pending"
-                                ? "Openstaand"
-                                : "Vervallen"}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-sm text-gray-900 text-right font-medium">
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-red-100 text-red-800"
+                          }`}
+                        >
+                          {invoice.status === "paid"
+                            ? "Betaald"
+                            : invoice.status === "pending"
+                              ? "Openstaand"
+                              : "Vervallen"}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600">
+                        {invoice.description}
+                      </p>
+                      <div className="flex items-center justify-between pt-2 border-t">
+                        <p className="text-sm font-medium text-gray-900">
                           €
                           {invoice.total.toLocaleString("nl-NL", {
                             minimumFractionDigits: 2,
                           })}
-                        </td>
-                        <td className="px-4 py-3 text-right">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0 text-[#F1592A]"
-                          >
-                            <Download className="w-4 h-4" />
-                          </Button>
-                        </td>
+                        </p>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0 text-[#F1592A]"
+                        >
+                          <Download className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="hidden md:block">
+                  <table className="w-full">
+                    <thead className="border-b">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Factuurnummer
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Datum
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Omschrijving
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Status
+                        </th>
+                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                          Bedrag
+                        </th>
+                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                          PDF
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="divide-y">
+                      {invoices.map((invoice) => (
+                        <tr key={invoice.id} className="hover:bg-gray-50">
+                          <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                            {invoice.invoiceNumber}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-600">
+                            {invoice.date}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-600">
+                            {invoice.description}
+                          </td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                invoice.status === "paid"
+                                  ? "bg-green-100 text-green-800"
+                                  : invoice.status === "pending"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-red-100 text-red-800"
+                              }`}
+                            >
+                              {invoice.status === "paid"
+                                ? "Betaald"
+                                : invoice.status === "pending"
+                                  ? "Openstaand"
+                                  : "Vervallen"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-900 text-right font-medium">
+                            €
+                            {invoice.total.toLocaleString("nl-NL", {
+                              minimumFractionDigits: 2,
+                            })}
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 text-[#F1592A]"
+                            >
+                              <Download className="w-4 h-4" />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </>
             )}
           </div>

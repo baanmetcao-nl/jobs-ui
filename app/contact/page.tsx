@@ -81,7 +81,12 @@ export default function ContactPage() {
             type="text"
             name="company"
             aria-hidden="true"
-            style={{ position: "absolute", left: "-9999px", height: 0, overflow: "hidden" }}
+            style={{
+              position: "absolute",
+              left: "-9999px",
+              height: 0,
+              overflow: "hidden",
+            }}
             tabIndex={-1}
             autoComplete="off"
           />

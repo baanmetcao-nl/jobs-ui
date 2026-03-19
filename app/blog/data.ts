@@ -184,8 +184,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "salarisonderhandeling-tips-hoger-salaris",
-    title:
-      "Salarisonderhandeling: zo vraag je het salaris dat je verdient",
+    title: "Salarisonderhandeling: zo vraag je het salaris dat je verdient",
     description:
       "Leer hoe je succesvol onderhandelt over je salaris. Van voorbereiding tot het gesprek: praktische tips voor een hoger salaris bij je nieuwe of huidige werkgever.",
     image: "/blog/salarisonderhandeling.jpg",
@@ -484,9 +483,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         heading: "Hoe lang mag het duren?",
-        paragraphs: [
-          "Dit hangt af van je contract. De regels zijn strikt:",
-        ],
+        paragraphs: ["Dit hangt af van je contract. De regels zijn strikt:"],
         list: [
           "Contract van 6 maanden of korter — geen proeftijd toegestaan. Punt. Je werkgever mag het niet afspreken, en als het toch in je contract staat, is het nietig",
           "Contract langer dan 6 maanden maar korter dan 2 jaar — maximaal 1 maand",
@@ -576,9 +573,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         heading: "De checklist",
-        paragraphs: [
-          "Loop dit rijtje af voordat je opzegt:",
-        ],
+        paragraphs: ["Loop dit rijtje af voordat je opzegt:"],
         list: [
           "Opzegtermijn gecheckt in je contract of CAO?",
           "Nieuw contract getekend (als je ergens anders begint)?",

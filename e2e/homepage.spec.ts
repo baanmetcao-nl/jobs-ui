@@ -42,7 +42,9 @@ test.describe("Homepage", () => {
   });
 
   test("search filters update URL params", async ({ page }) => {
-    const searchInput = page.getByPlaceholder("Zoek op functie, bedrijf of vaardigheden...");
+    const searchInput = page.getByPlaceholder(
+      "Zoek op functie, bedrijf of vaardigheden...",
+    );
     await searchInput.fill("developer");
     await searchInput.press("Enter");
 
@@ -51,7 +53,9 @@ test.describe("Homepage", () => {
   });
 
   test("search returns filtered mock results", async ({ page }) => {
-    const searchInput = page.getByPlaceholder("Zoek op functie, bedrijf of vaardigheden...");
+    const searchInput = page.getByPlaceholder(
+      "Zoek op functie, bedrijf of vaardigheden...",
+    );
     await searchInput.fill("developer");
     await searchInput.press("Enter");
 

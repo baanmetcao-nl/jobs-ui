@@ -17,9 +17,7 @@ test.describe("Employer landing page (/werkgevers)", () => {
   });
 
   test("shows 'Plaats een vacature' CTA", async ({ page }) => {
-    const cta = page
-      .getByRole("link", { name: "Plaats een vacature" })
-      .first();
+    const cta = page.getByRole("link", { name: "Plaats een vacature" }).first();
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "/plaats-vacature");
   });
@@ -62,21 +60,23 @@ test.describe("Employer landing page (/werkgevers)", () => {
     ).toBeVisible();
     await expect(page.getByText("Maak een account")).toBeVisible();
     await expect(page.getByText("Plaats de vacature")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Ontvang sollicitaties" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Ontvang sollicitaties" }),
+    ).toBeVisible();
   });
 
   test("features section lists all benefits", async ({ page }) => {
     await expect(page.getByText("Direct online")).toBeVisible();
     await expect(page.getByText("Real-time statistieken")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Bedrijfsprofiel" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Bedrijfsprofiel" }),
+    ).toBeVisible();
     await expect(page.getByText("60 dagen zichtbaar")).toBeVisible();
     await expect(page.getByText("Eenvoudig verlengen")).toBeVisible();
   });
 
   test("structured data scripts are present", async ({ page }) => {
-    const faqSchema = page.locator(
-      'script[type="application/ld+json"]',
-    );
+    const faqSchema = page.locator('script[type="application/ld+json"]');
     const schemas = await faqSchema.allTextContents();
     const hasFaq = schemas.some((s) => s.includes("FAQPage"));
     const hasOfferCatalog = schemas.some((s) => s.includes("OfferCatalog"));

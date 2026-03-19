@@ -3,12 +3,12 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'jobs-dry-breeze-1010.fly.dev',
+        protocol: "https",
+        hostname: "jobs-dry-breeze-1010.fly.dev",
       },
       {
-        protocol: 'https',
-        hostname: 'img.clerk.com',
+        protocol: "https",
+        hostname: "img.clerk.com",
       },
     ],
   },

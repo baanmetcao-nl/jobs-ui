@@ -47,9 +47,7 @@ export default function JobList({
           <Card
             key={job.id}
             className={`hover:shadow-md transition-shadow ${
-              job.isFeatured
-                ? "border-yellow-300 border-2 bg-yellow-50/30"
-                : ""
+              job.isFeatured ? "border-yellow-300 border-2 bg-yellow-50/30" : ""
             }`}
           >
             <CardHeader>

@@ -21,7 +21,16 @@ interface LocationAutocompleteProps {
   showCount?: boolean;
 }
 
-const EXCLUDED_PATTERNS = [",", "/", " en ", " and ", " & ", "in overleg", "route", "undefined"];
+const EXCLUDED_PATTERNS = [
+  ",",
+  "/",
+  " en ",
+  " and ",
+  " & ",
+  "in overleg",
+  "route",
+  "undefined",
+];
 
 function isValidCity(city: string): boolean {
   if (!city || !city.trim()) return false;
@@ -141,14 +150,10 @@ export function LocationAutocomplete({
 
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setHighlightIndex((prev) =>
-        prev < filtered.length - 1 ? prev + 1 : 0,
-      );
+      setHighlightIndex((prev) => (prev < filtered.length - 1 ? prev + 1 : 0));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setHighlightIndex((prev) =>
-        prev > 0 ? prev - 1 : filtered.length - 1,
-      );
+      setHighlightIndex((prev) => (prev > 0 ? prev - 1 : filtered.length - 1));
     } else if (e.key === "Enter") {
       e.preventDefault();
       if (highlightIndex >= 0 && highlightIndex < filtered.length) {
@@ -195,9 +200,7 @@ export function LocationAutocomplete({
             <li
               key={`${loc.country}__${loc.city}`}
               className={`flex items-center justify-between px-3 py-2 text-sm cursor-pointer ${
-                i === highlightIndex
-                  ? "bg-gray-100"
-                  : "hover:bg-gray-50"
+                i === highlightIndex ? "bg-gray-100" : "hover:bg-gray-50"
               }`}
               onMouseDown={(e) => {
                 e.preventDefault();

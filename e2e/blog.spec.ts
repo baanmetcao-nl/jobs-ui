@@ -10,7 +10,9 @@ test.describe("Blog listing page", () => {
   });
 
   test("shows blog badge", async ({ page }) => {
-    await expect(page.locator("main").first().getByText("Blog").first()).toBeVisible();
+    await expect(
+      page.locator("main").first().getByText("Blog").first(),
+    ).toBeVisible();
   });
 
   test("displays blog post cards", async ({ page }) => {
@@ -35,9 +37,7 @@ test.describe("Blog listing page", () => {
   });
 
   test("clicking a blog card navigates to the post", async ({ page }) => {
-    const firstLink = page
-      .locator('a[href^="/blog/"]')
-      .first();
+    const firstLink = page.locator('a[href^="/blog/"]').first();
     const href = await firstLink.getAttribute("href");
     await firstLink.click();
 

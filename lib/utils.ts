@@ -21,7 +21,7 @@ export function formatDate(dateString: string): string {
   return formatted;
 }
 
-export function formatNumber(num:number) {
+export function formatNumber(num: number) {
   return new Intl.NumberFormat("nl-NL").format(num);
 }
 
@@ -29,7 +29,6 @@ export function truncate(text: string, maxLength: number) {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength) + "...";
 }
-
 
 export function intervalFormat(interval: Interval) {
   const labels: Record<Interval, string> = {

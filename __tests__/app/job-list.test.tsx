@@ -41,7 +41,7 @@ jest.mock("react-markdown", () => ({
 jest.mock("rehype-raw", () => ({ __esModule: true, default: () => {} }));
 
 const makeJobsResponse = (
-  overrides: Partial<JobsResponse["data"][number]>[] = []
+  overrides: Partial<JobsResponse["data"][number]>[] = [],
 ): JobsResponse => ({
   data: overrides.length
     ? overrides.map((o, i) => ({
@@ -53,13 +53,24 @@ const makeJobsResponse = (
         workplace: "hybrid",
         contract: "permanent",
         niches: ["technology-it"],
-        salary: { symbol: "€", min: 3000, max: 5000, interval: "monthly", currency: "EUR" },
+        salary: {
+          symbol: "€",
+          min: 3000,
+          max: 5000,
+          interval: "monthly",
+          currency: "EUR",
+        },
         tags: [],
         company: { name: `Company ${i + 1}`, logoUrl: "" },
         ...o,
       }))
     : [],
-  pagination: { limit: 10, offset: 0, totalCount: overrides.length, hasMore: false },
+  pagination: {
+    limit: 10,
+    offset: 0,
+    totalCount: overrides.length,
+    hasMore: false,
+  },
 });
 
 describe("JobList", () => {
@@ -75,7 +86,7 @@ describe("JobList", () => {
       <JobList
         jobsResponse={makeJobsResponse([{ title: "Senior React Developer" }])}
         page={0}
-      />
+      />,
     );
     expect(screen.getByText("Senior React Developer")).toBeInTheDocument();
   });
@@ -87,7 +98,7 @@ describe("JobList", () => {
           { company: { name: "Acme Corp", logoUrl: "" }, city: "Rotterdam" },
         ])}
         page={0}
-      />
+      />,
     );
     expect(screen.getByText("Acme Corp")).toBeInTheDocument();
     expect(screen.getByText("Rotterdam")).toBeInTheDocument();
@@ -108,7 +119,7 @@ describe("JobList", () => {
           },
         ])}
         page={0}
-      />
+      />,
     );
     expect(screen.getByText(/4000.*6000.*per maand/)).toBeInTheDocument();
   });
@@ -118,7 +129,7 @@ describe("JobList", () => {
       <JobList
         jobsResponse={makeJobsResponse([{ contract: "permanent" }])}
         page={0}
-      />
+      />,
     );
     expect(screen.getByText("Vast contract")).toBeInTheDocument();
   });
@@ -128,7 +139,7 @@ describe("JobList", () => {
       <JobList
         jobsResponse={makeJobsResponse([{ tags: ["React", "TypeScript"] }])}
         page={0}
-      />
+      />,
     );
     expect(screen.getByText("React")).toBeInTheDocument();
     expect(screen.getByText("TypeScript")).toBeInTheDocument();
@@ -139,19 +150,14 @@ describe("JobList", () => {
       <JobList
         jobsResponse={makeJobsResponse([{ id: "42", title: "Vue Developer" }])}
         page={0}
-      />
+      />,
     );
     fireEvent.click(screen.getByText("Bekijk vacature"));
     expect(mockPush).toHaveBeenCalledWith("/vacature/42/vue-developer");
   });
 
   it("renders multiple jobs", () => {
-    render(
-      <JobList
-        jobsResponse={makeJobsResponse([{}, {}, {}])}
-        page={0}
-      />
-    );
+    render(<JobList jobsResponse={makeJobsResponse([{}, {}, {}])} page={0} />);
     expect(screen.getAllByText("Bekijk vacature")).toHaveLength(3);
   });
 

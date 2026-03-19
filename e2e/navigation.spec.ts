@@ -1,7 +1,10 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Header", () => {
-  test.skip(({ viewport }) => (viewport?.width ?? 1280) < 768, "Desktop-only tests");
+  test.skip(
+    ({ viewport }) => (viewport?.width ?? 1280) < 768,
+    "Desktop-only tests",
+  );
 
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
@@ -81,9 +84,7 @@ test.describe("Footer", () => {
 
   test("displays job category links", async ({ page }) => {
     const footer = page.locator("footer");
-    await expect(
-      footer.getByText("Vacature categorieën"),
-    ).toBeVisible();
+    await expect(footer.getByText("Vacature categorieën")).toBeVisible();
 
     const categoryLinks = footer.locator('a[href^="/vacatures/"]');
     expect(await categoryLinks.count()).toBeGreaterThan(0);
@@ -97,7 +98,10 @@ test.describe("Footer", () => {
 });
 
 test.describe("Search in navbar", () => {
-  test.skip(({ viewport }) => (viewport?.width ?? 1280) < 768, "Desktop-only tests");
+  test.skip(
+    ({ viewport }) => (viewport?.width ?? 1280) < 768,
+    "Desktop-only tests",
+  );
 
   test("search bar appears on non-homepage routes", async ({ page }) => {
     await page.goto("/over-ons");

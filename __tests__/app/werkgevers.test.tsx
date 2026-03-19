@@ -20,9 +20,9 @@ describe("WerkgeversPage", () => {
   });
 
   it("renders the hero heading", () => {
-    expect(
-      screen.getByRole("heading", { level: 1 })
-    ).toHaveTextContent(/Vind medewerkers die blijven/);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      /Vind medewerkers die blijven/,
+    );
   });
 
   it("renders a CTA link to /plaats-vacature", () => {
@@ -71,7 +71,7 @@ describe("WerkgeversPage", () => {
       const plansWithSavings = PRICING_PLANS.filter((p) => p.savings);
       for (const plan of plansWithSavings) {
         expect(
-          screen.getByText(`Bespaar €${plan.savings}`)
+          screen.getByText(`Bespaar €${plan.savings}`),
         ).toBeInTheDocument();
       }
     });
@@ -81,7 +81,7 @@ describe("WerkgeversPage", () => {
       expect(plansWithoutSavings.length).toBeGreaterThan(0);
       for (const plan of plansWithoutSavings) {
         expect(
-          screen.queryByText(new RegExp(`Bespaar.*€${plan.price}`))
+          screen.queryByText(new RegExp(`Bespaar.*€${plan.price}`)),
         ).not.toBeInTheDocument();
       }
     });
@@ -90,14 +90,15 @@ describe("WerkgeversPage", () => {
       const planLinks = screen
         .getAllByRole("link")
         .filter((a) =>
-          a.getAttribute("href")?.startsWith("/plaats-vacature?plan=")
+          a.getAttribute("href")?.startsWith("/plaats-vacature?plan="),
         );
       expect(planLinks).toHaveLength(PRICING_PLANS.length);
       for (const plan of PRICING_PLANS) {
         expect(
           planLinks.some(
-            (a) => a.getAttribute("href") === `/plaats-vacature?plan=${plan.id}`
-          )
+            (a) =>
+              a.getAttribute("href") === `/plaats-vacature?plan=${plan.id}`,
+          ),
         ).toBe(true);
       }
     });
@@ -121,7 +122,7 @@ describe("WerkgeversPage", () => {
   describe("structured data", () => {
     it("renders FAQ JSON-LD script", () => {
       const scripts = document.querySelectorAll(
-        'script[type="application/ld+json"]'
+        'script[type="application/ld+json"]',
       );
       const jsonContents = Array.from(scripts).map((s) => s.innerHTML);
       const faqScript = jsonContents.find((c) => c.includes('"FAQPage"'));
@@ -134,11 +135,11 @@ describe("WerkgeversPage", () => {
 
     it("renders pricing JSON-LD script with all plans", () => {
       const scripts = document.querySelectorAll(
-        'script[type="application/ld+json"]'
+        'script[type="application/ld+json"]',
       );
       const jsonContents = Array.from(scripts).map((s) => s.innerHTML);
       const pricingScript = jsonContents.find((c) =>
-        c.includes('"OfferCatalog"')
+        c.includes('"OfferCatalog"'),
       );
       expect(pricingScript).toBeDefined();
 
@@ -148,7 +149,7 @@ describe("WerkgeversPage", () => {
 
       for (const plan of PRICING_PLANS) {
         const offer = parsed.itemListElement.find(
-          (o: { name: string }) => o.name === plan.name
+          (o: { name: string }) => o.name === plan.name,
         );
         expect(offer).toBeDefined();
         expect(offer.price).toBe(plan.price);

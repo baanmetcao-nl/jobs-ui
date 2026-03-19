@@ -27,10 +27,7 @@ test.describe("Accessibility basics", () => {
 
     for (let i = 0; i < count; i++) {
       const alt = await images.nth(i).getAttribute("alt");
-      expect(
-        alt !== null,
-        `Image ${i} is missing alt attribute`,
-      ).toBe(true);
+      expect(alt !== null, `Image ${i} is missing alt attribute`).toBe(true);
     }
   });
 
@@ -79,8 +76,9 @@ test.describe("Accessibility basics", () => {
     await page.goto("/");
     await page.locator("h1").first().waitFor({ timeout: 10_000 });
 
-    const buttonData = await page.locator("button:visible").evaluateAll(
-      (buttons) =>
+    const buttonData = await page
+      .locator("button:visible")
+      .evaluateAll((buttons) =>
         buttons
           .filter(
             (btn) =>
@@ -96,7 +94,7 @@ test.describe("Accessibility basics", () => {
             ariaLabel: btn.getAttribute("aria-label") || "",
             title: btn.getAttribute("title") || "",
           })),
-    );
+      );
 
     for (const btn of buttonData) {
       if (!btn.text) {

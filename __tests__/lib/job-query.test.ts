@@ -16,7 +16,11 @@ describe("jobQuery", () => {
 
   it("passes through search, contract and workplace from searchParams", () => {
     const result = jobQuery({
-      searchParams: { search: "developer", contract: "permanent", workplace: "remote" },
+      searchParams: {
+        search: "developer",
+        contract: "permanent",
+        workplace: "remote",
+      },
       limit: 10,
       page: 1,
     });

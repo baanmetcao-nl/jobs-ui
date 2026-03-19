@@ -13,7 +13,7 @@ describe("useDebouncedCallback", () => {
   it("does not call the function before the timeout elapses", () => {
     const fn = jest.fn();
     const { result } = renderHook(() =>
-      useDebouncedCallback(fn, { timeout: 300 })
+      useDebouncedCallback(fn, { timeout: 300 }),
     );
 
     act(() => {
@@ -26,7 +26,7 @@ describe("useDebouncedCallback", () => {
   it("calls the function after the timeout elapses", () => {
     const fn = jest.fn();
     const { result } = renderHook(() =>
-      useDebouncedCallback(fn, { timeout: 300 })
+      useDebouncedCallback(fn, { timeout: 300 }),
     );
 
     act(() => {
@@ -41,7 +41,7 @@ describe("useDebouncedCallback", () => {
   it("resets the timer when called multiple times within the timeout", () => {
     const fn = jest.fn();
     const { result } = renderHook(() =>
-      useDebouncedCallback(fn, { timeout: 300 })
+      useDebouncedCallback(fn, { timeout: 300 }),
     );
 
     act(() => {
@@ -65,7 +65,7 @@ describe("useDebouncedCallback", () => {
   it("calls the function once even when triggered many times in quick succession", () => {
     const fn = jest.fn();
     const { result } = renderHook(() =>
-      useDebouncedCallback(fn, { timeout: 500 })
+      useDebouncedCallback(fn, { timeout: 500 }),
     );
 
     act(() => {

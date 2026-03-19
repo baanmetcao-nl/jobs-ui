@@ -100,9 +100,9 @@ export default function AlgemeneVoorwaardenPage() {
               Platform.
             </li>
             <li>
-              Het is niet toegestaan het Platform te gebruiken voor onrechtmatige
-              doeleinden, waaronder het plaatsen van misleidende of
-              discriminerende vacatures.
+              Het is niet toegestaan het Platform te gebruiken voor
+              onrechtmatige doeleinden, waaronder het plaatsen van misleidende
+              of discriminerende vacatures.
             </li>
           </ul>
         </section>
@@ -151,8 +151,9 @@ export default function AlgemeneVoorwaardenPage() {
               betaling.
             </li>
             <li>
-              Baan met CAO behoudt zich het recht voor prijzen te wijzigen. Reeds
-              betaalde vacatures worden niet beïnvloed door prijswijzigingen.
+              Baan met CAO behoudt zich het recht voor prijzen te wijzigen.
+              Reeds betaalde vacatures worden niet beïnvloed door
+              prijswijzigingen.
             </li>
           </ul>
         </section>
@@ -168,8 +169,8 @@ export default function AlgemeneVoorwaardenPage() {
               plaatsvinden.
             </li>
             <li>
-              Bij vermoeden van onbevoegd gebruik dient de Werkgever Baan met CAO
-              direct op de hoogte te stellen.
+              Bij vermoeden van onbevoegd gebruik dient de Werkgever Baan met
+              CAO direct op de hoogte te stellen.
             </li>
             <li>
               Baan met CAO kan een account opschorten of verwijderen bij
@@ -195,8 +196,8 @@ export default function AlgemeneVoorwaardenPage() {
             </li>
             <li>
               De Werkgever verleent Baan met CAO een niet-exclusieve licentie om
-              de aangeleverde vacature-inhoud te publiceren en te verspreiden via
-              het Platform.
+              de aangeleverde vacature-inhoud te publiceren en te verspreiden
+              via het Platform.
             </li>
           </ul>
         </section>
@@ -208,8 +209,8 @@ export default function AlgemeneVoorwaardenPage() {
           <ul className="list-disc pl-6 text-gray-600 space-y-2">
             <li>
               Baan met CAO spant zich in om het Platform zo goed mogelijk te
-              laten functioneren, maar garandeert geen ononderbroken of
-              foutloze werking.
+              laten functioneren, maar garandeert geen ononderbroken of foutloze
+              werking.
             </li>
             <li>
               Baan met CAO is niet aansprakelijk voor schade als gevolg van
@@ -221,8 +222,8 @@ export default function AlgemeneVoorwaardenPage() {
               bedrag dat de Werkgever heeft betaald voor de betreffende dienst.
             </li>
             <li>
-              Baan met CAO is niet aansprakelijk voor indirecte schade, waaronder
-              gevolgschade, gederfde winst of gemiste kansen.
+              Baan met CAO is niet aansprakelijk voor indirecte schade,
+              waaronder gevolgschade, gederfde winst of gemiste kansen.
             </li>
           </ul>
         </section>
@@ -261,9 +262,7 @@ export default function AlgemeneVoorwaardenPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Contact
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Contact</h2>
           <p className="text-gray-600">
             Heb je vragen over deze voorwaarden? Neem dan contact met ons op via{" "}
             <a

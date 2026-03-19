@@ -230,7 +230,6 @@ export default function Filters({
     return () => clearTimeout(handler);
   }, [searchTerm, locationTerm]);
 
-
   const visibleFilters = filterConfig.filter((f) => {
     if (!showNicheFilter && f.key === "niches") return false;
     return true;
@@ -255,7 +254,9 @@ export default function Filters({
           <Spinner className="h-8 w-8 animate-spin text-teal-600" />
         </div>
       )}
-      <div className={`grid grid-cols-1 ${showLocationInput ? "md:grid-cols-2" : ""} gap-4 mb-6`}>
+      <div
+        className={`grid grid-cols-1 ${showLocationInput ? "md:grid-cols-2" : ""} gap-4 mb-6`}
+      >
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
           <Input

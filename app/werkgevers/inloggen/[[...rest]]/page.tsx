@@ -15,8 +15,7 @@ export default function LoginPage() {
             cardBox: "shadow-sm rounded-xl",
             headerTitle: "text-2xl font-bold text-gray-900",
             headerSubtitle: "text-gray-600",
-            formButtonPrimary:
-              "bg-[#F1592A] hover:bg-[#e04d1f] text-white",
+            formButtonPrimary: "bg-[#F1592A] hover:bg-[#e04d1f] text-white",
             footerActionLink: "text-[#F1592A] hover:text-[#e04d1f]",
           },
         }}

@@ -59,10 +59,14 @@ test.describe("Mobile navigation", () => {
     await menuButton.click();
 
     // Wait for the mobile menu to appear and be stable
-    const contactLink = page.locator("header").getByRole("link", { name: "Contact" });
+    const contactLink = page
+      .locator("header")
+      .getByRole("link", { name: "Contact" });
     await contactLink.waitFor({ state: "visible" });
 
-    const blogLink = page.locator("header").getByRole("link", { name: "Blog", exact: true });
+    const blogLink = page
+      .locator("header")
+      .getByRole("link", { name: "Blog", exact: true });
     await blogLink.click();
 
     await page.waitForURL("/blog");
@@ -72,9 +76,7 @@ test.describe("Mobile navigation", () => {
 
   test("Plaats vacature CTA button is hidden on mobile", async ({ page }) => {
     await page.goto("/");
-    const ctaButton = page.locator(
-      "header .hidden.md\\:inline-flex",
-    );
+    const ctaButton = page.locator("header .hidden.md\\:inline-flex");
     await expect(ctaButton).toBeHidden();
   });
 });

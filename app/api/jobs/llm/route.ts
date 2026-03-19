@@ -261,7 +261,9 @@ export async function GET(request: Request) {
       "https://baanmetcao.nl",
       "https://www.baanmetcao.nl",
     ];
-    const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+    const corsOrigin = allowedOrigins.includes(origin)
+      ? origin
+      : allowedOrigins[0];
 
     return NextResponse.json(responseData, {
       headers: {

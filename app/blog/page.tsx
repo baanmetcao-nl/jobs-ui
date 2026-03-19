@@ -76,7 +76,10 @@ export default function BlogPage() {
                       className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
                     />
                     <div className="absolute top-3 left-3">
-                      <Badge data-testid="category-badge" className="bg-white/90 text-gray-700 border-0 text-xs backdrop-blur-sm shadow-sm">
+                      <Badge
+                        data-testid="category-badge"
+                        className="bg-white/90 text-gray-700 border-0 text-xs backdrop-blur-sm shadow-sm"
+                      >
                         {post.category}
                       </Badge>
                     </div>

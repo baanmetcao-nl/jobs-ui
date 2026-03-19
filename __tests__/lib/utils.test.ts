@@ -90,10 +90,10 @@ describe("educationFormat", () => {
     expect(educationFormat("secondary")).toBe("Voortgezet onderwijs");
     expect(educationFormat("vocational_training")).toBe("Beroepsopleiding");
     expect(educationFormat("higher_professional")).toBe(
-      "Hoger beroepsonderwijs"
+      "Hoger beroepsonderwijs",
     );
     expect(educationFormat("university_bachelor")).toBe(
-      "Universitair bachelor"
+      "Universitair bachelor",
     );
     expect(educationFormat("university_master")).toBe("Universitair master");
     expect(educationFormat("doctorate")).toBe("Doctoraat");

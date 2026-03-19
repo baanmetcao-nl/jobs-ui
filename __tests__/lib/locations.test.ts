@@ -11,7 +11,7 @@ describe("locations", () => {
         "eindhoven",
         "groningen",
         "tilburg",
-      ])
+      ]),
     );
     expect(locations).toHaveLength(7);
   });

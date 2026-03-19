@@ -12,13 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Building2,
-  Upload,
-  Globe,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Building2, Upload, Globe } from "lucide-react";
 import { CompanyFormData } from "@/app/types-employer";
 import { ensureHttps, sanitizeInput } from "@/lib/utils";
 

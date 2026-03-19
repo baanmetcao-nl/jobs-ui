@@ -58,7 +58,11 @@ describe("ProgressSteps", () => {
 
   it("applies the provided className", () => {
     const { container } = render(
-      <ProgressSteps steps={steps} currentStep={1} className="my-custom-class" />
+      <ProgressSteps
+        steps={steps}
+        currentStep={1}
+        className="my-custom-class"
+      />,
     );
     expect(container.firstChild).toHaveClass("my-custom-class");
   });
@@ -67,7 +71,7 @@ describe("ProgressSteps", () => {
 describe("ProgressStepsCompact", () => {
   it("renders a dot for each step", () => {
     const { container } = render(
-      <ProgressStepsCompact steps={steps} currentStep={1} />
+      <ProgressStepsCompact steps={steps} currentStep={1} />,
     );
     // Each step renders a div with a step number or check icon
     expect(container.querySelectorAll(".rounded-full")).toHaveLength(3);

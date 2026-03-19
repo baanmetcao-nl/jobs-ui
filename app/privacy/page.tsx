@@ -91,8 +91,8 @@ export default function PrivacyPage() {
             3.2 Gegevens van werkzoekenden
           </h3>
           <p className="text-gray-600 mb-2">
-            Als werkzoekende kun je het Platform gebruiken zonder een account aan
-            te maken. Wij verzamelen:
+            Als werkzoekende kun je het Platform gebruiken zonder een account
+            aan te maken. Wij verzamelen:
           </p>
           <ul className="list-disc pl-6 text-gray-600 space-y-1">
             <li>
@@ -159,8 +159,8 @@ export default function PrivacyPage() {
               van onze diensten aan werkgevers.
             </li>
             <li>
-              <strong>Toestemming:</strong> voor het versturen van de nieuwsbrief
-              en het plaatsen van niet-essentiële cookies.
+              <strong>Toestemming:</strong> voor het versturen van de
+              nieuwsbrief en het plaatsen van niet-essentiële cookies.
             </li>
             <li>
               <strong>Gerechtvaardigd belang:</strong> voor het verbeteren van
@@ -193,19 +193,18 @@ export default function PrivacyPage() {
               websitegebruik.
             </li>
             <li>
-              <strong>Hostingprovider:</strong> voor het hosten van het Platform.
+              <strong>Hostingprovider:</strong> voor het hosten van het
+              Platform.
             </li>
           </ul>
           <p className="text-gray-600 mt-3">
-            Wij verkopen je gegevens nooit aan derden. Met alle verwerkers hebben
-            wij passende verwerkersovereenkomsten gesloten.
+            Wij verkopen je gegevens nooit aan derden. Met alle verwerkers
+            hebben wij passende verwerkersovereenkomsten gesloten.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            7. Cookies
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Cookies</h2>
           <p className="text-gray-600 mb-3">
             Het Platform maakt gebruik van cookies. Wij onderscheiden:
           </p>
@@ -241,8 +240,8 @@ export default function PrivacyPage() {
               het Platform.
             </li>
             <li>
-              <strong>Financiële gegevens:</strong> 7 jaar, conform de wettelijke
-              bewaarplicht.
+              <strong>Financiële gegevens:</strong> 7 jaar, conform de
+              wettelijke bewaarplicht.
             </li>
             <li>
               <strong>Contactberichten:</strong> maximaal 12 maanden na
@@ -351,9 +350,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Contact
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Contact</h2>
           <p className="text-gray-600">
             Heb je vragen over dit privacybeleid? Neem dan contact met ons op
             via{" "}

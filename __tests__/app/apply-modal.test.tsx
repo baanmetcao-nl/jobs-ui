@@ -5,11 +5,16 @@ import ApplyModal from "@/app/apply-modal";
 // framer-motion and radix portal need minimal mocking for jsdom
 jest.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement> & { children?: React.ReactNode }) => (
-      <div {...props}>{children}</div>
-    ),
+    div: ({
+      children,
+      ...props
+    }: React.HTMLAttributes<HTMLDivElement> & {
+      children?: React.ReactNode;
+    }) => <div {...props}>{children}</div>,
   },
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
 }));
 
 // Suppress the Radix "Missing Description" warning — the production component
@@ -30,7 +35,7 @@ describe("ApplyModal", () => {
   it("renders the redirect warning message", () => {
     render(<ApplyModal onAccept={jest.fn()} onClose={jest.fn()} />);
     expect(
-      screen.getByText(/Je staat op het punt om de website/)
+      screen.getByText(/Je staat op het punt om de website/),
     ).toBeInTheDocument();
   });
 

@@ -109,7 +109,6 @@ export function NavBar() {
     router.push(url);
   };
 
-
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const isEmployerFlow =
@@ -131,7 +130,6 @@ export function NavBar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
 
   return (
     <div className="w-full bg-white">
@@ -228,7 +226,9 @@ export function NavBar() {
                       Inloggen
                     </Link>
                   ) : (
-                    <DesktopAuthLink onClose={() => setIsWerkgeversOpen(false)} />
+                    <DesktopAuthLink
+                      onClose={() => setIsWerkgeversOpen(false)}
+                    />
                   )}
                 </div>
               )}

@@ -20,11 +20,11 @@ This document describes what the frontend sends to Stripe and what your backend 
 
 ## Pricing plans
 
-| Plan ID     | Name             | Price (ex. BTW) | Amount charged (incl. 21% BTW) | Job credits |
-|-------------|------------------|-----------------|-------------------------------|-------------|
-| `single`    | Enkele vacature  | €299.00         | €361.79 (36179 cents)         | 1           |
-| `bundle3`   | 3 vacatures      | €799.00         | €966.79 (96679 cents)         | 3           |
-| `bundle10`  | 10 vacatures     | €1999.00        | €2418.79 (241879 cents)       | 10          |
+| Plan ID    | Name            | Price (ex. BTW) | Amount charged (incl. 21% BTW) | Job credits |
+| ---------- | --------------- | --------------- | ------------------------------ | ----------- |
+| `single`   | Enkele vacature | €299.00         | €361.79 (36179 cents)          | 1           |
+| `bundle3`  | 3 vacatures     | €799.00         | €966.79 (96679 cents)          | 3           |
+| `bundle10` | 10 vacatures    | €1999.00        | €2418.79 (241879 cents)        | 10          |
 
 An optional "featured" add-on (€49 per job) may be added on top. Each job listing runs for 60 days.
 
@@ -59,22 +59,22 @@ Stripe sends a POST to your webhook endpoint with a `payment_intent.succeeded` e
 
 ### Metadata fields
 
-| Field          | Type   | Description                                      |
-|----------------|--------|--------------------------------------------------|
-| `planId`       | string | One of: `single`, `bundle3`, `bundle10`           |
-| `clerkUserId`  | string | Clerk authentication user ID — the unique employer identifier |
-| `firstName`    | string | Employer's first name                             |
-| `lastName`     | string | Employer's last name                              |
-| `email`        | string | Employer's email address                          |
-| `companyName`  | string | Employer's company name                           |
+| Field         | Type   | Description                                                   |
+| ------------- | ------ | ------------------------------------------------------------- |
+| `planId`      | string | One of: `single`, `bundle3`, `bundle10`                       |
+| `clerkUserId` | string | Clerk authentication user ID — the unique employer identifier |
+| `firstName`   | string | Employer's first name                                         |
+| `lastName`    | string | Employer's last name                                          |
+| `email`       | string | Employer's email address                                      |
+| `companyName` | string | Employer's company name                                       |
 
 ### Top-level PaymentIntent fields
 
-| Field          | Type   | Description                                      |
-|----------------|--------|--------------------------------------------------|
-| `id`           | string | Stripe PaymentIntent ID (e.g. `pi_3abc123`)       |
-| `amount`       | int    | Total charged in **cents** (incl. 21% BTW)        |
-| `currency`     | string | Always `eur`                                      |
+| Field           | Type   | Description                                        |
+| --------------- | ------ | -------------------------------------------------- |
+| `id`            | string | Stripe PaymentIntent ID (e.g. `pi_3abc123`)        |
+| `amount`        | int    | Total charged in **cents** (incl. 21% BTW)         |
+| `currency`      | string | Always `eur`                                       |
 | `receipt_email` | string | Same as metadata email — Stripe sends receipt here |
 
 ---
@@ -197,41 +197,41 @@ The job posting content (title, description, salary, etc.) is **not** in the Str
 
 #### Field reference — `job` object
 
-| Field               | Type     | Required | Values / Notes                                                     |
-|---------------------|----------|----------|--------------------------------------------------------------------|
-| `title`             | string   | yes      | Job title                                                           |
-| `description`       | string   | yes      | HTML content (sanitized with DOMPurify on the frontend)             |
-| `city`              | string   | yes      | City name, e.g. "Amsterdam"                                        |
-| `workplace`         | string   | yes      | `remote` · `hybrid` · `office` · `free_choice` · `other`           |
-| `contract`          | string   | yes      | `permanent` · `temporary` · `flex` · `freelance`                   |
-| `seniority`         | string   | yes      | `junior` · `medior` · `senior` · `principal`                       |
+| Field               | Type     | Required | Values / Notes                                                                                                                                           |
+| ------------------- | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`             | string   | yes      | Job title                                                                                                                                                |
+| `description`       | string   | yes      | HTML content (sanitized with DOMPurify on the frontend)                                                                                                  |
+| `city`              | string   | yes      | City name, e.g. "Amsterdam"                                                                                                                              |
+| `workplace`         | string   | yes      | `remote` · `hybrid` · `office` · `free_choice` · `other`                                                                                                 |
+| `contract`          | string   | yes      | `permanent` · `temporary` · `flex` · `freelance`                                                                                                         |
+| `seniority`         | string   | yes      | `junior` · `medior` · `senior` · `principal`                                                                                                             |
 | `education`         | string   | yes      | `none` · `primary` · `secondary` · `vocational_training` · `higher_professional` · `university_bachelor` · `university_master` · `doctorate` · `unknown` |
-| `url`               | string   | no       | External application URL                                            |
-| `hours.min`         | number   | yes      | Minimum hours per week                                              |
-| `hours.max`         | number   | yes      | Maximum hours per week                                              |
-| `salary.min`        | number   | yes      | Minimum salary                                                      |
-| `salary.max`        | number   | yes      | Maximum salary                                                      |
-| `salary.interval`   | string   | yes      | `hourly` · `daily` · `weekly` · `4_weekly` · `monthly` · `yearly`  |
-| `benefits`          | object   | yes      | All boolean flags (see request body above)                          |
-| `requirements`      | string[] | no       | List of requirements                                                |
-| `responsibilities`  | string[] | no       | List of responsibilities                                            |
-| `tags`              | string[] | no       | Freeform tags                                                       |
-| `niche`             | string   | yes      | Category/niche identifier (e.g. `ict`, `finance`, `zorg`)          |
-| `applicationMethod` | string   | yes      | `email` · `external` · `mollie`                                    |
-| `applicationEmail`  | string   | no       | Required when `applicationMethod` is `email`                        |
+| `url`               | string   | no       | External application URL                                                                                                                                 |
+| `hours.min`         | number   | yes      | Minimum hours per week                                                                                                                                   |
+| `hours.max`         | number   | yes      | Maximum hours per week                                                                                                                                   |
+| `salary.min`        | number   | yes      | Minimum salary                                                                                                                                           |
+| `salary.max`        | number   | yes      | Maximum salary                                                                                                                                           |
+| `salary.interval`   | string   | yes      | `hourly` · `daily` · `weekly` · `4_weekly` · `monthly` · `yearly`                                                                                        |
+| `benefits`          | object   | yes      | All boolean flags (see request body above)                                                                                                               |
+| `requirements`      | string[] | no       | List of requirements                                                                                                                                     |
+| `responsibilities`  | string[] | no       | List of responsibilities                                                                                                                                 |
+| `tags`              | string[] | no       | Freeform tags                                                                                                                                            |
+| `niche`             | string   | yes      | Category/niche identifier (e.g. `ict`, `finance`, `zorg`)                                                                                                |
+| `applicationMethod` | string   | yes      | `email` · `external` · `mollie`                                                                                                                          |
+| `applicationEmail`  | string   | no       | Required when `applicationMethod` is `email`                                                                                                             |
 
 #### Field reference — `company` object
 
-| Field         | Type   | Required | Notes                              |
-|---------------|--------|----------|------------------------------------|
-| `name`        | string | yes      | Company name                       |
-| `bio`         | string | yes      | Company description                |
-| `logoUrl`     | string | yes      | Path to uploaded logo              |
-| `website`     | string | no       | Company website URL                |
-| `industry`    | string | no       | Industry sector                    |
-| `size`        | string | no       | Employee count range, e.g. "50-200"|
-| `foundedYear` | number | no       | Year founded                       |
-| `location`    | string | no       | Company HQ location                |
+| Field         | Type   | Required | Notes                               |
+| ------------- | ------ | -------- | ----------------------------------- |
+| `name`        | string | yes      | Company name                        |
+| `bio`         | string | yes      | Company description                 |
+| `logoUrl`     | string | yes      | Path to uploaded logo               |
+| `website`     | string | no       | Company website URL                 |
+| `industry`    | string | no       | Industry sector                     |
+| `size`        | string | no       | Employee count range, e.g. "50-200" |
+| `foundedYear` | number | no       | Year founded                        |
+| `location`    | string | no       | Company HQ location                 |
 
 ---
 
@@ -353,8 +353,8 @@ Returns the saved draft so the frontend can restore the wizard state.
 
 ```json
 {
-  "job": { "title": "Frontend Developer", "..." : "..." },
-  "company": { "name": "Acme B.V.", "..." : "..." }
+  "job": { "title": "Frontend Developer", "...": "..." },
+  "company": { "name": "Acme B.V.", "...": "..." }
 }
 ```
 

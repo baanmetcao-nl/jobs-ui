@@ -137,19 +137,25 @@ export default function StepPage() {
     vacature: {
       data: flowData.jobDetails,
       onChange: (updates: Partial<JobDetailsFormData>) =>
-        setFlowData((prev) => prev && ({
-          ...prev,
-          jobDetails: { ...prev.jobDetails, ...updates },
-        })),
+        setFlowData(
+          (prev) =>
+            prev && {
+              ...prev,
+              jobDetails: { ...prev.jobDetails, ...updates },
+            },
+        ),
       goToStep,
     },
     bedrijf: {
       data: flowData.company,
       onChange: (updates: Partial<CompanyFormData>) =>
-        setFlowData((prev) => prev && ({
-          ...prev,
-          company: { ...prev.company, ...updates },
-        })),
+        setFlowData(
+          (prev) =>
+            prev && {
+              ...prev,
+              company: { ...prev.company, ...updates },
+            },
+        ),
       goToStep,
     },
     preview: {
@@ -160,19 +166,22 @@ export default function StepPage() {
     prijzen: {
       selectedPlan: flowData.pricing,
       onSelect: (plan: PricingPlan) =>
-        setFlowData((prev) => prev && ({ ...prev, pricing: plan })),
+        setFlowData((prev) => prev && { ...prev, pricing: plan }),
       featured: flowData.featured,
       onFeaturedChange: (featured: boolean) =>
-        setFlowData((prev) => prev && ({ ...prev, featured })),
+        setFlowData((prev) => prev && { ...prev, featured }),
       goToStep,
     },
     account: {
       data: flowData.account,
       onChange: (updates: Partial<AccountFormData>) =>
-        setFlowData((prev) => prev && ({
-          ...prev,
-          account: { ...prev.account, ...updates },
-        })),
+        setFlowData(
+          (prev) =>
+            prev && {
+              ...prev,
+              account: { ...prev.account, ...updates },
+            },
+        ),
       selectedPlan: flowData.pricing,
       featured: flowData.featured,
       goToStep,

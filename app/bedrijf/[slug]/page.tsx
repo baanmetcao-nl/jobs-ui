@@ -1,8 +1,4 @@
-"use client";
-
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Briefcase,
@@ -16,72 +12,62 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { backendFetch } from "@/lib/api/backend";
 import type { EmployerProfile, DashboardJob } from "@/app/types-employer";
+import { cache } from "react";
 
-const mockProfile: EmployerProfile = {
-  id: "1",
-  companyName: "Tech Corp Netherlands",
-  slug: "tech-corp",
-  logoUrl: "",
-  coverImage: "",
-  bio: "Wij zijn een innovatief technologiebedrijf met een passie voor het bouwen van producten die het leven van mensen verbeteren. Opgericht in 2015, zijn we gegroeid naar een team van 250+ medewerkers verspreid over 5 locaties in Nederland.",
-  website: "https://techcorp.nl",
-  industry: "Technology",
-  size: "250-500",
-  location: "Amsterdam",
-  foundedYear: 2015,
-  createdAt: "2024-01-15",
-  totalJobsPosted: 45,
-  activeJobs: 8,
-};
+export const revalidate = 3600;
 
-const mockJobs: DashboardJob[] = [
-  {
-    id: "1",
-    title: "Senior Software Developer",
-    status: "active",
-    city: "Amsterdam",
-    publishedAt: "2024-01-15",
-    expiresAt: "2024-02-15",
-    views: 1250,
-    clicks: 340,
-    applications: 28,
-    package: "Enkele vacature",
-    isPromoted: false,
-    company: { name: "Tech Corp Netherlands", logoUrl: "" },
-  },
-  {
-    id: "2",
-    title: "Project Manager",
-    status: "active",
-    city: "Utrecht",
-    publishedAt: "2024-01-10",
-    expiresAt: "2024-02-10",
-    views: 890,
-    clicks: 210,
-    applications: 15,
-    package: "Enkele vacature",
-    isPromoted: true,
-    company: { name: "Tech Corp Netherlands", logoUrl: "" },
-  },
-  {
-    id: "3",
-    title: "UX Designer",
-    status: "active",
-    city: "Amsterdam",
-    publishedAt: "2024-01-08",
-    expiresAt: "2024-02-08",
-    views: 720,
-    clicks: 180,
-    applications: 22,
-    package: "Enkele vacature",
-    isPromoted: false,
-    company: { name: "Tech Corp Netherlands", logoUrl: "" },
-  },
-];
+const getCompany = cache(async function getCompany(slug: string) {
+  const res = await backendFetch(`/api/companies/${slug}`);
 
-function sanitizeSlug(slug: string): string {
-  return slug.replace(/[^a-z0-9-]/gi, "").toLowerCase();
+  if (res.status === 404) notFound();
+  if (!res.ok) throw new Error("Failed to fetch company");
+
+  return res.json() as Promise<{
+    profile: EmployerProfile;
+    jobs: DashboardJob[];
+  }>;
+});
+
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
+}) {
+  const params = await props.params;
+
+  try {
+    const { profile } = await getCompany(params.slug);
+
+    return {
+      title: `${profile.companyName} - Vacatures & bedrijfsprofiel`,
+      description: profile.bio
+        ? profile.bio.slice(0, 155)
+        : `Bekijk vacatures en het bedrijfsprofiel van ${profile.companyName} op Baan met CAO.`,
+      alternates: {
+        canonical: `/bedrijf/${params.slug}`,
+      },
+      openGraph: {
+        title: `${profile.companyName} - Vacatures & bedrijfsprofiel`,
+        description: profile.bio
+          ? profile.bio.slice(0, 155)
+          : `Bekijk vacatures van ${profile.companyName}.`,
+      },
+    };
+  } catch {
+    return {
+      title: "Bedrijfsprofiel",
+    };
+  }
+}
+
+function formatNumber(num: number): string {
+  return num.toLocaleString("nl-NL");
+}
+
+function getStatusColor(status: string): string {
+  if (status === "active") return "bg-green-100 text-green-800";
+  return "bg-gray-100 text-gray-800";
 }
 
 function createJobSlug(title: string): string {
@@ -91,31 +77,15 @@ function createJobSlug(title: string): string {
     .replace(/[^a-z0-9-]/g, "");
 }
 
-export default function CompanyProfilePage({
-  params,
-}: {
-  params: { slug: string };
+function getJobLink(job: DashboardJob): string {
+  return `/vacature/${job.id}/${createJobSlug(job.title)}`;
+}
+
+export default async function CompanyProfilePage(props: {
+  params: Promise<{ slug: string }>;
 }) {
-  const _safeSlug = sanitizeSlug(params.slug);
-  const [profile] = useState<EmployerProfile>(mockProfile);
-  const [jobs] = useState<DashboardJob[]>(mockJobs);
-
-  const formatNumber = (num: number): string => {
-    return num.toLocaleString("nl-NL");
-  };
-
-  const getStatusColor = (status: string): string => {
-    switch (status) {
-      case "active":
-        return "bg-green-100 text-green-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
-  const getJobLink = (job: DashboardJob): string => {
-    return `/vacature/${job.id}/${createJobSlug(job.title)}`;
-  };
+  const params = await props.params;
+  const { profile, jobs } = await getCompany(params.slug);
 
   return (
     <div className="min-h-screen bg-gray-50">

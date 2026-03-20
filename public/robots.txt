@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /plaats-vacature/
+Disallow: /werkgevers/inloggen
+Disallow: /werkgevers/registreren
+Disallow: /bevestiging/
+
+Sitemap: https://baanmetcao.nl/sitemap.xml

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { backendFetch } from "@/lib/api/backend";
 
 export const runtime = "nodejs";
 
@@ -36,22 +37,30 @@ export async function POST(req: Request) {
 
   if (event.type === "payment_intent.succeeded") {
     const paymentIntent = event.data.object as Stripe.PaymentIntent;
-    const { firstName, lastName, email, companyName, planId } =
-      paymentIntent.metadata;
+    const { clerkUserId, draftId, planId } = paymentIntent.metadata;
 
-    console.log("Payment succeeded:", {
-      paymentIntentId: paymentIntent.id,
-      amount: paymentIntent.amount,
-      email,
-      firstName,
-      lastName,
-      companyName,
-      planId,
-    });
+    try {
+      const res = await backendFetch("/api/employer/payments/confirm", {
+        method: "POST",
+        body: JSON.stringify({
+          paymentIntentId: paymentIntent.id,
+          amount: paymentIntent.amount,
+          clerkUserId,
+          draftId,
+          planId,
+        }),
+      });
 
-    // TODO: Create user account in your database
-    // TODO: Send activation email via Resend
-    // TODO: Publish the job posting
+      if (!res.ok) {
+        console.error(
+          "Backend payment confirmation failed:",
+          res.status,
+          await res.text(),
+        );
+      }
+    } catch (err) {
+      console.error("Failed to confirm payment with backend:", err);
+    }
   }
 
   if (event.type === "payment_intent.payment_failed") {

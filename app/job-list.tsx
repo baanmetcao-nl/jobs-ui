@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import DOMPurify from "isomorphic-dompurify";
 import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
 import Pagination from "./pagination";
 import { contractFormat, intervalFormat, slugify } from "@/lib/utils";
 import Link from "next/link";
@@ -118,8 +118,8 @@ export default function JobList({
             </CardHeader>
 
             <CardContent>
-              <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                {job.summary}
+              <ReactMarkdown>
+                {DOMPurify.sanitize(job.summary)}
               </ReactMarkdown>
 
               <div className="flex flex-wrap gap-2 mt-3">

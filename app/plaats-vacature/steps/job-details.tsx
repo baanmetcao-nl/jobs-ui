@@ -161,6 +161,16 @@ export function JobDetailsForm({
     });
   };
 
+  function getMethodCardClass(method: "email" | "external"): string {
+    if (data.applicationMethod === method) {
+      return "border-[#F1592A] bg-orange-50";
+    }
+    if (errors.applicationMethod) {
+      return "border-red-500 hover:border-red-400";
+    }
+    return "border-gray-200 hover:border-gray-300";
+  }
+
   const MAX_TAGS = 10;
 
   const addTag = (tag: string) => {
@@ -544,13 +554,7 @@ export function JobDetailsForm({
             </Label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
               <div
-                className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
-                  data.applicationMethod === "email"
-                    ? "border-[#F1592A] bg-orange-50"
-                    : errors.applicationMethod
-                      ? "border-red-500 hover:border-red-400"
-                      : "border-gray-200 hover:border-gray-300"
-                }`}
+                className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${getMethodCardClass("email")}`}
                 onClick={() => {
                   onChange({ applicationMethod: "email" });
                   clearError("applicationMethod");
@@ -562,13 +566,7 @@ export function JobDetailsForm({
                 </p>
               </div>
               <div
-                className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
-                  data.applicationMethod === "external"
-                    ? "border-[#F1592A] bg-orange-50"
-                    : errors.applicationMethod
-                      ? "border-red-500 hover:border-red-400"
-                      : "border-gray-200 hover:border-gray-300"
-                }`}
+                className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${getMethodCardClass("external")}`}
                 onClick={() => {
                   onChange({ applicationMethod: "external" });
                   clearError("applicationMethod");

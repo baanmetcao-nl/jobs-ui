@@ -22,6 +22,7 @@ import {
 import {
   AccountFormData,
   PricingPlan,
+  JobPostingFlow,
   FEATURED_PRICE,
 } from "@/app/types-employer";
 import { useUser, SignInButton } from "@clerk/nextjs";
@@ -54,6 +55,7 @@ interface AccountStepProps {
   onChange: (data: Partial<AccountFormData>) => void;
   selectedPlan: PricingPlan | null;
   featured: boolean;
+  flowData: JobPostingFlow;
   goToStep?: (slug: string) => void;
 }
 
@@ -94,23 +96,23 @@ function OrderSummary({
         </div>
         <div className="flex justify-between">
           <span className="text-gray-600">Pakketprijs</span>
-          <span>€{fmt(planPrice)}</span>
+          <span>&euro;{fmt(planPrice)}</span>
         </div>
         {featured && (
           <div className="flex justify-between">
             <span className="text-gray-600">
-              Uitgelicht ({selectedPlan?.jobCount ?? 1}x €{FEATURED_PRICE})
+              Uitgelicht ({selectedPlan?.jobCount ?? 1}x &euro;{FEATURED_PRICE})
             </span>
-            <span>€{fmt(featuredTotal)}</span>
+            <span>&euro;{fmt(featuredTotal)}</span>
           </div>
         )}
         <div className="flex justify-between">
           <span className="text-gray-600">BTW (21%)</span>
-          <span>€{fmt(vatAmount)}</span>
+          <span>&euro;{fmt(vatAmount)}</span>
         </div>
         <div className="flex justify-between font-bold text-base pt-3 border-t border-gray-200 mt-1">
           <span>Totaal</span>
-          <span className="text-[#F1592A]">€{fmt(totalAmount)}</span>
+          <span className="text-[#F1592A]">&euro;{fmt(totalAmount)}</span>
         </div>
       </div>
 
@@ -137,6 +139,7 @@ interface CheckoutFormProps {
   onChange: (data: Partial<AccountFormData>) => void;
   selectedPlan: PricingPlan | null;
   featured: boolean;
+  flowData: JobPostingFlow;
   paymentIntentId: string;
   goToStep?: (slug: string) => void;
 }
@@ -146,6 +149,7 @@ function CheckoutForm({
   onChange,
   selectedPlan,
   featured,
+  flowData,
   paymentIntentId,
   goToStep,
 }: CheckoutFormProps) {
@@ -154,17 +158,6 @@ function CheckoutForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [stripeError, setStripeError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useUser();
-
-  useEffect(() => {
-    if (!user) return;
-    const updates: Partial<AccountFormData> = {};
-    if (!data.firstName && user.firstName) updates.firstName = user.firstName;
-    if (!data.lastName && user.lastName) updates.lastName = user.lastName;
-    if (!data.email && user.primaryEmailAddress?.emailAddress)
-      updates.email = user.primaryEmailAddress.emailAddress;
-    if (Object.keys(updates).length > 0) onChange(updates);
-  }, [user]);
 
   const planPrice = selectedPlan?.price ?? 199;
   const featuredTotal = featured
@@ -212,6 +205,14 @@ function CheckoutForm({
     setStripeError("");
 
     try {
+      await fetch("/api/store-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paymentIntentId, flowData }),
+      });
+    } catch {}
+
+    try {
       await fetch("/api/update-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -223,9 +224,7 @@ function CheckoutForm({
           companyName: data.companyName,
         }),
       });
-    } catch {
-      // Non-critical — webhook will still process payment
-    }
+    } catch {}
 
     const { error } = await stripe.confirmPayment({
       elements,
@@ -250,91 +249,6 @@ function CheckoutForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
-      <div>
-        <h3 className="text-base font-semibold text-gray-900 mb-4">
-          Jouw gegevens
-        </h3>
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="firstName" className="mb-2">
-                Voornaam <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="firstName"
-                placeholder="Jan"
-                value={data.firstName || ""}
-                onChange={(e) => {
-                  onChange({ firstName: e.target.value });
-                  if (e.target.value.trim()) clearError("firstName");
-                }}
-                className={errors.firstName ? "border-red-500" : ""}
-              />
-              {errors.firstName && (
-                <p className="text-sm text-red-500 mt-1">{errors.firstName}</p>
-              )}
-            </div>
-            <div>
-              <Label htmlFor="lastName" className="mb-2">
-                Achternaam <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="lastName"
-                placeholder="Jansen"
-                value={data.lastName || ""}
-                onChange={(e) => {
-                  onChange({ lastName: e.target.value });
-                  if (e.target.value.trim()) clearError("lastName");
-                }}
-                className={errors.lastName ? "border-red-500" : ""}
-              />
-              {errors.lastName && (
-                <p className="text-sm text-red-500 mt-1">{errors.lastName}</p>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="email" className="mb-2">
-              E-mailadres <span className="text-red-500">*</span>
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="jan@bedrijf.nl"
-              value={data.email || ""}
-              onChange={(e) => {
-                onChange({ email: e.target.value });
-                clearError("email");
-              }}
-              className={errors.email ? "border-red-500" : ""}
-            />
-            {errors.email && (
-              <p className="text-sm text-red-500 mt-1">{errors.email}</p>
-            )}
-          </div>
-
-          <div>
-            <Label htmlFor="companyName" className="mb-2">
-              Bedrijfsnaam <span className="text-red-500">*</span>
-            </Label>
-            <Input
-              id="companyName"
-              placeholder="Acme B.V."
-              value={data.companyName || ""}
-              onChange={(e) => {
-                onChange({ companyName: e.target.value });
-                if (e.target.value.trim()) clearError("companyName");
-              }}
-              className={errors.companyName ? "border-red-500" : ""}
-            />
-            {errors.companyName && (
-              <p className="text-sm text-red-500 mt-1">{errors.companyName}</p>
-            )}
-          </div>
-        </div>
-      </div>
-
       <div>
         <h3 className="text-base font-semibold text-gray-900 mb-4">
           Betaalmethode
@@ -434,7 +348,7 @@ function CheckoutForm({
           ) : (
             <>
               <Lock className="w-4 h-4 mr-2" />
-              Betaal €{fmt(totalAmount)}
+              Betaal &euro;{fmt(totalAmount)}
             </>
           )}
         </Button>
@@ -448,20 +362,24 @@ export function AccountStep({
   onChange,
   selectedPlan,
   featured,
+  flowData,
   goToStep,
 }: AccountStepProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentIntentId, setPaymentIntentId] = useState("");
   const [initError, setInitError] = useState("");
-  const { isSignedIn, isLoaded } = useUser();
+  const { isSignedIn, isLoaded, user } = useUser();
 
   useEffect(() => {
-    if (!selectedPlan) return;
+    if (!selectedPlan || !isSignedIn) return;
 
     fetch("/api/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ planId: selectedPlan.id }),
+      body: JSON.stringify({
+        planId: selectedPlan.id,
+        featured,
+      }),
     })
       .then((r) => r.json())
       .then((d) => {
@@ -475,58 +393,28 @@ export function AccountStep({
       .catch(() =>
         setInitError("Kon betaling niet initialiseren. Probeer opnieuw."),
       );
-  }, [selectedPlan?.id]);
+  }, [selectedPlan?.id, featured, isSignedIn]);
 
-  if (initError) {
-    return (
-      <div className="text-center py-12 space-y-4">
-        <p className="text-red-600">{initError}</p>
-        <Button variant="outline" onClick={() => window.location.reload()}>
-          Opnieuw proberen
-        </Button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (!user || !isSignedIn) return;
+    const updates: Partial<AccountFormData> = {};
+    if (!data.firstName && user.firstName) updates.firstName = user.firstName;
+    if (!data.lastName && user.lastName) updates.lastName = user.lastName;
+    if (!data.email && user.primaryEmailAddress?.emailAddress)
+      updates.email = user.primaryEmailAddress.emailAddress;
+    if (Object.keys(updates).length > 0) onChange(updates);
+  }, [user, isSignedIn]);
 
-  if (isLoaded && !isSignedIn) {
-    return (
-      <div className="text-center py-12 space-y-6">
-        <div>
-          <h2 className="text-xl font-semibold mb-2">Eerst inloggen</h2>
-          <p className="text-gray-500 text-sm">
-            Log in of maak een account aan om je vacature te plaatsen en af te
-            rekenen.
-          </p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <SignInButton mode="modal">
-            <Button className="bg-[#F1592A] hover:bg-[#e04d1f] text-white">
-              Inloggen / Registreren
-            </Button>
-          </SignInButton>
-        </div>
-        <Button variant="outline" onClick={() => goToStep?.("prijzen")}>
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Vorige
-        </Button>
-      </div>
-    );
-  }
-
-  if (!clientSecret) {
-    return (
-      <div className="space-y-6 animate-pulse">
-        <div className="h-5 w-40 bg-gray-200 rounded" />
-        <div className="grid grid-cols-2 gap-4">
-          <div className="h-10 bg-gray-200 rounded" />
-          <div className="h-10 bg-gray-200 rounded" />
-        </div>
-        <div className="h-10 bg-gray-200 rounded" />
-        <div className="h-10 bg-gray-200 rounded" />
-        <div className="h-32 bg-gray-200 rounded" />
-      </div>
-    );
-  }
+  const planPrice = selectedPlan?.price ?? 199;
+  const featuredTotal = featured
+    ? FEATURED_PRICE * (selectedPlan?.jobCount ?? 1)
+    : 0;
+  const totalAmount = (planPrice + featuredTotal) * 1.21;
+  const fmt = (n: number) =>
+    n.toLocaleString("nl-NL", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
   return (
     <div className="space-y-6">
@@ -538,24 +426,144 @@ export function AccountStep({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8 items-start">
-        <Elements
-          stripe={stripePromise}
-          options={{
-            clientSecret,
-            appearance: stripeAppearance,
-            fonts: stripeFonts,
-            locale: "nl",
-          }}
-        >
-          <CheckoutForm
-            data={data}
-            onChange={onChange}
-            selectedPlan={selectedPlan}
-            featured={featured}
-            paymentIntentId={paymentIntentId}
-            goToStep={goToStep}
-          />
-        </Elements>
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-base font-semibold text-gray-900 mb-4">
+              Jouw gegevens
+            </h3>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="firstName" className="mb-2">
+                    Voornaam <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="firstName"
+                    placeholder="Jan"
+                    value={data.firstName || ""}
+                    onChange={(e) => onChange({ firstName: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="lastName" className="mb-2">
+                    Achternaam <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="lastName"
+                    placeholder="Jansen"
+                    value={data.lastName || ""}
+                    onChange={(e) => onChange({ lastName: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="email" className="mb-2">
+                  E-mailadres <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="jan@bedrijf.nl"
+                  value={data.email || ""}
+                  onChange={(e) => onChange({ email: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="companyName" className="mb-2">
+                  Bedrijfsnaam <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="companyName"
+                  placeholder="Acme B.V."
+                  value={data.companyName || ""}
+                  onChange={(e) => onChange({ companyName: e.target.value })}
+                />
+              </div>
+            </div>
+          </div>
+
+          {isLoaded && !isSignedIn && (
+            <div className="bg-orange-50 border border-orange-200 rounded-xl p-6 space-y-4">
+              <div>
+                <h3 className="font-semibold text-gray-900">
+                  Account aanmaken om af te rekenen
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  Maak een gratis account aan om je vacature te plaatsen. Hiermee
+                  kun je je vacatures beheren en statistieken bekijken.
+                </p>
+              </div>
+              <SignInButton mode="modal">
+                <Button className="bg-[#F1592A] hover:bg-[#e04d1f] text-white w-full sm:w-auto">
+                  Account aanmaken / Inloggen
+                </Button>
+              </SignInButton>
+            </div>
+          )}
+
+          {isSignedIn && !clientSecret && !initError && (
+            <div className="space-y-6 animate-pulse">
+              <div className="h-5 w-48 bg-gray-200 rounded" />
+              <div className="h-32 bg-gray-200 rounded" />
+            </div>
+          )}
+
+          {initError && (
+            <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-700">
+              {initError}{" "}
+              <button
+                onClick={() => window.location.reload()}
+                className="underline font-medium"
+              >
+                Opnieuw proberen
+              </button>
+            </div>
+          )}
+
+          {isSignedIn && clientSecret && (
+            <Elements
+              stripe={stripePromise}
+              options={{
+                clientSecret,
+                appearance: stripeAppearance,
+                fonts: stripeFonts,
+                locale: "nl",
+              }}
+            >
+              <CheckoutForm
+                data={data}
+                onChange={onChange}
+                selectedPlan={selectedPlan}
+                featured={featured}
+                flowData={flowData}
+                paymentIntentId={paymentIntentId}
+                goToStep={goToStep}
+              />
+            </Elements>
+          )}
+
+          {!isSignedIn && (
+            <div className="flex justify-between pt-4 border-t">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => goToStep?.("prijzen")}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Vorige
+              </Button>
+              <Button
+                disabled
+                className="bg-[#F1592A] text-white sm:min-w-55 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Lock className="w-4 h-4 mr-2" />
+                Betaal &euro;{fmt(totalAmount)}
+              </Button>
+            </div>
+          )}
+        </div>
 
         <div className="lg:sticky lg:top-8">
           <OrderSummary selectedPlan={selectedPlan} featured={featured} />

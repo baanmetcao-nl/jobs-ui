@@ -13,6 +13,7 @@ import {
   type CompanyFormData,
   type PricingPlan,
   type AccountFormData,
+  type Benefit,
 } from "@/app/types-employer";
 import { JobDetailsForm } from "@/app/plaats-vacature/steps/job-details";
 import { CompanyForm } from "@/app/plaats-vacature/steps/company";
@@ -28,6 +29,24 @@ const STEP_COMPONENTS: Record<StepSlug, React.FC<any>> = {
   prijzen: PricingStep,
   account: AccountStep,
 };
+
+const CAMEL_TO_SNAKE: Record<string, Benefit> = {
+  extraFixedPayment: "extra_fixed_payment",
+  extraVariablePayment: "extra_variable_payment",
+  pensionPlan: "pension_plan",
+  travelAllowance: "travel_allowance",
+  extraTimeOff: "extra_time_off",
+};
+
+function normalizeBenefits(benefits: unknown): Benefit[] {
+  if (!benefits) return [];
+  if (!Array.isArray(benefits)) {
+    return Object.entries(benefits)
+      .filter(([, v]) => v)
+      .map(([k]) => CAMEL_TO_SNAKE[k] || (k as Benefit));
+  }
+  return [...new Set(benefits.map((b: string) => CAMEL_TO_SNAKE[b] || b))] as Benefit[];
+}
 
 const DEFAULT_FLOW: JobPostingFlow = {
   step: 1,
@@ -50,6 +69,10 @@ export default function StepPage() {
     try {
       const saved = localStorage.getItem("job-posting-flow");
       const data = saved ? JSON.parse(saved) : DEFAULT_FLOW;
+
+      if (data.jobDetails?.benefits) {
+        data.jobDetails.benefits = normalizeBenefits(data.jobDetails.benefits);
+      }
 
       const planParam = searchParams.get("plan");
       if (planParam && !data.pricing) {
@@ -184,6 +207,7 @@ export default function StepPage() {
         ),
       selectedPlan: flowData.pricing,
       featured: flowData.featured,
+      flowData,
       goToStep,
     },
   };

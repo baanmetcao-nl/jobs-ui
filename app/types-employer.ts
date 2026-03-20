@@ -1,5 +1,12 @@
 import type { Contract, Interval, Niche, Workplace } from "./types";
 
+export type Benefit =
+  | "extra_fixed_payment"
+  | "extra_variable_payment"
+  | "pension_plan"
+  | "travel_allowance"
+  | "extra_time_off";
+
 export type JobDetailsFormData = {
   title: string;
   description: string;
@@ -20,15 +27,8 @@ export type JobDetailsFormData = {
     max: number;
     interval: Interval;
   };
-  benefits: {
-    extraFixedPayment: boolean;
-    extraVariablePayment: boolean;
-    pensionPlan: boolean;
-    travelAllowance: boolean;
-    extraTimeOff: boolean;
-    stockPlan: boolean;
-  };
-  tags: string[];
+  benefits: Benefit[];
+  keywords: string[];
   niches: Niche[];
   applicationMethod: "email" | "external" | "mollie";
   applicationEmail?: string;
@@ -37,12 +37,10 @@ export type JobDetailsFormData = {
 export type CompanyFormData = {
   name: string;
   bio: string;
-  logoUrl: string;
-  website?: string;
-  industry?: string;
-  size?: string;
-  foundedYear?: number;
-  location?: string;
+  email: string;
+  url: string;
+  logoFileId?: string;
+  logoPreviewUrl?: string;
 };
 
 export type PricingPlan = {

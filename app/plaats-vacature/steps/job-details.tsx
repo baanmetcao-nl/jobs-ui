@@ -22,10 +22,12 @@ import {
   ArrowRight,
   HelpCircle,
   X,
+  Plus,
+  GraduationCap,
 } from "lucide-react";
 import { LocationAutocomplete } from "@/components/location-autocomplete";
-import { JobDetailsFormData } from "@/app/types-employer";
-import { Contract, Interval, Niche, Workplace } from "@/app/types";
+import type { Benefit, JobDetailsFormData } from "@/app/types-employer";
+import type { Contract, Interval, Niche, Workplace } from "@/app/types";
 import { nicheSeo } from "@/lib/niches";
 import { ensureHttps, sanitizeInput } from "@/lib/utils";
 
@@ -35,13 +37,34 @@ interface JobDetailsFormProps {
   goToStep?: (slug: string) => void;
 }
 
+const BENEFIT_OPTIONS: { value: Benefit; label: string }[] = [
+  { value: "extra_fixed_payment", label: "13e maand" },
+  { value: "pension_plan", label: "Pensioen" },
+  { value: "travel_allowance", label: "Reiskostenvergoeding" },
+  { value: "extra_time_off", label: "Extra vakantiedagen" },
+  { value: "extra_variable_payment", label: "Bonus / Variabel" },
+];
+
+const EDUCATION_OPTIONS = [
+  { value: "none", label: "Geen vereiste" },
+  { value: "primary", label: "Basisonderwijs" },
+  { value: "secondary", label: "Voortgezet onderwijs" },
+  { value: "vocational_training", label: "MBO" },
+  { value: "higher_professional", label: "HBO" },
+  { value: "university_bachelor", label: "WO Bachelor" },
+  { value: "university_master", label: "WO Master" },
+  { value: "doctorate", label: "Doctoraat" },
+] as const;
+
 export function JobDetailsForm({
   data,
   onChange,
   goToStep,
 }: JobDetailsFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [tagInput, setTagInput] = useState("");
+  const [keywordInput, setKeywordInput] = useState("");
+  const [requirementInput, setRequirementInput] = useState("");
+  const [responsibilityInput, setResponsibilityInput] = useState("");
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -54,19 +77,21 @@ export function JobDetailsForm({
     if (!strippedDescription) {
       newErrors.description = "Beschrijving is verplicht";
     }
+
     if (!data.city?.trim()) {
       newErrors.city = "Locatie is verplicht";
     }
     if (!data.contract) {
       newErrors.contract = "Contract type is verplicht";
     }
-
     if (!data.workplace) {
       newErrors.workplace = "Werkplek is verplicht";
     }
-
     if (!data.seniority) {
       newErrors.seniority = "Senioriteit is verplicht";
+    }
+    if (!data.education) {
+      newErrors.education = "Opleidingsniveau is verplicht";
     }
 
     if (!data.salary?.min || data.salary.min <= 0) {
@@ -82,7 +107,6 @@ export function JobDetailsForm({
     ) {
       newErrors.salaryMax = "Maximum moet hoger zijn dan minimum";
     }
-
     if (!data.salary?.interval) {
       newErrors.interval = "Salaris periode is verplicht";
     }
@@ -100,7 +124,6 @@ export function JobDetailsForm({
     if (!data.applicationMethod) {
       newErrors.applicationMethod = "Sollicitatie methode is verplicht";
     }
-
     if (data.applicationMethod === "email") {
       if (!data.applicationEmail?.trim()) {
         newErrors.applicationEmail =
@@ -109,7 +132,6 @@ export function JobDetailsForm({
         newErrors.applicationEmail = "Voer een geldig emailadres in";
       }
     }
-
     if (data.applicationMethod === "external") {
       if (!data.url?.trim()) {
         newErrors.url = "URL naar sollicitatiepagina is verplicht";
@@ -121,6 +143,14 @@ export function JobDetailsForm({
 
     if (!data.niches?.length) {
       newErrors.niches = "Selecteer minimaal 1 categorie";
+    }
+
+    if (!data.requirements?.length) {
+      newErrors.requirements = "Voeg minimaal 1 functie-eis toe";
+    }
+    if (!data.responsibilities?.length) {
+      newErrors.responsibilities =
+        "Voeg minimaal 1 verantwoordelijkheid toe";
     }
 
     setErrors(newErrors);
@@ -144,21 +174,12 @@ export function JobDetailsForm({
     }
   };
 
-  const updateBenefit = (
-    key: keyof NonNullable<JobDetailsFormData["benefits"]>,
-    checked: boolean,
-  ) => {
-    onChange({
-      benefits: {
-        extraFixedPayment: data.benefits?.extraFixedPayment ?? false,
-        extraVariablePayment: data.benefits?.extraVariablePayment ?? false,
-        pensionPlan: data.benefits?.pensionPlan ?? false,
-        travelAllowance: data.benefits?.travelAllowance ?? false,
-        extraTimeOff: data.benefits?.extraTimeOff ?? false,
-        stockPlan: data.benefits?.stockPlan ?? false,
-        [key]: checked,
-      },
-    });
+  const toggleBenefit = (benefit: Benefit, checked: boolean) => {
+    const current = data.benefits ?? [];
+    const updated = checked
+      ? [...current, benefit]
+      : current.filter((b) => b !== benefit);
+    onChange({ benefits: updated });
   };
 
   function getMethodCardClass(method: "email" | "external"): string {
@@ -171,25 +192,44 @@ export function JobDetailsForm({
     return "border-gray-200 hover:border-gray-300";
   }
 
-  const MAX_TAGS = 10;
+  const MAX_KEYWORDS = 20;
 
-  const addTag = (tag: string) => {
-    const currentTags = data.tags || [];
-    if (currentTags.length >= MAX_TAGS) {
-      return;
-    }
-    const sanitizedTag = sanitizeInput(tag);
-    if (sanitizedTag && !currentTags.includes(sanitizedTag)) {
-      onChange({ tags: [...currentTags, sanitizedTag] });
+  const addKeyword = (keyword: string) => {
+    const current = data.keywords || [];
+    if (current.length >= MAX_KEYWORDS) return;
+    const sanitized = sanitizeInput(keyword);
+    if (sanitized && !current.includes(sanitized)) {
+      onChange({ keywords: [...current, sanitized] });
     }
   };
 
-  const removeTag = (tag: string) => {
-    const currentTags = data.tags || [];
-    onChange({ tags: currentTags.filter((t) => t !== tag) });
+  const removeKeyword = (keyword: string) => {
+    const current = data.keywords || [];
+    onChange({ keywords: current.filter((k) => k !== keyword) });
   };
 
-  const tagCount = data.tags?.length || 0;
+  const keywordCount = data.keywords?.length || 0;
+
+  const addListItem = (
+    field: "requirements" | "responsibilities",
+    value: string,
+  ) => {
+    const current = data[field] || [];
+    if (current.length >= 20) return;
+    const sanitized = sanitizeInput(value);
+    if (sanitized && !current.includes(sanitized)) {
+      onChange({ [field]: [...current, sanitized] });
+      clearError(field);
+    }
+  };
+
+  const removeListItem = (
+    field: "requirements" | "responsibilities",
+    value: string,
+  ) => {
+    const current = data[field] || [];
+    onChange({ [field]: current.filter((item) => item !== value) });
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
@@ -345,10 +385,42 @@ export function JobDetailsForm({
             </div>
           </div>
 
+          <div>
+            <Label className="mb-4">
+              <div className="flex items-center gap-2">
+                <GraduationCap className="w-4 h-4 text-[#F1592A]" />
+                Opleidingsniveau <span className="text-red-500">*</span>
+              </div>
+            </Label>
+            <Select
+              value={data.education || ""}
+              onValueChange={(value) => {
+                onChange({ education: value });
+                clearError("education");
+              }}
+            >
+              <SelectTrigger
+                className={errors.education ? "border-red-500" : ""}
+              >
+                <SelectValue placeholder="Kies opleidingsniveau" />
+              </SelectTrigger>
+              <SelectContent>
+                {EDUCATION_OPTIONS.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.education && (
+              <p className="text-sm text-red-500 mt-1">{errors.education}</p>
+            )}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <Label htmlFor="salaris-van" className="mb-4">
-                Salaris van (€) <span className="text-red-500">*</span>
+                Salaris van (&euro;) <span className="text-red-500">*</span>
               </Label>
               <div className="relative">
                 <Euro className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -375,7 +447,7 @@ export function JobDetailsForm({
 
             <div>
               <Label htmlFor="salaris-tot" className="mb-4">
-                Salaris tot (€) <span className="text-red-500">*</span>
+                Salaris tot (&euro;) <span className="text-red-500">*</span>
               </Label>
               <div className="relative">
                 <Euro className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -445,7 +517,7 @@ export function JobDetailsForm({
                 </p>
                 <p className="text-sm text-blue-800">
                   Vacatures met een vast salaris krijgen gemiddeld 40% meer
-                  reacties. Vermeld ook of er een CAO van toepassing is.
+                  reacties.
                 </p>
               </div>
             </div>
@@ -515,28 +587,154 @@ export function JobDetailsForm({
               Arbeidsvoorwaarden
             </Label>
             <div className="grid md:grid-cols-3 gap-3 mt-2">
-              {(
-                [
-                  { key: "extraFixedPayment", label: "13e maand" },
-                  { key: "pensionPlan", label: "Pensioen" },
-                  { key: "travelAllowance", label: "Reiskostenvergoeding" },
-                  { key: "extraTimeOff", label: "Extra vakantiedagen" },
-                  { key: "extraVariablePayment", label: "Bonus / Variabel" },
-                  { key: "stockPlan", label: "Aandelen" },
-                ] as const
-              ).map(({ key, label }) => (
-                <div key={key} className="flex items-center space-x-2">
+              {BENEFIT_OPTIONS.map(({ value, label }) => (
+                <div key={value} className="flex items-center space-x-2">
                   <Checkbox
-                    id={key}
-                    checked={data.benefits?.[key] || false}
-                    onCheckedChange={(checked) => updateBenefit(key, !!checked)}
+                    id={value}
+                    checked={data.benefits?.includes(value) ?? false}
+                    onCheckedChange={(checked) =>
+                      toggleBenefit(value, !!checked)
+                    }
                   />
-                  <label htmlFor={key} className="text-sm cursor-pointer">
+                  <label htmlFor={value} className="text-sm cursor-pointer">
                     {label}
                   </label>
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <FileText className="w-5 h-5 text-[#F1592A]" />
+          Functie-eisen & Verantwoordelijkheden
+        </h2>
+
+        <div className="space-y-6">
+          <div>
+            <Label
+              className={`${errors.requirements ? "text-red-500" : ""} mb-4`}
+            >
+              Functie-eisen <span className="text-red-500">*</span>
+            </Label>
+            <div className="flex gap-2 mt-2">
+              <Input
+                placeholder="Bijv. 3+ jaar ervaring met TypeScript"
+                value={requirementInput}
+                disabled={(data.requirements?.length ?? 0) >= 20}
+                onChange={(e) => setRequirementInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    const value = requirementInput.trim();
+                    if (value) {
+                      addListItem("requirements", value);
+                      setRequirementInput("");
+                    }
+                  }
+                }}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                disabled={(data.requirements?.length ?? 0) >= 20}
+                onClick={() => {
+                  const value = requirementInput.trim();
+                  if (value) {
+                    addListItem("requirements", value);
+                    setRequirementInput("");
+                  }
+                }}
+              >
+                <Plus className="w-4 h-4" />
+              </Button>
+            </div>
+            <ul className="space-y-2 mt-2">
+              {data.requirements?.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2 text-sm"
+                >
+                  <span>{item}</span>
+                  <button
+                    type="button"
+                    onClick={() => removeListItem("requirements", item)}
+                    className="text-gray-400 hover:text-red-500"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            {errors.requirements && (
+              <p className="text-sm text-red-500 mt-1">{errors.requirements}</p>
+            )}
+          </div>
+
+          <div>
+            <Label
+              className={`${errors.responsibilities ? "text-red-500" : ""} mb-4`}
+            >
+              Verantwoordelijkheden <span className="text-red-500">*</span>
+            </Label>
+            <div className="flex gap-2 mt-2">
+              <Input
+                placeholder="Bijv. Ontwikkelen van nieuwe features"
+                value={responsibilityInput}
+                disabled={(data.responsibilities?.length ?? 0) >= 20}
+                onChange={(e) => setResponsibilityInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    const value = responsibilityInput.trim();
+                    if (value) {
+                      addListItem("responsibilities", value);
+                      setResponsibilityInput("");
+                    }
+                  }
+                }}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                disabled={(data.responsibilities?.length ?? 0) >= 20}
+                onClick={() => {
+                  const value = responsibilityInput.trim();
+                  if (value) {
+                    addListItem("responsibilities", value);
+                    setResponsibilityInput("");
+                  }
+                }}
+              >
+                <Plus className="w-4 h-4" />
+              </Button>
+            </div>
+            <ul className="space-y-2 mt-2">
+              {data.responsibilities?.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2 text-sm"
+                >
+                  <span>{item}</span>
+                  <button
+                    type="button"
+                    onClick={() => removeListItem("responsibilities", item)}
+                    className="text-gray-400 hover:text-red-500"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            {errors.responsibilities && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.responsibilities}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -628,43 +826,44 @@ export function JobDetailsForm({
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-4">Tags & Categorieën</h2>
+        <h2 className="text-xl font-semibold mb-4">Keywords & Categorieën</h2>
 
         <div className="space-y-4">
           <div>
-            <Label htmlFor="tags" className="mb-4">
-              Tags (druk Enter om toe te voegen)
-              {tagCount >= MAX_TAGS && (
+            <Label htmlFor="keywords" className="mb-4">
+              Keywords (druk Enter om toe te voegen)
+              {keywordCount >= MAX_KEYWORDS && (
                 <span className="text-orange-500 text-xs">
-                  (max {MAX_TAGS})
+                  {" "}
+                  (max {MAX_KEYWORDS})
                 </span>
               )}
             </Label>
             <Input
               placeholder="Typ en druk Enter..."
-              disabled={tagCount >= MAX_TAGS}
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
+              disabled={keywordCount >= MAX_KEYWORDS}
+              value={keywordInput}
+              onChange={(e) => setKeywordInput(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
-                  const value = tagInput.trim();
+                  const value = keywordInput.trim();
                   if (value) {
-                    addTag(value);
-                    setTagInput("");
+                    addKeyword(value);
+                    setKeywordInput("");
                   }
                 }
               }}
               className="mt-2"
             />
             <div className="flex flex-wrap gap-2 mt-2">
-              {data.tags?.map((tag) => (
+              {data.keywords?.map((keyword) => (
                 <span
-                  key={tag}
+                  key={keyword}
                   className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full text-sm cursor-pointer"
-                  onClick={() => removeTag(tag)}
+                  onClick={() => removeKeyword(keyword)}
                 >
-                  {tag}
+                  {keyword}
                   <X className="w-3 h-3 hover:text-red-500" />
                 </span>
               ))}
@@ -676,7 +875,7 @@ export function JobDetailsForm({
               htmlFor="niches"
               className={`${errors.niches ? "text-red-500" : ""} mb-3`}
             >
-              Categorieën (max 3) <span className="text-red-500">*</span>
+              Categorieën (max 10) <span className="text-red-500">*</span>
             </Label>
             <div className="grid md:grid-cols-3 gap-3 mt-2">
               {Object.entries(nicheSeo)
@@ -684,7 +883,7 @@ export function JobDetailsForm({
                 .map(([key, niche]) => {
                   if (niche.slug === "alle-vacatures") return null;
                   const selected = data.niches?.includes(key as Niche) ?? false;
-                  const atMax = (data.niches?.length ?? 0) >= 3;
+                  const atMax = (data.niches?.length ?? 0) >= 10;
                   return (
                     <div key={key} className="flex items-center space-x-2">
                       <Checkbox

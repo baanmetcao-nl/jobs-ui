@@ -6,21 +6,17 @@ export async function backendFetch(
     "Content-Type": "application/json",
   };
 
-  // Try Clerk token for authenticated server-side requests
+  let token: string | null = null;
   try {
     const { auth } = await import("@clerk/nextjs/server");
     const { getToken } = await auth();
-    const token = await getToken();
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
-  } catch {
-    // Not in a server component context or Clerk not available,
-    // fall back to env token
-    const envToken = process.env.BEARER_TOKEN;
-    if (envToken) {
-      headers.Authorization = `Bearer ${envToken}`;
-    }
+    token = await getToken();
+  } catch {}
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  } else if (process.env.BEARER_TOKEN) {
+    headers.Authorization = `Bearer ${process.env.BEARER_TOKEN}`;
   }
 
   return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${path}`, {

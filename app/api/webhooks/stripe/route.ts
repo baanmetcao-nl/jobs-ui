@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { backendFetch } from "@/lib/api/backend";
+import { extractDraftFromMetadata } from "@/app/api/store-draft/route";
+import { transformFlowToRegisterPayload } from "@/lib/api/transform";
+import type { JobPostingFlow } from "@/app/types-employer";
 
 export const runtime = "nodejs";
 
@@ -37,29 +40,52 @@ export async function POST(req: Request) {
 
   if (event.type === "payment_intent.succeeded") {
     const paymentIntent = event.data.object as Stripe.PaymentIntent;
-    const { clerkUserId, draftId, planId } = paymentIntent.metadata;
+    const { clerkUserId } = paymentIntent.metadata;
+    const stripeCustomerId =
+      typeof paymentIntent.customer === "string"
+        ? paymentIntent.customer
+        : paymentIntent.customer?.id ?? "";
+
+    const flowData = extractDraftFromMetadata(
+      paymentIntent.metadata as Record<string, string>,
+    ) as JobPostingFlow | undefined;
+
+    if (!flowData) {
+      console.error(
+        "No draft found in metadata for paymentIntent:",
+        paymentIntent.id,
+        "- job will not be created automatically",
+      );
+      return NextResponse.json({ received: true });
+    }
+
+    if (!clerkUserId || !stripeCustomerId) {
+      console.error("Missing clerkUserId or stripeCustomerId in metadata");
+      return NextResponse.json({ received: true });
+    }
 
     try {
-      const res = await backendFetch("/api/employer/payments/confirm", {
+      const payload = transformFlowToRegisterPayload(
+        flowData,
+        clerkUserId,
+        stripeCustomerId,
+      );
+
+      const res = await backendFetch("/api/register", {
         method: "POST",
-        body: JSON.stringify({
-          paymentIntentId: paymentIntent.id,
-          amount: paymentIntent.amount,
-          clerkUserId,
-          draftId,
-          planId,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
+        const errorText = await res.text();
         console.error(
-          "Backend payment confirmation failed:",
+          "Backend registration failed:",
           res.status,
-          await res.text(),
+          errorText,
         );
       }
     } catch (err) {
-      console.error("Failed to confirm payment with backend:", err);
+      console.error("Failed to register with backend:", err);
     }
   }
 

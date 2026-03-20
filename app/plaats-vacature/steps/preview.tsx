@@ -4,6 +4,12 @@ import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   ArrowLeft,
   ArrowRight,
   Eye,
@@ -17,7 +23,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 
-import { JobDetailsFormData, CompanyFormData } from "@/app/types-employer";
+import type { JobDetailsFormData, CompanyFormData, Benefit } from "@/app/types-employer";
 import { locationDisplayName } from "@/components/location-autocomplete";
 import { nicheSeo } from "@/lib/niches";
 import { intervalFormat } from "@/lib/utils";
@@ -28,6 +34,19 @@ interface PreviewStepProps {
   goToStep?: (slug: string) => void;
 }
 
+const BENEFIT_LABELS: Record<string, string> = {
+  extra_fixed_payment: "13e maand",
+  extra_variable_payment: "Bonus / Variabel",
+  pension_plan: "Pensioen",
+  travel_allowance: "Reiskostenvergoeding",
+  extra_time_off: "Extra vakantiedagen",
+  extraFixedPayment: "13e maand",
+  extraVariablePayment: "Bonus / Variabel",
+  pensionPlan: "Pensioen",
+  travelAllowance: "Reiskostenvergoeding",
+  extraTimeOff: "Extra vakantiedagen",
+};
+
 export function PreviewStep({
   jobData,
   companyData,
@@ -35,10 +54,10 @@ export function PreviewStep({
 }: PreviewStepProps) {
   const salaryDisplay = () => {
     if (jobData.salary?.min && jobData.salary?.max) {
-      return `€${jobData.salary.min.toLocaleString("nl-NL")} - €${jobData.salary.max.toLocaleString("nl-NL")} ${intervalFormat(jobData.salary.interval)}`;
+      return `\u20AC${jobData.salary.min.toLocaleString("nl-NL")} - \u20AC${jobData.salary.max.toLocaleString("nl-NL")} ${intervalFormat(jobData.salary.interval)}`;
     }
     if (jobData.salary?.min) {
-      return `Vanaf €${jobData.salary.min.toLocaleString("nl-NL")}`;
+      return `Vanaf \u20AC${jobData.salary.min.toLocaleString("nl-NL")}`;
     }
     return "Salaris op aanvraag";
   };
@@ -136,7 +155,7 @@ export function PreviewStep({
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={companyData.logoUrl || "/web-app-manifest-512x512.png"}
+                src={companyData.logoPreviewUrl || "/web-app-manifest-512x512.png"}
                 alt={companyData.name || "Bedrijf"}
                 className="w-16 h-16 object-contain rounded-full"
               />
@@ -161,11 +180,11 @@ export function PreviewStep({
           </div>
         </div>
 
-        {jobData.tags && jobData.tags.length > 0 && (
+        {jobData.keywords && jobData.keywords.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            {jobData.tags.map((tag) => (
-              <Badge key={tag} className="bg-[#E6F4F1] text-[#3FAFA1]">
-                {tag}
+            {jobData.keywords.map((keyword) => (
+              <Badge key={keyword} className="bg-[#E6F4F1] text-[#3FAFA1]">
+                {keyword}
               </Badge>
             ))}
           </div>
@@ -226,32 +245,44 @@ export function PreviewStep({
           ) : (
             <p>Vacaturetekst hier...</p>
           )}
-          {jobData.benefits && (
+
+          {jobData.requirements && jobData.requirements.length > 0 && (
+            <>
+              <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">
+                Functie-eisen
+              </h3>
+              <ul className="space-y-1">
+                {jobData.requirements.map((req) => (
+                  <li key={req}>{req}</li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {jobData.responsibilities && jobData.responsibilities.length > 0 && (
+            <>
+              <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">
+                Verantwoordelijkheden
+              </h3>
+              <ul className="space-y-1">
+                {jobData.responsibilities.map((resp) => (
+                  <li key={resp}>{resp}</li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {jobData.benefits && jobData.benefits.length > 0 && (
             <>
               <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">
                 Secundaire arbeidsvoorwaarden
               </h3>
-              <ul className="space-y-2">
-                <li>
-                  <strong>Extra beloning (bijv. 13e maand):</strong>{" "}
-                  {jobData.benefits.extraFixedPayment ? "Ja" : "Nee"}
-                </li>
-                <li>
-                  <strong>Prestatiegebonden beloning:</strong>{" "}
-                  {jobData.benefits.extraVariablePayment ? "Ja" : "Nee"}
-                </li>
-                <li>
-                  <strong>Pensioen:</strong>{" "}
-                  {jobData.benefits.pensionPlan ? "Ja" : "Nee"}
-                </li>
-                <li>
-                  <strong>Reiskostenvergoeding:</strong>{" "}
-                  {jobData.benefits.travelAllowance ? "Ja" : "Nee"}
-                </li>
-                <li>
-                  <strong>Aandelen:</strong>{" "}
-                  {jobData.benefits.stockPlan ? "Ja" : "Nee"}
-                </li>
+              <ul className="space-y-1">
+                {jobData.benefits.map((benefit) => (
+                  <li key={benefit}>
+                    {BENEFIT_LABELS[benefit] || benefit}
+                  </li>
+                ))}
               </ul>
             </>
           )}
@@ -267,26 +298,56 @@ export function PreviewStep({
             Neem de volgende stap
           </p>
         </div>
-        <Button className="bg-[#F1592A] hover:bg-[#F1592A]/90 text-white font-medium px-8 py-2 sm:w-auto w-full">
-          Solliciteer nu (preview)
-        </Button>
+        <TooltipProvider delayDuration={100}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="sm:w-auto w-full">
+                <Button
+                  disabled
+                  className="bg-[#F1592A] text-white font-medium px-8 py-2 w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Solliciteer nu
+                </Button>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Dit is een preview — de knop werkt na publicatie</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
 
       <div className="bg-gray-50 rounded-lg p-6">
         <h3 className="font-semibold mb-2">
           Over {companyData.name || "het bedrijf"}
         </h3>
-        <p className="text-gray-600 text-sm">
-          {companyData.bio || "Geen beschrijving beschikbaar."}
+        <p className="text-gray-600 text-sm whitespace-pre-line break-words">
+          {companyData.bio
+            ? companyData.bio.split(/(https?:\/\/[^\s]+)/g).map((part, i) =>
+                /^https?:\/\//.test(part) ? (
+                  <a
+                    key={i}
+                    href={part}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#F1592A] hover:underline"
+                  >
+                    {part}
+                  </a>
+                ) : (
+                  part
+                ),
+              )
+            : "Geen beschrijving beschikbaar."}
         </p>
-        {companyData.website && (
+        {companyData.url && (
           <a
-            href={companyData.website}
+            href={companyData.url}
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#F1592A] text-sm hover:underline mt-2 inline-block"
           >
-            {companyData.website}
+            {companyData.url}
           </a>
         )}
       </div>

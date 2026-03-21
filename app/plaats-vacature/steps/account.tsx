@@ -205,19 +205,12 @@ function CheckoutForm({
     setStripeError("");
 
     try {
-      await fetch("/api/store-draft", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ paymentIntentId, flowData }),
-      });
-    } catch {}
-
-    try {
-      await fetch("/api/update-payment-intent", {
+      await fetch("/api/prepare-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           paymentIntentId,
+          flowData,
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
@@ -491,8 +484,8 @@ export function AccountStep({
                   Account aanmaken om af te rekenen
                 </h3>
                 <p className="text-sm text-gray-600 mt-1">
-                  Maak een gratis account aan om je vacature te plaatsen. Hiermee
-                  kun je je vacatures beheren en statistieken bekijken.
+                  Maak een gratis account aan om je vacature te plaatsen.
+                  Hiermee kun je je vacatures beheren en statistieken bekijken.
                 </p>
               </div>
               <SignInButton mode="modal">

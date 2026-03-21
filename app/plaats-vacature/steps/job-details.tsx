@@ -149,8 +149,7 @@ export function JobDetailsForm({
       newErrors.requirements = "Voeg minimaal 1 functie-eis toe";
     }
     if (!data.responsibilities?.length) {
-      newErrors.responsibilities =
-        "Voeg minimaal 1 verantwoordelijkheid toe";
+      newErrors.responsibilities = "Voeg minimaal 1 verantwoordelijkheid toe";
     }
 
     setErrors(newErrors);

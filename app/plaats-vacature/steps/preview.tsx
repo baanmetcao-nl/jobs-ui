@@ -23,7 +23,11 @@ import {
   HelpCircle,
 } from "lucide-react";
 
-import type { JobDetailsFormData, CompanyFormData, Benefit } from "@/app/types-employer";
+import type {
+  JobDetailsFormData,
+  CompanyFormData,
+  Benefit,
+} from "@/app/types-employer";
 import { locationDisplayName } from "@/components/location-autocomplete";
 import { nicheSeo } from "@/lib/niches";
 import { intervalFormat } from "@/lib/utils";
@@ -155,7 +159,9 @@ export function PreviewStep({
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={companyData.logoPreviewUrl || "/web-app-manifest-512x512.png"}
+                src={
+                  companyData.logoPreviewUrl || "/web-app-manifest-512x512.png"
+                }
                 alt={companyData.name || "Bedrijf"}
                 className="w-16 h-16 object-contain rounded-full"
               />
@@ -279,9 +285,7 @@ export function PreviewStep({
               </h3>
               <ul className="space-y-1">
                 {jobData.benefits.map((benefit) => (
-                  <li key={benefit}>
-                    {BENEFIT_LABELS[benefit] || benefit}
-                  </li>
+                  <li key={benefit}>{BENEFIT_LABELS[benefit] || benefit}</li>
                 ))}
               </ul>
             </>

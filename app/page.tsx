@@ -61,18 +61,19 @@ export default async function JobBoard({
   const senioritiesValues = toArray(params.seniorities);
   const nichesValues = toArray(params.niches);
 
-  const jobsResponse: JobsResponse = await fetchJobs({
-    limit: LIMIT,
-    offset,
-    search: params.search,
-    contracts: params.contracts,
-    seniorities: senioritiesValues,
-    locations: locationValues,
-    workplace: params.workplace,
-    niches: nichesValues,
-  });
-
-  const totalJobCount = await fetchTotalJobCount();
+  const [jobsResponse, totalJobCount] = await Promise.all([
+    fetchJobs({
+      limit: LIMIT,
+      offset,
+      search: params.search,
+      contracts: params.contracts,
+      seniorities: senioritiesValues,
+      locations: locationValues,
+      workplace: params.workplace,
+      niches: nichesValues,
+    }),
+    fetchTotalJobCount(),
+  ]);
 
   return (
     <div className="min-h-screen bg-gray-50">

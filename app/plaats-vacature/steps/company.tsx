@@ -99,7 +99,9 @@ export function CompanyForm({ data, onChange, goToStep }: CompanyFormProps) {
     setUploadError("");
 
     if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
-      setUploadError("Ongeldig bestandstype. Gebruik PNG, JPG, SVG, WebP of GIF.");
+      setUploadError(
+        "Ongeldig bestandstype. Gebruik PNG, JPG, SVG, WebP of GIF.",
+      );
       return;
     }
     if (file.size > MAX_FILE_SIZE) {

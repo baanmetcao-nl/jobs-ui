@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     const stripeCustomerId =
       typeof paymentIntent.customer === "string"
         ? paymentIntent.customer
-        : paymentIntent.customer?.id ?? "";
+        : (paymentIntent.customer?.id ?? "");
 
     const flowData = extractDraftFromMetadata(
       paymentIntent.metadata as Record<string, string>,
@@ -78,11 +78,7 @@ export async function POST(req: Request) {
 
       if (!res.ok) {
         const errorText = await res.text();
-        console.error(
-          "Backend registration failed:",
-          res.status,
-          errorText,
-        );
+        console.error("Backend registration failed:", res.status, errorText);
       }
     } catch (err) {
       console.error("Failed to register with backend:", err);

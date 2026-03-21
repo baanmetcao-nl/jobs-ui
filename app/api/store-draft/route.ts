@@ -62,9 +62,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Store draft error:", error);
-    return NextResponse.json(
-      { error: "Er ging iets mis" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Er ging iets mis" }, { status: 500 });
   }
 }

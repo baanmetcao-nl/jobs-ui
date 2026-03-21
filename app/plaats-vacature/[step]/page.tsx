@@ -45,7 +45,9 @@ function normalizeBenefits(benefits: unknown): Benefit[] {
       .filter(([, v]) => v)
       .map(([k]) => CAMEL_TO_SNAKE[k] || (k as Benefit));
   }
-  return [...new Set(benefits.map((b: string) => CAMEL_TO_SNAKE[b] || b))] as Benefit[];
+  return [
+    ...new Set(benefits.map((b: string) => CAMEL_TO_SNAKE[b] || b)),
+  ] as Benefit[];
 }
 
 const DEFAULT_FLOW: JobPostingFlow = {

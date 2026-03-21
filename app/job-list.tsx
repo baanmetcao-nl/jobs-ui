@@ -118,9 +118,7 @@ export default function JobList({
             </CardHeader>
 
             <CardContent>
-              <ReactMarkdown>
-                {DOMPurify.sanitize(job.summary)}
-              </ReactMarkdown>
+              <ReactMarkdown>{DOMPurify.sanitize(job.summary)}</ReactMarkdown>
 
               <div className="flex flex-wrap gap-2 mt-3">
                 {job.tags.map((tag) => (

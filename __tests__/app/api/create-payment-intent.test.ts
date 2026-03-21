@@ -18,11 +18,15 @@ jest.mock("@clerk/nextjs/server", () => ({
   auth: (...args: unknown[]) => mockAuth(...args),
 }));
 
-// Use an arrow wrapper so mockCreate is evaluated at call-time, not factory-creation-time (avoids TDZ)
+// Use an arrow wrapper so mocks are evaluated at call-time, not factory-creation-time (avoids TDZ)
 const mockCreate = jest.fn();
+const mockCustomerCreate = jest.fn().mockResolvedValue({ id: "cus_test123" });
 
 jest.mock("stripe", () => {
   return jest.fn().mockImplementation(() => ({
+    customers: {
+      create: (...args: unknown[]) => mockCustomerCreate(...args),
+    },
     paymentIntents: { create: (...args: unknown[]) => mockCreate(...args) },
   }));
 });
@@ -40,6 +44,8 @@ function callPost(body: Record<string, unknown>) {
 describe("POST /api/create-payment-intent", () => {
   beforeEach(() => {
     mockCreate.mockClear();
+    mockCustomerCreate.mockClear();
+    mockCustomerCreate.mockResolvedValue({ id: "cus_test123" });
   });
 
   it("returns 400 for an invalid planId", async () => {
@@ -50,9 +56,9 @@ describe("POST /api/create-payment-intent", () => {
   });
 
   it.each([
-    ["single", 29900, Math.round(29900 * 1.21)],
-    ["bundle3", 79900, Math.round(79900 * 1.21)],
-    ["bundle10", 199900, Math.round(199900 * 1.21)],
+    ["single", 19900, Math.round(19900 * 1.21)],
+    ["bundle3", 49900, Math.round(49900 * 1.21)],
+    ["bundle10", 149900, Math.round(149900 * 1.21)],
   ])(
     "creates a payment intent for plan '%s' with the correct VAT-inclusive amount",
     async (planId, _base, totalWithVat) => {
@@ -85,7 +91,11 @@ describe("POST /api/create-payment-intent", () => {
     await callPost({ planId: "bundle3" });
     expect(mockCreate).toHaveBeenCalledWith(
       expect.objectContaining({
-        metadata: { planId: "bundle3", clerkUserId: "user_test123" },
+        metadata: {
+          planId: "bundle3",
+          clerkUserId: "user_test123",
+          featured: "false",
+        },
       }),
     );
   });

@@ -34,8 +34,14 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { paymentIntentId, flowData, firstName, lastName, email, companyName } =
-      await req.json();
+    const {
+      paymentIntentId,
+      flowData,
+      firstName,
+      lastName,
+      email,
+      companyName,
+    } = await req.json();
 
     if (!paymentIntentId || typeof paymentIntentId !== "string") {
       return NextResponse.json(

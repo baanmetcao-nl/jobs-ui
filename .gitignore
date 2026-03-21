@@ -27,5 +27,14 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
 # other
 .DS_Store
+.claude
+# clerk configuration (can include secrets)
+/.clerk/

@@ -1,0 +1,15 @@
+echo "Running pre-push checks..."
+
+echo "1/4 Linting..."
+npm run lint || exit 1
+
+echo "2/4 Type checking..."
+npm run typecheck || exit 1
+
+echo "3/4 Prettier..."
+npm run format:check || exit 1
+
+echo "4/4 Unit tests..."
+npm run test || exit 1
+
+echo "All checks passed!"

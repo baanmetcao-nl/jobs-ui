@@ -1,13 +1,13 @@
 "use client";
 
-import { JobsResponse } from "./types";
-import { MapPin, Building2, Eye } from "lucide-react";
+import { JobsResponse } from "@/app/types";
+import { MapPin, Building2, Eye, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import DOMPurify from "isomorphic-dompurify";
 import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
 import Pagination from "./pagination";
 import { contractFormat, intervalFormat, slugify } from "@/lib/utils";
 import Link from "next/link";
@@ -20,7 +20,11 @@ export default function JobList({
   jobsResponse: JobsResponse;
   page: number;
 }) {
-  const jobs = jobsResponse.data;
+  const sortedJobs = [...jobsResponse.data].sort((a, b) => {
+    if (a.isFeatured && !b.isFeatured) return -1;
+    if (!a.isFeatured && b.isFeatured) return 1;
+    return 0;
+  });
   const { totalCount, limit } = jobsResponse.pagination;
   const totalPages = Math.ceil(totalCount / limit);
 
@@ -33,14 +37,19 @@ export default function JobList({
   return (
     <>
       <div className="space-y-6">
-        {jobs.length === 0 && (
+        {sortedJobs.length === 0 && (
           <div className="text-center py-12 text-gray-500">
             Geen vacatures gevonden
           </div>
         )}
 
-        {jobs.map((job: JobsResponse["data"][number]) => (
-          <Card key={job.id} className="hover:shadow-md transition-shadow">
+        {sortedJobs.map((job: JobsResponse["data"][number]) => (
+          <Card
+            key={job.id}
+            className={`hover:shadow-md transition-shadow ${
+              job.isFeatured ? "border-yellow-300 border-2 bg-yellow-50/30" : ""
+            }`}
+          >
             <CardHeader>
               <div className="flex max-sm:flex-col md:flex-row justify-between gap-4">
                 <div>
@@ -54,14 +63,22 @@ export default function JobList({
                       alt={`${job.company.name} logo`}
                       size={60}
                     />
-                    <CardTitle className="text-xl mb-2 hover:text-[#F1592A]">
-                      <Link
-                        prefetch={false}
-                        href={`/vacature/${job.id}/${slugify(job.title)}`}
-                      >
-                        {job.title}
-                      </Link>
-                    </CardTitle>
+                    <div>
+                      {job.isFeatured && (
+                        <Badge className="bg-yellow-100 text-yellow-800 border-yellow-300 mb-1 text-xs">
+                          <Star className="w-3 h-3 mr-1 fill-yellow-500 text-yellow-500" />
+                          Uitgelicht
+                        </Badge>
+                      )}
+                      <CardTitle className="text-xl mb-2 hover:text-[#F1592A]">
+                        <Link
+                          prefetch={false}
+                          href={`/vacature/${job.id}/${slugify(job.title)}`}
+                        >
+                          {job.title}
+                        </Link>
+                      </CardTitle>
+                    </div>
                   </div>
                   <div className="flex max-sm:flex-col gap-4 text-gray-600">
                     <div className="flex flex-row gap-4">
@@ -101,9 +118,7 @@ export default function JobList({
             </CardHeader>
 
             <CardContent>
-              <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                {job.summary}
-              </ReactMarkdown>
+              <ReactMarkdown>{DOMPurify.sanitize(job.summary)}</ReactMarkdown>
 
               <div className="flex flex-wrap gap-2 mt-3">
                 {job.tags.map((tag) => (

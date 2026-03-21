@@ -1,11 +1,11 @@
-import { JobsResponse } from "@/app/types";
+import { JobsResponse, MinimalJob } from "@/app/types";
 import { nicheSeo } from "@/lib/niches";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import Filters from "@/app/filters";
 import JobList from "@/app/job-list";
 import Link from "next/link";
-import { fetchJobs, fetchTotalJobCount } from "@/lib/api/jobs";
+import { fetchJobs } from "@/lib/api/jobs";
 import { locations } from "@/lib/locations";
 import { capitalize } from "@/lib/utils";
 
@@ -115,9 +115,6 @@ export default async function NichePage({
     console.error("Failed to fetch jobs:", error);
   }
 
-  const hasJobs = jobsResponse.pagination.totalCount > 0;
-  const totalJobCount = await fetchTotalJobCount();
-
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -125,11 +122,13 @@ export default async function NichePage({
     description: config.description,
     url: `https://baanmetcao.nl/vacatures/${config.slug}`,
     numberOfItems: jobsResponse.pagination.totalCount,
-    itemListElement: jobsResponse.data.map((job: any, index: number) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      url: `https://baanmetcao.nl/vacature/${job.id}/${job.slug}`,
-    })),
+    itemListElement: jobsResponse.data.map(
+      (job: MinimalJob, index: number) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `https://baanmetcao.nl/vacature/${job.id}/${job.slug}`,
+      }),
+    ),
   };
 
   const breadcrumbData = {
@@ -182,11 +181,7 @@ export default async function NichePage({
           {config.intro}
         </p>
 
-        <Filters
-          jobCount={jobsResponse.data.length}
-          totalJobCount={totalJobCount}
-          showNicheFilter={false}
-        />
+        <Filters jobCount={jobsResponse.data.length} showNicheFilter={false} />
 
         <JobList jobsResponse={jobsResponse} page={page - 1} />
 

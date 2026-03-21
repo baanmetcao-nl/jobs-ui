@@ -1,9 +1,12 @@
 import { JobsResponse } from "@/app/types";
+import { backendFetch } from "./backend";
 import { ALLOWED_CONTRACTS } from "../contracts";
 
 function formatLocationForAPI(location: string): string {
+  if (location.includes("__")) return location;
+
   const formatted = location
-    .split("-")
+    .split(/[-\s]+/)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
 
@@ -23,16 +26,12 @@ type FetchJobsParams = {
   niches?: string[];
 };
 
-// Fetch total job count without any filters (for homepage banner)
 export async function fetchTotalJobCount(): Promise<number> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs/count`;
-
-  const res = await fetch(url, {
-    next: { revalidate: 300 }, // Cache for 5 minutes
+  const res = await backendFetch("/api/jobs/count", {
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) {
-    console.error("Failed to fetch total job count:", res.status);
     return 0;
   }
 
@@ -65,9 +64,7 @@ export async function fetchJobCount({
   );
   niches?.forEach((n) => params.append("niches", n));
 
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs/count?${params.toString()}`;
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/jobs/count?${params.toString()}`, {
     next: { revalidate: 60 },
   });
 
@@ -117,10 +114,7 @@ export async function fetchJobs({
   );
   niches?.forEach((n) => params.append("niches", n));
 
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs?${params.toString()}`;
-  console.log("fetchJobs URL:", url);
-
-  const res = await fetch(url, {
+  const res = await backendFetch(`/api/jobs?${params.toString()}`, {
     next: { revalidate: 60 },
   });
 

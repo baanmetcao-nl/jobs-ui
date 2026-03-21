@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { nicheSeo } from "@/lib/niches";
 import { locations } from "@/lib/locations";
+import { backendFetch } from "@/lib/api/backend";
 
 const BASE_URL = "https://baanmetcao.nl";
 
@@ -51,12 +52,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let jobPages: MetadataRoute.Sitemap = [];
 
   try {
-    const jobsRes = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL || "https://jobs-dry-breeze-1010.fly.dev"}/api/jobs?limit=1000`,
-      {
-        next: { revalidate: 3600 },
-      },
-    );
+    const jobsRes = await backendFetch("/api/jobs?limit=1000", {
+      next: { revalidate: 3600 },
+    });
 
     if (jobsRes.ok) {
       const jobsData = await jobsRes.json();

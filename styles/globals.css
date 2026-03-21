@@ -68,11 +68,11 @@
   }
 
   h1 {
-    @apply text-3xl font-bold tracking-tight text-gray-900 mb-4;
+    @apply text-3xl font-bold tracking-tight text-gray-900;
   }
 
   h2 {
-    @apply text-2xl font-semibold tracking-tight text-gray-900 mt-10 mb-4;
+    @apply text-2xl font-semibold tracking-tight text-gray-900 mb-4 mt-0;
   }
 
   h3 {
@@ -80,7 +80,7 @@
   }
 
   h4 {
-    @apply text-lg font-medium text-gray-900 mt-6 mb-2;
+    @apply text-lg font-medium text-gray-900 mb-2;
   }
 
   p {
@@ -114,4 +114,22 @@ ul {
     margin-left: 1em;
     padding: 0.3em 0;
   }
+}
+
+li p {
+  margin-bottom: 0;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  @apply space-y-0 my-2 ml-6;
+}
+
+.ProseMirror li {
+  padding: 0.125em 0;
+  @apply leading-tight;
+}
+
+.ProseMirror li p {
+  margin-bottom: 0;
 }

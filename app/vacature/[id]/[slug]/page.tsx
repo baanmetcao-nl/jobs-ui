@@ -1,17 +1,16 @@
-import { Contract, Job, JobsResponse } from "@/app/types";
+import { JobsResponse } from "@/app/types";
 import { notFound } from "next/navigation";
 import JobDetails from "./job-details";
 import Script from "next/script";
 import { ALLOWED_CONTRACTS } from "@/lib/contracts";
 import { cache } from "react";
+import { backendFetch } from "@/lib/api/backend";
 
 export const revalidate = 3600;
 export const dynamic = "force-static";
 
 const getJob = cache(async function getJob(id: string) {
-  const res = await fetch(
-    `https://jobs-dry-breeze-1010.fly.dev/api/jobs/${id}`,
-  );
+  const res = await backendFetch(`/api/jobs/${id}`);
 
   if (res.status === 404) notFound();
   if (!res.ok) throw new Error("Failed to fetch job");
@@ -21,38 +20,39 @@ const getJob = cache(async function getJob(id: string) {
 
 const getRelatedJobs = cache(async function getRelatedJobs(
   niches: string[],
+  excludeId: string,
 ): Promise<JobsResponse> {
   const params = new URLSearchParams();
-  params.append("limit", "3");
+  params.append("limit", "4");
 
   ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
 
   niches.forEach((niche) => params.append("niches", niche));
 
-  const res = await fetch(
-    `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
-  );
+  const res = await backendFetch(`/api/jobs?${params.toString()}`);
   if (!res.ok) throw new Error("Failed to fetch related jobs");
 
-  return res.json();
+  const data: JobsResponse = await res.json();
+  data.data = data.data.filter((j) => j.id !== excludeId).slice(0, 3);
+  return data;
 });
 
 const getRelatedCompanyJobs = cache(async function getRelatedCompanyJobs(
   companyId: string,
+  excludeId: string,
 ): Promise<JobsResponse> {
   const params = new URLSearchParams();
-  params.append("limit", "3");
+  params.append("limit", "4");
   params.append("companyIds", companyId);
 
   ALLOWED_CONTRACTS.forEach((c) => params.append("contracts", c));
 
-  const res = await fetch(
-    `https://jobs-dry-breeze-1010.fly.dev/api/jobs?${params.toString()}`,
-  );
-
+  const res = await backendFetch(`/api/jobs?${params.toString()}`);
   if (!res.ok) throw new Error("Failed to fetch company jobs");
 
-  return res.json();
+  const data: JobsResponse = await res.json();
+  data.data = data.data.filter((j) => j.id !== excludeId).slice(0, 3);
+  return data;
 });
 
 export async function generateMetadata(props: {
@@ -79,8 +79,8 @@ export default async function Page(props: {
   const job = await getJob(params.id);
 
   const [relatedJobs, relatedCompanyJobs] = await Promise.all([
-    getRelatedJobs(job.niches),
-    getRelatedCompanyJobs(job.company.id),
+    getRelatedJobs(job.niches, job.id),
+    getRelatedCompanyJobs(job.company.id, job.id),
   ]);
 
   const structuredData = {

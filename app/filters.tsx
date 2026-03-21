@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { LocationAutocomplete } from "@/components/location-autocomplete";
 import {
   Popover,
   PopoverTrigger,
@@ -38,8 +39,6 @@ const filterConfig = [
       { label: "Alle contracten", value: "all" },
       { label: "Vast", value: "permanent" },
       { label: "Tijdelijk", value: "temporary" },
-      { label: "Freelance", value: "freelance" },
-      { label: "Flexibel", value: "flex" },
     ],
   },
   {
@@ -51,18 +50,6 @@ const filterConfig = [
       { label: "Medior", value: "medior" },
       { label: "Senior", value: "senior" },
       { label: "Lead", value: "principal" },
-    ],
-  },
-  {
-    key: "locations",
-    label: "Locatie",
-    type: "multi",
-    options: [
-      { label: "Amsterdam", value: "amsterdam" },
-      { label: "Rotterdam", value: "rotterdam" },
-      { label: "Utrecht", value: "utrecht" },
-      { label: "Eindhoven", value: "eindhoven" },
-      { label: "Den Haag", value: "den-haag" },
     ],
   },
   {
@@ -134,16 +121,36 @@ function setSingleValue(
   return next;
 }
 
+function buildLocationFilterParams(
+  searchParams: URLSearchParams,
+): Record<string, string | string[]> {
+  const params: Record<string, string | string[]> = {};
+
+  const search = searchParams.get("search");
+  if (search) params.search = search;
+
+  const contracts = searchParams.get("contracts");
+  if (contracts && contracts !== "all") params.contracts = contracts;
+
+  const seniorities = searchParams.getAll("seniorities");
+  if (seniorities.length > 0) params.seniorities = seniorities;
+
+  const workplace = searchParams.get("workplace");
+  if (workplace && workplace !== "all") params.workplace = workplace;
+
+  const niches = searchParams.getAll("niches");
+  if (niches.length > 0) params.niches = niches;
+
+  return params;
+}
+
 export default function Filters({
-  jobCount,
-  totalJobCount,
   showNicheFilter = true,
-  showLocationFilter = true,
+  showLocationInput = true,
 }: {
-  jobCount: number;
-  totalJobCount: number;
+  jobCount?: number;
   showNicheFilter?: boolean;
-  showLocationFilter?: boolean;
+  showLocationInput?: boolean;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -152,6 +159,9 @@ export default function Filters({
 
   const [searchTerm, setSearchTerm] = useState(
     searchParams.get("search") || "",
+  );
+  const [locationTerm, setLocationTerm] = useState(
+    searchParams.get("locations") || "",
   );
 
   const updateMultiFilter = (key: string, value: string) => {
@@ -198,6 +208,7 @@ export default function Filters({
 
   const resetFilters = () => {
     setSearchTerm("");
+    setLocationTerm("");
     router.replace(pathname, { scroll: false });
   };
 
@@ -208,16 +219,18 @@ export default function Filters({
       if (!searchTerm) params.delete("search");
       else params.set("search", searchTerm);
 
+      if (!locationTerm) params.delete("locations");
+      else params.set("locations", locationTerm);
+
       params.delete("page");
 
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     }, 400);
 
     return () => clearTimeout(handler);
-  }, [searchTerm]);
+  }, [searchTerm, locationTerm]);
 
   const visibleFilters = filterConfig.filter((f) => {
-    if (!showLocationFilter && f.key === "locations") return false;
     if (!showNicheFilter && f.key === "niches") return false;
     return true;
   });
@@ -241,14 +254,27 @@ export default function Filters({
           <Spinner className="h-8 w-8 animate-spin text-teal-600" />
         </div>
       )}
-      <div className="relative mb-6">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
-        <Input
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Zoek op functie, bedrijf of vaardigheden..."
-          className="pl-10 h-12 text-lg"
-        />
+      <div
+        className={`grid grid-cols-1 ${showLocationInput ? "md:grid-cols-2" : ""} gap-4 mb-6`}
+      >
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+          <Input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Zoek op functie, bedrijf of vaardigheden..."
+            className="pl-10 h-12 text-lg"
+          />
+        </div>
+        {showLocationInput && (
+          <LocationAutocomplete
+            value={locationTerm}
+            onChange={(val) => setLocationTerm(val)}
+            onInputChange={(val) => setLocationTerm(val)}
+            inputClassName="h-12 text-lg"
+            filterParams={buildLocationFilterParams(searchParams)}
+          />
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
@@ -293,6 +319,7 @@ export default function Filters({
           variant="outline"
           onClick={resetFilters}
           className="flex gap-2 cursor-pointer"
+          role="combobox"
         >
           <Filter className="h-4 w-4" />
           Filters wissen
@@ -353,6 +380,7 @@ function MultiSelect({
         <Button
           variant="outline"
           className="w-full justify-between font-normal"
+          role="combobox"
         >
           {triggerLabel}
           <ChevronDown className="h-4 w-4 ml-2 opacity-50" />

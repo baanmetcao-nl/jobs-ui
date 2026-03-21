@@ -1,6 +1,6 @@
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Menu, Search, Shield, TrendingUp, Users, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,10 +33,16 @@ export function NavBar() {
 
   const pathname = usePathname();
   const isHomePage = pathname === "/";
+  const isEmployerFlow =
+    pathname.startsWith("/werkgevers") ||
+    pathname.startsWith("/plaats-vacature") ||
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/bevestiging") ||
+    pathname.startsWith("/bedrijf");
 
   return (
     <div className="w-full bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between gap-4">
           <div className="flex items-center gap-6 lg:gap-8">
             <Link href="/" className="flex items-center gap-2">
@@ -64,19 +70,19 @@ export function NavBar() {
                 Over ons
               </Link>
               <Link
-                href="/contact"
+                href="/blog"
                 className="text-sm font-medium text-gray-700 hover:text-gray-900"
               >
-                Contact
+                Blog
               </Link>
             </nav>
           </div>
-          {!isHomePage && (
+          {!isHomePage && !isEmployerFlow && (
             <form
               onSubmit={handleSearch}
-              className="hidden md:flex flex-1 max-w-md"
+              className="hidden md:flex flex-1 max-w-xl gap-2"
             >
-              <div className="relative w-full">
+              <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   type="search"
@@ -92,6 +98,7 @@ export function NavBar() {
             <Button
               variant="ghost"
               size="icon"
+              aria-label={isMenuOpen ? "Menu sluiten" : "Menu openen"}
               className="shrink-0 md:hidden text-black"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -104,7 +111,7 @@ export function NavBar() {
           </div>
         </div>
         {isMenuOpen && (
-          <div className="lg:hidden border-t py-4 space-y-2">
+          <div className="md:hidden border-t py-4 space-y-2">
             <Link
               prefetch={false}
               href="/"
@@ -119,6 +126,13 @@ export function NavBar() {
               onClick={() => setIsMenuOpen(false)}
             >
               Over ons
+            </Link>
+            <Link
+              href="/blog"
+              className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Blog
             </Link>
             <Link
               href="/contact"

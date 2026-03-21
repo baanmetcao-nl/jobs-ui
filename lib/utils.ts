@@ -1,4 +1,4 @@
-import { Interval, Job, JobsResponse } from "@/app/types";
+import { Interval, Job } from "@/app/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -21,7 +21,7 @@ export function formatDate(dateString: string): string {
   return formatted;
 }
 
-export function formatNumber(num:number) {
+export function formatNumber(num: number) {
   return new Intl.NumberFormat("nl-NL").format(num);
 }
 
@@ -29,7 +29,6 @@ export function truncate(text: string, maxLength: number) {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength) + "...";
 }
-
 
 export function intervalFormat(interval: Interval) {
   const labels: Record<Interval, string> = {
@@ -45,10 +44,8 @@ export function intervalFormat(interval: Interval) {
 
 export function contractFormat(contract: Job["contract"]) {
   const labels: Record<Job["contract"], string> = {
-    freelance: "Freelance",
     permanent: "Vast contract",
     temporary: "Tijdelijk contract",
-    flex: "Flexibel contract",
   };
   return labels[contract];
 }
@@ -66,6 +63,16 @@ export function educationFormat(education: Job["education"]) {
     unknown: "Niet bekend",
   };
   return labels[education];
+}
+
+export function sanitizeInput(input: string): string {
+  return input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+export function ensureHttps(url: string): string {
+  const trimmed = url.trim();
+  if (!trimmed) return trimmed;
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
 }
 
 export function slugify(text: string) {

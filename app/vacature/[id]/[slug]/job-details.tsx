@@ -8,7 +8,6 @@ import {
 import Link from "next/link";
 import {
   Award,
-  BookUser,
   Calendar,
   Clock,
   EuroIcon,
@@ -32,6 +31,7 @@ import {
 } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+import DOMPurify from "isomorphic-dompurify";
 import { Job, MinimalJob } from "@/app/types";
 import CompanyLogo from "@/components/image-fallback";
 
@@ -134,6 +134,8 @@ export default function JobDetails({
     job.hours.min === job.hours.max
       ? `${job.hours.min} uur`
       : `${job.hours.min} - ${job.hours.max} uur`;
+
+  const sanitizedDescription = DOMPurify.sanitize(job.description);
 
   return (
     <div className="min-h-screen bg-white pb-20 md:pb-0">
@@ -242,7 +244,7 @@ export default function JobDetails({
                 />
                 <InfoItem
                   icon={<Calendar color="#F1693F" />}
-                  label="Remote"
+                  label="Werkplek"
                   description={capitalize(workplaceLabels[job.workplace])}
                 />
                 <InfoItem
@@ -281,7 +283,7 @@ export default function JobDetails({
             <div className="mb-8">
               <div className="prose max-w-none text-gray-700">
                 <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                  {job.description}
+                  {sanitizedDescription}
                 </ReactMarkdown>
 
                 <h3 className="text-lg font-medium mt-6 mb-3 text-gray-900">
@@ -458,17 +460,13 @@ function RelatedJobCard({ vacature }: { vacature: MinimalJob }) {
   return (
     <div className="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
       <div className="flex items-start gap-4">
-        <div
-          className={`w-12 rounded-full flex items-center justify-center shrink-0`}
-        >
-          <span className="text-white font-semibold text-sm">
-            <Image
-              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${vacature.company.logoUrl}`}
-              alt={`${vacature.company.name} logo`}
-              width={60}
-              height={60}
-            />
-          </span>
+        <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${vacature.company.logoUrl}`}
+            alt={`${vacature.company.name} logo`}
+            fill
+            className="object-contain"
+          />
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-gray-900 mb-1">
@@ -538,12 +536,12 @@ function Sidebar({
 
         <div className="bg-gray-50 rounded-lg p-6">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
+            <div className="relative w-20 h-20 bg-white rounded-full overflow-hidden">
               <Image
                 src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${job.company.logoUrl}`}
                 alt={job.company.name}
-                width={60}
-                height={60}
+                fill
+                className="object-contain p-2"
               />
             </div>
             <div>

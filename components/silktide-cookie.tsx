@@ -3,14 +3,16 @@ import { useEffect } from "react";
 import Script from "next/script";
 
 export default function SilktideCookieBanner() {
+  const isE2E = process.env.NEXT_PUBLIC_E2E === "true";
+
   useEffect(() => {
+    if (isE2E) return;
     if (typeof window === "undefined") return;
-    const w = window as any;
 
     // wacht tot script geladen is
     const initSilktide = () => {
-      if (!w.silktideCookieBannerManager) return;
-      w.silktideCookieBannerManager.updateCookieBannerConfig({
+      if (!window.silktideCookieBannerManager) return;
+      window.silktideCookieBannerManager.updateCookieBannerConfig({
         background: { showBackground: true },
         cookieIcon: { position: "bottomRight" },
         cookieTypes: [
@@ -39,7 +41,7 @@ export default function SilktideCookieBanner() {
 
     // check elke 100ms tot script geladen is
     const interval = setInterval(() => {
-      if ((window as any).silktideCookieBannerManager) {
+      if (window.silktideCookieBannerManager) {
         clearInterval(interval);
         initSilktide();
       }
@@ -48,17 +50,12 @@ export default function SilktideCookieBanner() {
     return () => clearInterval(interval);
   }, []);
 
+  if (isE2E) return null;
+
   return (
-    <>
-      <link
-        rel="stylesheet"
-        id="silktide-consent-manager-css"
-        href="/silktide-consent/silktide-consent-manager.css"
-      />
-      <Script
-        src="/silktide-consent/silktide-consent-manager.js"
-        strategy="afterInteractive" // pas laden nadat pagina interactief is
-      />
-    </>
+    <Script
+      src="/silktide-consent/silktide-consent-manager.js"
+      strategy="afterInteractive"
+    />
   );
 }

@@ -40,7 +40,7 @@ jest.mock("react-markdown", () => ({
 
 jest.mock("rehype-raw", () => ({ __esModule: true, default: () => {} }));
 
-jest.mock("isomorphic-dompurify", () => ({
+jest.mock("dompurify", () => ({
   __esModule: true,
   default: { sanitize: (input: string) => input },
 }));

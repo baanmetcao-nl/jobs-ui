@@ -1,6 +1,6 @@
 "use client";
 
-import DOMPurify from "dompurify";
+import { sanitize } from "@/lib/sanitize";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -245,7 +245,7 @@ export function PreviewStep({
           {jobData.description ? (
             <div
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(jobData.description),
+                __html: sanitize(jobData.description),
               }}
             />
           ) : (

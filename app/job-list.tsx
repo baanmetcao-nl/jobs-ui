@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitize } from "@/lib/sanitize";
 import ReactMarkdown from "react-markdown";
 import Pagination from "./pagination";
 import { contractFormat, intervalFormat, slugify } from "@/lib/utils";
@@ -118,7 +118,7 @@ export default function JobList({
             </CardHeader>
 
             <CardContent>
-              <ReactMarkdown>{DOMPurify.sanitize(job.summary)}</ReactMarkdown>
+              <ReactMarkdown>{sanitize(job.summary)}</ReactMarkdown>
 
               <div className="flex flex-wrap gap-2 mt-3">
                 {job.tags.map((tag) => (

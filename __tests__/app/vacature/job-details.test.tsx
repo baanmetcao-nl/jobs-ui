@@ -28,8 +28,9 @@ jest.mock("next/image", () => ({
   ),
 }));
 
-jest.mock("isomorphic-dompurify", () => ({
-  sanitize: (html: string) => html,
+jest.mock("dompurify", () => ({
+  __esModule: true,
+  default: { sanitize: (html: string) => html },
 }));
 
 jest.mock("@/app/apply-modal", () => ({

@@ -31,7 +31,7 @@ import {
 } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitize } from "@/lib/sanitize";
 import { Job, MinimalJob } from "@/app/types";
 import CompanyLogo from "@/components/image-fallback";
 
@@ -135,7 +135,7 @@ export default function JobDetails({
       ? `${job.hours.min} uur`
       : `${job.hours.min} - ${job.hours.max} uur`;
 
-  const sanitizedDescription = DOMPurify.sanitize(job.description);
+  const sanitizedDescription = sanitize(job.description);
 
   return (
     <div className="min-h-screen bg-white pb-20 md:pb-0">

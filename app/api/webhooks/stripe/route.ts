@@ -3,13 +3,10 @@ import Stripe from "stripe";
 import { backendFetch } from "@/lib/api/backend";
 import { extractDraftFromMetadata } from "@/app/api/store-draft/route";
 import { transformFlowToRegisterPayload } from "@/lib/api/transform";
+import { getStripe } from "@/lib/stripe";
 import type { JobPostingFlow } from "@/app/types-employer";
 
 export const runtime = "nodejs";
-
-function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!);
-}
 
 export async function POST(req: Request) {
   const body = await req.text();

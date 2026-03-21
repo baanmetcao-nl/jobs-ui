@@ -17,6 +17,9 @@
     "test:e2e:headed": "playwright test --headed",
     "prepare": "husky"
   },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,md}": "prettier --write"
+  },
   "dependencies": {
     "@clerk/localizations": "^4.2.2",
     "@clerk/nextjs": "^7.0.5",
@@ -108,6 +111,7 @@
     "husky": "^9.1.7",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
+    "lint-staged": "^16.4.0",
     "npm-check-updates": "^19.6.3",
     "postcss": "^8",
     "tailwindcss": "^4.2.1",

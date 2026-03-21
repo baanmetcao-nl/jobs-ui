@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
 import { auth } from "@clerk/nextjs/server";
+import { getStripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
-
-function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!);
-}
 
 const PLAN_PRICES: Record<string, number> = {
   single: 19900,
@@ -41,13 +37,11 @@ export async function POST(req: Request) {
     const subtotal = baseAmount + featuredAmount;
     const totalWithVat = Math.round(subtotal * 1.21);
 
-    const stripe = getStripe();
-
-    const customer = await stripe.customers.create({
+    const customer = await getStripe().customers.create({
       metadata: { clerkUserId: userId },
     });
 
-    const paymentIntent = await stripe.paymentIntents.create({
+    const paymentIntent = await getStripe().paymentIntents.create({
       amount: totalWithVat,
       currency: "eur",
       customer: customer.id,

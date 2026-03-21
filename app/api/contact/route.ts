@@ -27,11 +27,11 @@ function containsDangerous(input: string): boolean {
 // Escape HTML entities
 function escapeHtml(str: string): string {
   return str
-    .replace(/&/g, String.fromCharCode(38) + "amp;")
-    .replace(/</g, String.fromCharCode(38) + "lt;")
-    .replace(/>/g, String.fromCharCode(38) + "gt;")
-    .replace(/"/g, String.fromCharCode(38) + "quot;")
-    .replace(/'/g, String.fromCharCode(38) + "#39;")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
     .replace(/\n/g, "<br/>");
 }
 

@@ -14,6 +14,28 @@ export async function POST(req: Request) {
       );
     }
 
+    const ALLOWED_TYPES = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/svg+xml",
+    ];
+    const MAX_SIZE = 5 * 1024 * 1024;
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      return NextResponse.json(
+        { error: "Ongeldig bestandstype. Gebruik JPG, PNG, WebP of SVG." },
+        { status: 400 },
+      );
+    }
+
+    if (file.size > MAX_SIZE) {
+      return NextResponse.json(
+        { error: "Bestand te groot (max 5MB)" },
+        { status: 400 },
+      );
+    }
+
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     if (!backendUrl) {
       return NextResponse.json(

@@ -1,14 +1,11 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import Stripe from "stripe";
+import { getStripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
 
 const CHUNK_SIZE = 490;
-
-function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!);
-}
+const MAX_DRAFT_CHUNKS = 48;
 
 export function extractDraftFromMetadata(
   metadata: Record<string, string>,
@@ -46,8 +43,26 @@ export async function POST(req: Request) {
       );
     }
 
+    const stripe = getStripe();
+
+    const existing = await stripe.paymentIntents.retrieve(paymentIntentId);
+    if (existing.metadata.clerkUserId !== userId) {
+      return NextResponse.json(
+        { error: "Niet geautoriseerd" },
+        { status: 403 },
+      );
+    }
+
     const json = JSON.stringify(flowData);
     const totalChunks = Math.ceil(json.length / CHUNK_SIZE);
+
+    if (totalChunks > MAX_DRAFT_CHUNKS) {
+      return NextResponse.json(
+        { error: "Data te groot om op te slaan" },
+        { status: 400 },
+      );
+    }
+
     const metadata: Record<string, string> = {
       draft_chunks: String(totalChunks),
     };
@@ -56,7 +71,6 @@ export async function POST(req: Request) {
       metadata[`draft_${i}`] = json.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
     }
 
-    const stripe = getStripe();
     await stripe.paymentIntents.update(paymentIntentId, { metadata });
 
     return NextResponse.json({ success: true });

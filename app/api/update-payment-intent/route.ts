@@ -1,29 +1,9 @@
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
 import { auth } from "@clerk/nextjs/server";
+import { getStripe } from "@/lib/stripe";
+import { sanitizeString } from "@/lib/sanitize-string";
 
 export const runtime = "nodejs";
-
-function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!);
-}
-
-function sanitize(value: unknown): string {
-  if (typeof value !== "string") return "";
-  return value
-    .trim()
-    .slice(0, 200)
-    .replace(/[<>"'&]/g, (ch) => {
-      const entities: Record<string, string> = {
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#x27;",
-        "&": "&amp;",
-      };
-      return entities[ch] ?? ch;
-    });
-}
 
 export async function POST(req: Request) {
   const { userId } = await auth();
@@ -42,7 +22,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const sanitizedEmail = sanitize(email);
+    const sanitizedEmail = sanitizeString(email);
     if (sanitizedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedEmail)) {
       return NextResponse.json(
         { error: "Ongeldig emailadres" },
@@ -50,12 +30,22 @@ export async function POST(req: Request) {
       );
     }
 
-    await getStripe().paymentIntents.update(paymentIntentId, {
+    const stripe = getStripe();
+
+    const existing = await stripe.paymentIntents.retrieve(paymentIntentId);
+    if (existing.metadata.clerkUserId !== userId) {
+      return NextResponse.json(
+        { error: "Niet geautoriseerd" },
+        { status: 403 },
+      );
+    }
+
+    await stripe.paymentIntents.update(paymentIntentId, {
       metadata: {
-        firstName: sanitize(firstName),
-        lastName: sanitize(lastName),
+        firstName: sanitizeString(firstName),
+        lastName: sanitizeString(lastName),
         email: sanitizedEmail,
-        companyName: sanitize(companyName),
+        companyName: sanitizeString(companyName),
         clerkUserId: userId,
       },
       receipt_email: sanitizedEmail || undefined,
